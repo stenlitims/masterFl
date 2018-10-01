@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     nav(w) {
-      this.$bus.emit('send-form', w);
+      this.$bus.emit(this.steps[this.step].comp, w);
       // if (this.complete || w == "prev") {
       //   this.$emit("footerBtn", w);
       // }

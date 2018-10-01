@@ -14,8 +14,10 @@
             <component :is="component"
              @btnActive="setBtnActive"
              @footerBtn="footerBtn"
+             @objId="setObjId"
              :steps="steps" 
-             :step="step" 
+             :step="step"
+             :object_id="object_id"
              ></component>
           </transition>
         </div>
@@ -116,7 +118,7 @@ export default {
   created() {
     this.setMaster();
     this.setComp();
-   // this.getMaster(true);
+    this.getMaster(true);
   },
   mounted() {
     $(".page-master").addClass("active");
@@ -131,12 +133,17 @@ export default {
       if (!this.steps[this.step]) {
         return "cartObject";
       } else {
-        this.getMaster(false);
+        if (this.step > 0) {
+          this.getMaster(false);
+        }
         return this.steps[this.step].comp;
       }
     }
   },
   methods: {
+    setObjId(id) {
+      if (id) this.object_id = id;
+    },
     setMaster() {
       this.namep = this.$route.name;
       this.steps = steps[this.$route.name].steps;
@@ -148,6 +155,7 @@ export default {
       data["master"] = this.namep;
       data["steps"] = this.steps;
       data["step"] = this.step;
+      data["object_id"] = this.object_id;
 
       let action = "getState";
       if (!firstLoad) {

@@ -12,7 +12,7 @@
         <div class="col-lg-6">
           <div class="form-group">
             <label>Сайт</label>
-            <input type="text" class="form-control" placeholder="Введите адрес" v-model="form.site">
+            <input type="text" class="form-control" placeholder="Введите адрес" v-model="form.sales_department_site">
           </div>
         </div>
         <div class="col-lg-6">
@@ -27,18 +27,17 @@
         <div class="col-lg-6">
             <div class="form-group">
               <label>Логотип</label>
-              <input type="file" class="form-control"  @change="onFileChange" placeholder="Файл">
+              <input type="file" name="img" id="logo" class="form-control" placeholder="Файл">
             </div>
-            <!-- <div class="form-group obj-logo" v-if="form.logo">
+            <div class="obj-logo" v-if="form.logo">
               <img :src="form.logo" /><br>
-              <a href="#" @click="removeImage">Удалить</a>
-            </div> -->
+            </div>
         </div>
 
         <div class="col-lg-12">
           <div class="form-group">
             <label>Адрес объекта</label>
-            <input type="text" class="form-control" placeholder="Введите адрес (город, улица, дом)" v-model="form.adress">
+            <input type="text" class="form-control" placeholder="Введите адрес (город, улица, дом)" v-model="form.address">
           </div>
         </div>
         
@@ -85,8 +84,8 @@
 
 <script>
 export default {
-  name: "form1",
-  props: ["steps", "step"],
+  name: "cartObject",
+  props: ["steps", "step", "object_id"],
   data() {
     return {
       errors: [],
@@ -94,22 +93,24 @@ export default {
       success: false,
       form: {
         name: "",
-        adress: "",
-        site: "",
-        img: "",
+        address: "",
+        sales_department_site: "",
+        logo: "",
         currency: "USD"
       },
       required: {
         name: "",
-        adress: "",
+        address: "",
         currency: ""
       },
       currency: ["USD", "UAH", "RUB"],
-      error: []
+      error: [],
+      dataLoad: false
     };
   },
   created() {
-    this.$bus.on("send-form", this.send);
+    this.$bus.on("cartObject", this.send);
+    this.getData();
   },
   updated() {
     this.error = [];
@@ -123,33 +124,39 @@ export default {
 
     this.$emit("btnActive", !this.error.length);
   },
+  watch: {
+    object_id() {
+      this.getData();
+    }
+  },
   methods: {
-    onFileChange(e) {
-      var files = e.target.files || e.dataTransfer.files;
-      if (!files.length) return;
-      this.createImage(files[0]);
-    },
-    createImage(file) {
-      var image = new Image();
-      var reader = new FileReader();
-
-      reader.onload = e => {
-        this.form.img = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    },
-    removeImage(e) {
-      e.preventDefault();
-      this.form.img = "";
-    },
-    upload() {
-      axios.post("/api/upload", { image: this.form.img }).then(response => {});
+    getData() {
+    //  console.log(this.object_id);
+      if (!this.object_id || this.dataLoad) return;
+      $.post(
+        this.$root.apiurl,
+        {
+          action: "getGproject",
+          id: this.object_id
+        },
+        data => {
+          if (data) {
+            console.log(data);
+            this.form.name = data.name;
+            this.form.logo = data.logo;
+            this.form.currency = data.currency;
+            this.form.address = data.address;
+            this.form.sales_department_site = data.sales_department_site;
+            this.dataLoad = true;
+          }
+        },
+        "json"
+      );
     },
     send(e) {
-
-    //  console.log(e);
-
-      if(this.steps[this.step].complete){
+      console.log(1);
+    //  return;
+      if (e == "prev") {
         this.$emit("footerBtn", e);
         return;
       }
@@ -159,27 +166,45 @@ export default {
       if (!this.form.name) {
         this.errors.push("Требуется указать имя.");
       }
-      if (!this.form.adress) {
+      if (!this.form.address) {
         this.errors.push("Требуется указать адресс.");
       }
 
       if (!this.errors.length) {
-        $.post(
-          this.$root.apiurl,
-          {
-            action: "addGproject",
-            data: this.form
-          },
-          data => {
-            console.log(data);
+        let form_data = new FormData();
+        if ($("#logo")[0].files.length) {
+          form_data.append("img", $("#logo")[0].files[0]);
+        }
+        let action = "addGproject";
+        if (this.object_id) {
+          action = "getGproject";
+          form_data.append("id", this.object_id);
+          form_data.append("update", 1);
+        }
+        form_data.append("action", action);
+
+        for (let item in this.form) {
+          if (this.form[item]) form_data.append(item, this.form[item]);
+        }
+
+        $.ajax({
+          url: this.$root.apiurl,
+          dataType: "json",
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: form_data,
+          type: "POST",
+          success: data => {
+           // console.log(data);
             if (!data.errors) {
+              if (!this.object_id) this.$emit("objId", data.id);
               this.$emit("footerBtn", e);
             } else {
               this.errorsSer = data.errors;
             }
-          },
-          "json"
-        );
+          }
+        });
       }
     }
   }
@@ -192,4 +217,12 @@ export default {
     margin-bottom: 0;
   }
 }
+.obj-logo {
+  margin-top: -15px;
+  img {
+    max-width: 100%;
+    max-height: 80px;
+  }
+}
+
 </style>

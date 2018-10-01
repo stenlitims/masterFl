@@ -61,7 +61,7 @@
 
 <script>
 export default {
-  name: "form1",
+  name: "FlatsImport",
   props: ["steps", "step"],
   data() {
     return {
@@ -92,6 +92,9 @@ export default {
       }
     };
   },
+  created(){
+    this.$bus.on("FlatsImport", this.send);
+  },
   computed: {},
   methods: {
     isEmailAddress() {
@@ -100,8 +103,14 @@ export default {
         this.innerStep = 1;
       }
     },
-    send() {
-      console.log(this.form);
+    send(w) {
+       console.log(w);
+      if (w == "prev") {
+        this.$emit("footerBtn", w);
+        return;
+      }
+      this.errors = [];
+      this.findError();
 
       this.errors = [];
 
