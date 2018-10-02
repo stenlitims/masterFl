@@ -60,14 +60,13 @@
 </template>
 
 <script>
+import masterMixin from '@/mixin/masterMixin';
+
 export default {
   name: "FlatsImport",
-  props: ["steps", "step"],
+  mixins: [masterMixin],
   data() {
     return {
-      // steps: []
-      errors: [],
-      success: false,
       varimport: [
         // {
         //   id: 1,

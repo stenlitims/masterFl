@@ -7,6 +7,9 @@
                   Назад</button>
             </div>
             <a href="#" @click.prevent="hideModal" class="close-master">Закрыть</a>
+
+
+            <button @click="clear" class="btn btn-md btn-clear waves-effect">Очистить</button>
             
           </div>
           <div>
@@ -22,7 +25,7 @@
 <script>
 export default {
   name: "MasterFooter",
-  props: ["steps", "step"],
+  props: ["steps", "step", "object_id"],
   data() {
     return {
       // steps: []
@@ -30,7 +33,7 @@ export default {
   },
   computed: {
     complete() {
-    //  console.log(this.steps);
+      //  console.log(this.steps);
       if (this.steps[this.step].complete) {
         return true;
       }
@@ -52,6 +55,26 @@ export default {
     },
     hideModal() {
       $(".page-master").removeClass("active");
+    },
+    clear() {
+      let clear = confirm("Очистить мастер?");
+      if (clear) {
+        $.post(
+          this.$root.apiurl,
+          {
+            action: "removeGproject",
+            object_id: this.object_id,
+            master: this.$route.name,
+          },
+          data => {
+            if (data) {
+              console.log(data);
+              if(data.type == 'success') location.reload();
+            }
+          },
+          "json"
+        );
+      }
     }
   }
 };
@@ -79,6 +102,12 @@ export default {
   .btn-next {
     //  opacity: 0.6;
     border-radius: 5px;
+  }
+
+  .btn-clear {
+    margin-left: 50px;
+    font-size: 10px;
+    padding: 4px 8px;
   }
 
   .btn {
@@ -121,7 +150,8 @@ export default {
       background: #d2d6db !important;
       border-color: #d2d6db !important;
       color: #808080 !important;
-      &:after, &:before{
+      &:after,
+      &:before {
         border-color: #808080;
       }
     }

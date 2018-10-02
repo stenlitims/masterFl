@@ -24,7 +24,7 @@
     </div>
    
 
-    <master-footer :steps="steps" :step="step"></master-footer>
+    <master-footer :steps="steps" :step="step" :object_id="object_id"></master-footer>
   </div>
 </template>
 
@@ -101,8 +101,8 @@ export default {
       steps: [],
       namep: "",
       object_id: false,
+      master_id: false,
       btn: false
-      // component: "cartObject"
     };
   },
   components: {

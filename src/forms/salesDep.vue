@@ -49,14 +49,13 @@
 </template>
 
 <script>
+import masterMixin from '@/mixin/masterMixin';
+
 export default {
   name: "salesDep",
-  props: ["steps", "step", "object_id"],
+  mixins: [masterMixin],
   data() {
     return {
-      // steps: []
-      errors: [],
-      success: false,
       form: {
         sales_department_address: "",
         sales_department_phone: "",
@@ -68,9 +67,7 @@ export default {
         sales_department_phone: "",
         sales_department_schedule: "",
         sales_department_email: ""
-      },
-      error: [],
-      dataLoad: false
+      }
     };
   },
   created() {
@@ -78,8 +75,6 @@ export default {
     this.getData();
   },
   updated() {
-    this.findError();
-    this.$emit("btnActive", !this.error.length);
   },
   watch: {
     object_id() {
@@ -87,14 +82,6 @@ export default {
     }
   },
   methods: {
-    findError() {
-      this.error = [];
-      for (let item in this.required) {
-        if (this.form[item] == "") {
-          this.error.push(item);
-        }
-      }
-    },
     getData() {
       // console.log(this.object_id);
       if (!this.object_id || this.dataLoad) return;

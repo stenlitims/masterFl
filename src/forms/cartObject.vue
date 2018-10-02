@@ -83,14 +83,13 @@
 </template>
 
 <script>
+import masterMixin from '@/mixin/masterMixin';
+
 export default {
   name: "cartObject",
-  props: ["steps", "step", "object_id"],
+  mixins: [masterMixin],
   data() {
     return {
-      errors: [],
-      errorsSer: [],
-      success: false,
       form: {
         name: "",
         address: "",
@@ -104,8 +103,6 @@ export default {
         currency: ""
       },
       currency: ["USD", "UAH", "RUB"],
-      error: [],
-      dataLoad: false
     };
   },
   created() {
@@ -113,16 +110,6 @@ export default {
     this.getData();
   },
   updated() {
-    this.error = [];
-    for (let item in this.required) {
-      //  console.log(item);
-
-      if (this.form[item] == "") {
-        this.error.push(item);
-      }
-    }
-
-    this.$emit("btnActive", !this.error.length);
   },
   watch: {
     object_id() {
@@ -131,7 +118,7 @@ export default {
   },
   methods: {
     getData() {
-    //  console.log(this.object_id);
+      //  console.log(this.object_id);
       if (!this.object_id || this.dataLoad) return;
       $.post(
         this.$root.apiurl,
@@ -155,7 +142,7 @@ export default {
     },
     send(e) {
       console.log(1);
-    //  return;
+      //  return;
       if (e == "prev") {
         this.$emit("footerBtn", e);
         return;
@@ -196,7 +183,7 @@ export default {
           data: form_data,
           type: "POST",
           success: data => {
-           // console.log(data);
+            // console.log(data);
             if (!data.errors) {
               if (!this.object_id) this.$emit("objId", data.id);
               this.$emit("footerBtn", e);
@@ -224,5 +211,4 @@ export default {
     max-height: 80px;
   }
 }
-
 </style>

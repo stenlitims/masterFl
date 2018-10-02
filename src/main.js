@@ -10,14 +10,19 @@ Vue.use(VueBus);
 
 Vue.config.productionTip = false
 
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
-  components: { App },
+  components: {
+    App
+  },
   data: {
-    apiurl: 'https://test.flatris.com.ua/assets/api/api.php'
+    apiurl: 'https://test.flatris.com.ua/assets/api/api.php',
   },
   template: '<App/>'
-})
+});
+
+
 
