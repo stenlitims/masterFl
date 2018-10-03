@@ -102,7 +102,8 @@ export default {
       namep: "",
       object_id: false,
       master_id: false,
-      btn: false
+      btn: false,
+      pleload: false,
     };
   },
   components: {
@@ -119,6 +120,9 @@ export default {
     this.setMaster();
     this.setComp();
     this.getMaster(true);
+    setTimeout(() => {
+      this.pleload = true;
+    }, 3000);
   },
   mounted() {
     $(".page-master").addClass("active");
@@ -162,6 +166,8 @@ export default {
         action = "setState";
       }
 
+      let load = false;
+
       $.post(
         this.$root.apiurl,
         {
@@ -182,13 +188,18 @@ export default {
             if (data.object_id) this.object_id = data.object_id;
             location.hash = "/" + this.namep + "/" + (+this.step + 1);
             //  console.log(this.steps);
+            load = true;
           }
         },
         "json"
       );
+
+      return load;
     },
     footerBtn(e) {
-      //console.log(this.step);
+
+      console.log(e);
+      
       if (e == "next") {
         this.steps[this.step].complete = true;
         this.steps[this.step].active = true;
@@ -208,6 +219,7 @@ export default {
         location.hash = "/" + this.namep + "/" + (+this.step + 1);
         // console.log(this.step, this.steps[this.step].comp);
       }
+
     },
     setComp() {
       //   console.log(this.$route);

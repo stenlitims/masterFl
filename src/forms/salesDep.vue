@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import masterMixin from '@/mixin/masterMixin';
+import masterMixin from "@/mixin/masterMixin";
 
 export default {
   name: "salesDep",
@@ -71,11 +71,9 @@ export default {
     };
   },
   created() {
-    this.$bus.on("salesDep", this.send);
     this.getData();
   },
-  updated() {
-  },
+  updated() {},
   watch: {
     object_id() {
       this.getData();
@@ -93,9 +91,10 @@ export default {
         },
         data => {
           if (data) {
-            console.log(data);
+           // console.log(data);
             this.form.sales_department_address = data.sales_department_address;
-            this.form.sales_department_schedule = data.sales_department_schedule;
+            this.form.sales_department_schedule =
+              data.sales_department_schedule;
             this.form.sales_department_email = data.sales_department_email;
             this.form.sales_department_phone = data.sales_department_phone;
             this.dataLoad = true;
@@ -104,12 +103,17 @@ export default {
         "json"
       );
     },
-    send(w) {
-      console.log(w);
-      if (w == "prev") {
-        this.$emit("footerBtn", w);
-        return;
+    send(e) {
+      if (e == "prev") {
+        this.$emit("footerBtn", e);
+        return true;
       }
+
+      if (!this.formChange && this.object_id) {
+        this.$emit("footerBtn", e);
+        return true;
+      }
+
       this.errors = [];
       this.findError();
 
@@ -117,25 +121,26 @@ export default {
       //   this.errors.push("Требуется указать адресс.");
       // }
 
-      if (!this.error.length) {
-        let fdata = this.form;
-        fdata.action = "getGproject";
-        fdata.update = 1;
-        fdata.id = this.object_id;
-        $.post(
-          this.$root.apiurl,
-          fdata,
-          data => {
-            console.log(data);
-            if (!data.errors) {
-              this.$emit("footerBtn", w);
-            } else {
-              this.errorsSer = data.errors;
-            }
-          },
-          "json"
-        );
-      }
+      if (this.errors.length) return false;
+
+      let fdata = this.form;
+      fdata.action = "getGproject";
+      fdata.update = 1;
+      fdata.id = this.object_id;
+      $.post(
+        this.$root.apiurl,
+        fdata,
+        data => {
+
+          if (!data.errors) {
+            this.$emit("footerBtn", e);
+            this.formChange = false;
+          } else {
+            this.errorsSer = data.errors;
+          }
+        },
+        "json"
+      );
     }
   }
 };

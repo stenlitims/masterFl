@@ -92,7 +92,6 @@ export default {
     };
   },
   created(){
-    this.$bus.on("FlatsImport", this.send);
   },
   computed: {},
   methods: {

@@ -32,13 +32,13 @@ export default {
     };
   },
   computed: {
-    complete() {
-      //  console.log(this.steps);
-      if (this.steps[this.step].complete) {
-        return true;
-      }
-      return false;
-    },
+    // complete() {
+    //   //  console.log(this.steps);
+    //   if (this.steps[this.step].complete) {
+    //     return true;
+    //   }
+    //   return false;
+    // },
     btnActive() {
       if (this.steps[this.step].btnActive) {
         return true;

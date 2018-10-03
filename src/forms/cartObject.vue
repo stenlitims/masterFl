@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import masterMixin from '@/mixin/masterMixin';
+import masterMixin from "@/mixin/masterMixin";
 
 export default {
   name: "cartObject",
@@ -102,15 +102,14 @@ export default {
         address: "",
         currency: ""
       },
-      currency: ["USD", "UAH", "RUB"],
+      currency: ["USD", "UAH", "RUB"]
     };
   },
   created() {
-    this.$bus.on("cartObject", this.send);
+   // this.$bus.on("cartObject", this.send);
     this.getData();
   },
-  updated() {
-  },
+  updated() {},
   watch: {
     object_id() {
       this.getData();
@@ -128,7 +127,7 @@ export default {
         },
         data => {
           if (data) {
-            console.log(data);
+            //   console.log(data);
             this.form.name = data.name;
             this.form.logo = data.logo;
             this.form.currency = data.currency;
@@ -141,11 +140,15 @@ export default {
       );
     },
     send(e) {
-      console.log(1);
-      //  return;
+
       if (e == "prev") {
         this.$emit("footerBtn", e);
-        return;
+        return true;
+      }
+
+      if (!this.formChange && this.object_id) {
+        this.$emit("footerBtn", e);
+        return true;
       }
 
       this.errors = [];
@@ -157,42 +160,43 @@ export default {
         this.errors.push("Требуется указать адресс.");
       }
 
-      if (!this.errors.length) {
-        let form_data = new FormData();
-        if ($("#logo")[0].files.length) {
-          form_data.append("img", $("#logo")[0].files[0]);
-        }
-        let action = "addGproject";
-        if (this.object_id) {
-          action = "getGproject";
-          form_data.append("id", this.object_id);
-          form_data.append("update", 1);
-        }
-        form_data.append("action", action);
+      if (this.errors.length) return false;
 
-        for (let item in this.form) {
-          if (this.form[item]) form_data.append(item, this.form[item]);
-        }
-
-        $.ajax({
-          url: this.$root.apiurl,
-          dataType: "json",
-          cache: false,
-          contentType: false,
-          processData: false,
-          data: form_data,
-          type: "POST",
-          success: data => {
-            // console.log(data);
-            if (!data.errors) {
-              if (!this.object_id) this.$emit("objId", data.id);
-              this.$emit("footerBtn", e);
-            } else {
-              this.errorsSer = data.errors;
-            }
-          }
-        });
+      let form_data = new FormData();
+      if ($("#logo")[0].files.length) {
+        form_data.append("img", $("#logo")[0].files[0]);
       }
+      let action = "addGproject";
+      if (this.object_id) {
+        action = "getGproject";
+        form_data.append("id", this.object_id);
+        form_data.append("update", 1);
+      }
+      form_data.append("action", action);
+
+      for (let item in this.form) {
+        if (this.form[item]) form_data.append(item, this.form[item]);
+      }
+
+      $.ajax({
+        url: this.$root.apiurl,
+        dataType: "json",
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: form_data,
+        type: "POST",
+        success: data => {
+          // console.log(data);
+          if (!data.errors) {
+            if (!this.object_id) this.$emit("objId", data.id);
+            this.formChange = false;
+            this.$emit("footerBtn", e);
+          } else {
+            this.errorsSer = data.errors;
+          }
+        }
+      });
     }
   }
 };
