@@ -20,6 +20,7 @@ new Vue({
   },
   data: {
     apiurl: 'https://test.flatris.com.ua/assets/api/api.php',
+    mainurl: 'https://test.flatris.com.ua',
   },
   template: '<App/>'
 });

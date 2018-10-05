@@ -43,19 +43,18 @@ export default {
       return step;
     },
     width() {
-      let width = 100 / (this.steps.length - 1) * this.step;
-     // console.log(width);
+      let width = (100 / (this.steps.length - 1)) * this.step;
+      // console.log(width);
       return {
         width: width + "%"
       };
     }
   },
-  methods:{
-    setSpep(n){
-      if(this.steps[n].complete || this.steps[n -1].complete){
+  methods: {
+    setSpep(n) {
+      if (this.steps[n].complete || this.steps[n - 1].complete) {
         this.$emit("setSpep", n);
       }
-      
     }
   }
 };
@@ -161,6 +160,30 @@ export default {
         text-align: center;
       }
     }
+  }
+}
+
+@media (max-height: 640px) {
+  .master-header {
+    padding-bottom: 36px;
+    padding-top: 20px;
+  }
+  .master-header .step-list .item .title {
+    font-size: 13px;
+    bottom: -26px;
+  }
+  .master-header .step-list .item .cl {
+    width: 24px;
+    height: 24px;
+  }
+  .master-header .header-info {
+    font-size: 16px;
+  }
+  .master-header .step-list .item.complete.active .cl {
+    border-width: 5px;
+  }
+  .master-header .step-list .item.complete .cl:before {
+    width: 7px;
   }
 }
 </style>

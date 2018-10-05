@@ -123,6 +123,7 @@ export default {
         this.$root.apiurl,
         {
           action: "getGproject",
+          action2: "getCurrency",
           id: this.object_id
         },
         data => {
@@ -133,6 +134,7 @@ export default {
             this.form.currency = data.currency;
             this.form.address = data.address;
             this.form.sales_department_site = data.sales_department_site;
+            this.currency = data.currency_list;
             this.dataLoad = true;
           }
         },
@@ -154,10 +156,10 @@ export default {
       this.errors = [];
 
       if (!this.form.name) {
-        this.errors.push("Требуется указать имя.");
+        this.errors.push("Требуется указать -  Название объекта");
       }
       if (!this.form.address) {
-        this.errors.push("Требуется указать адресс.");
+        this.errors.push("Требуется указать - Адрес объекта");
       }
 
       if (this.errors.length) return false;

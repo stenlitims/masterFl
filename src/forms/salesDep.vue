@@ -65,7 +65,7 @@ export default {
       required: {
         sales_department_address: "",
         sales_department_phone: "",
-        sales_department_schedule: "",
+       // sales_department_schedule: "",
         sales_department_email: ""
       }
     };
@@ -93,8 +93,7 @@ export default {
           if (data) {
            // console.log(data);
             this.form.sales_department_address = data.sales_department_address;
-            this.form.sales_department_schedule =
-              data.sales_department_schedule;
+            this.form.sales_department_schedule = data.sales_department_schedule;
             this.form.sales_department_email = data.sales_department_email;
             this.form.sales_department_phone = data.sales_department_phone;
             this.dataLoad = true;
@@ -109,19 +108,29 @@ export default {
         return true;
       }
 
+    
+
+      if (!this.form.sales_department_address) {
+        this.errors.push("Требуется указать -  Адрес");
+      }
+      if (!this.form.sales_department_email) {
+        this.errors.push("Требуется указать -  Email");
+      }
+      if (!this.form.sales_department_phone) {
+        this.errors.push("Требуется указать -  Телефон");
+      }
+
+      this.findError();
+      if (this.error.length) return false;
+
+
+
       if (!this.formChange && this.object_id) {
         this.$emit("footerBtn", e);
         return true;
       }
 
-      this.errors = [];
-      this.findError();
 
-      // if (!this.form.adress) {
-      //   this.errors.push("Требуется указать адресс.");
-      // }
-
-      if (this.errors.length) return false;
 
       let fdata = this.form;
       fdata.action = "getGproject";

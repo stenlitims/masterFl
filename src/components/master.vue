@@ -15,6 +15,9 @@
              @btnActive="setBtnActive"
              @footerBtn="footerBtn"
              @objId="setObjId"
+             @showTable="showGtable = true"
+             @closeTable="showGtable = false"
+             @spreadsheetId="setSpreadsheetId"
              :steps="steps" 
              :step="step"
              :object_id="object_id"
@@ -25,6 +28,16 @@
    
 
     <master-footer :steps="steps" :step="step" :object_id="object_id"></master-footer>
+
+
+    <div v-if="showGtable">
+      <google-table
+      @closeTable="showGtable = false"
+      :object_id="object_id" 
+      :spreadsheet_id="spreadsheet_id" 
+      ></google-table>
+    </div>
+    
   </div>
 </template>
 
@@ -84,6 +97,8 @@ let steps = {
   }
 };
 
+import GoogleTable from "@/blocks/GoogleTable";
+
 import MasterHeader from "@/blocks/MasterHeader";
 import MasterFooter from "@/blocks/MasterFooter";
 import cartObject from "@/forms/cartObject";
@@ -104,6 +119,8 @@ export default {
       master_id: false,
       btn: false,
       pleload: false,
+      showGtable: false,
+      spreadsheet_id: null
     };
   },
   components: {
@@ -114,7 +131,8 @@ export default {
     salesDep: salesDep,
     FlatsImport: FlatsImport,
     amoFirst: amoFirst,
-    amoTv: amoTv
+    amoTv: amoTv,
+    GoogleTable: GoogleTable
   },
   created() {
     this.setMaster();
@@ -145,6 +163,9 @@ export default {
     }
   },
   methods: {
+    setSpreadsheetId(data){
+      this.spreadsheet_id = data;
+    },
     setObjId(id) {
       if (id) this.object_id = id;
     },
@@ -197,9 +218,8 @@ export default {
       return load;
     },
     footerBtn(e) {
+    //  console.log(e);
 
-      console.log(e);
-      
       if (e == "next") {
         this.steps[this.step].complete = true;
         this.steps[this.step].active = true;
@@ -219,7 +239,6 @@ export default {
         location.hash = "/" + this.namep + "/" + (+this.step + 1);
         // console.log(this.step, this.steps[this.step].comp);
       }
-
     },
     setComp() {
       //   console.log(this.$route);
@@ -248,7 +267,7 @@ export default {
 
 <style lang="scss">
 .master-inner {
-  // overflow: auto;
+  overflow-y: auto;
 }
 .page-master {
   display: flex;
@@ -293,12 +312,25 @@ export default {
     }
     .btn-default {
       border-radius: 5px;
+      &.not-active{
+        background: #D1D5DA !important;
+        border-color: #D1D5DA !important;
+        color: #7F7F7F !important;
+        cursor: default !important;
+      }
     }
     .text-inner {
       max-width: 650px;
       margin-left: auto;
       margin-right: auto;
       margin-bottom: 40px;
+      a{
+        color: #18B0AD;
+        text-decoration: underline;
+        &:hover{
+          text-decoration: none;
+        }
+      }
     }
   }
 }
@@ -327,6 +359,26 @@ export default {
   transform: translate(100%, 0);
   &.active {
     transform: translate(0, 0);
+  }
+}
+
+.loader{
+  position: relative;
+  &:before,  &:after{
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 500;
+  }
+  &:before{
+    background: rgba(255,255,255,.5);
+  }
+  &:after{
+    z-index: 501;
+    background: url(https://flatris.com.ua/assets/images/preloader.svg) no-repeat center center;
   }
 }
 
@@ -386,6 +438,16 @@ export default {
   to {
     opacity: 0;
     transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@media (max-height: 640px) {
+  .page-master .center h3 {
+    margin-bottom: 26px;
+    font-size: 20px;
+  }
+  .page-master .center form .row .form-group {
+    margin-bottom: 20px;
   }
 }
 </style>

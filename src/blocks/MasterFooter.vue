@@ -64,12 +64,12 @@ export default {
           {
             action: "removeGproject",
             object_id: this.object_id,
-            master: this.$route.name,
+            master: this.$route.name
           },
           data => {
             if (data) {
               console.log(data);
-              if(data.type == 'success') location.reload();
+              if (data.type == "success") location.reload();
             }
           },
           "json"

@@ -1,5 +1,5 @@
 <template>
-  <div class="form">
+  <div class="form" :class="{'loader': pleloader == true}">
 
     <div v-if="!activeImport">
       <h3 class="text-center">Как вы хотите внести данные по квартирам?</h3>
@@ -16,9 +16,13 @@
     </div>
 
     <div v-if="activeImport == 2">
+      
       <h3 class="text-center">Заполнение таблицы с квартирами онлайн</h3>
 
       <div v-if="innerStep == 0">
+        <div class="text-inner text-center">
+          <a href="#" @click="activeImport = false">&laquo; Назад</a>
+        </div>
         <div class="text-inner text-center">
           <p>Мы интегрировали google таблицы во Flatris, что бы вам было удобно заполнять и редактировать таблицу с квартирами в любом месте и с любого устройства.</p>
           <p>Что бы начать заполнять таблицу с квартирами укажите вашу почту на gmail</p>
@@ -31,7 +35,7 @@
                 <input type="email" v-model="form.email" placeholder="введите GMAIL" class="form-control">
               </div>
               <div class="form-group">
-                <button type="button" @click="isEmailAddress" class="btn-default btn-md waves-effect waves-light">ПОДТВЕРДИТЬ</button>
+                <button type="button" @click="sendEmail" class="btn-default btn-md waves-effect waves-light">ПОДТВЕРДИТЬ</button>
               </div>
             </div>
           </div>
@@ -39,14 +43,19 @@
 
       </div>
        <div v-if="innerStep == 1">
+         <div class="text-inner text-center">
+          <a href="#" @click="innerStep = 0">&laquo; Назад</a>
+        </div>
           <div class="text-inner text-center">
           <p>Для перехода на следующий шаг, необходимо заполнить таблицу с квартирами.</p>
           <p>Если возникнут сложности, посмотрите <a href=""> короткое видео как заполнять таблицу</a></p>
         </div>
 
         <div class="text-center btns-big">
-          <a href="#" class="btn-default btn-md waves-effect waves-light">ЗАПОЛНИТЬ ТАБЛИЦУ С КВАРТИРАМИ</a> <br><br>
-          <a href="#" class="btn-default btn-md waves-effect waves-light">РЕДАКТИРОВАТЬ ПРАВА ДОСТУПА К ТАБЛИЦЕ</a>
+          <a href="#"
+              @click.prevent="showTable"
+           target="_blank" class="btn-default btn-md waves-effect waves-light">ЗАПОЛНИТЬ ТАБЛИЦУ С КВАРТИРАМИ</a> <br><br>
+          <a href="#" :class="{'not-active': edit_p == false}" class="btn-default btn-md waves-effect waves-light">РЕДАКТИРОВАТЬ ПРАВА ДОСТУПА К ТАБЛИЦЕ</a>
         </div>
 
       </div>
@@ -60,7 +69,7 @@
 </template>
 
 <script>
-import masterMixin from '@/mixin/masterMixin';
+import masterMixin from "@/mixin/masterMixin";
 
 export default {
   name: "FlatsImport",
@@ -86,23 +95,81 @@ export default {
       ],
       innerStep: 0,
       activeImport: false,
+      spreadsheet_id: null,
+      link_table: null,
+      edit_p: false,
+      pleloader: false,
       form: {
-        email: ""
-      }
+        email: "",
+        active: ""
+      },
+      required: {
+        email: "",
+        active: ""
+      },
     };
   },
-  created(){
+  created() {
+    this.getEmail();
+  },
+  mounted() {
   },
   computed: {},
   methods: {
-    isEmailAddress() {
+    showTable(){
+      this.$emit("showTable", true);
+      this.edit_p = true;
+    },
+    isGmailAddress(email) {
       let pattern = /^\w+([\.-]?\w+)*@gmail.com+$/;
-      if( pattern.test(this.form.email)){
-        this.innerStep = 1;
+      if (pattern.test(email)) {
+        return true;
+        // this.innerStep = 1;
       }
+      return false;
+    },
+    getEmail() {
+      $.post(
+        this.$root.apiurl,
+        {
+          action: "getEmail"
+        },
+        data => {
+          if (data) {
+            // console.log(data);
+            if (this.isGmailAddress(data.email)) {
+              this.form.email = data.email;
+            }
+          }
+        },
+        "json"
+      );
+    },
+    sendEmail() {
+      if (!this.isGmailAddress(this.form.email)) return false;
+      this.pleloader = true;
+      $.post(
+        this.$root.apiurl,
+        {
+          action: "setEmail",
+          email: this.form.email,
+          object_id: this.object_id
+        },
+        data => {
+          if (data) {
+            //console.log(data);
+            this.innerStep = 1;
+            this.spreadsheet_id = data.spreadsheet_id;
+            this.$emit("spreadsheetId", data.spreadsheet_id);
+            this.link_table = data.link_table;
+            this.pleloader = false;
+          }
+        },
+        "json"
+      );
     },
     send(w) {
-       console.log(w);
+      // console.log(w);
       if (w == "prev") {
         this.$emit("footerBtn", w);
         return;
