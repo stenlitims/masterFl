@@ -21,7 +21,7 @@
 
       <div v-if="innerStep == 0">
         <div class="text-inner text-center">
-          <a href="#" @click="activeImport = false">&laquo; Назад</a>
+          <a href="#" @click.prevent="activeImport = false">&laquo; Назад</a>
         </div>
         <div class="text-inner text-center">
           <p>Мы интегрировали google таблицы во Flatris, что бы вам было удобно заполнять и редактировать таблицу с квартирами в любом месте и с любого устройства.</p>
@@ -35,7 +35,7 @@
                 <input type="email" v-model="form.email" placeholder="введите GMAIL" class="form-control">
               </div>
               <div class="form-group">
-                <button type="button" @click="sendEmail" class="btn-default btn-md waves-effect waves-light">ПОДТВЕРДИТЬ</button>
+                <button type="button" @click.prevent="sendEmail" class="btn-default btn-md waves-effect waves-light">ПОДТВЕРДИТЬ</button>
               </div>
             </div>
           </div>
@@ -44,7 +44,7 @@
       </div>
        <div v-if="innerStep == 1">
          <div class="text-inner text-center">
-          <a href="#" @click="innerStep = 0">&laquo; Назад</a>
+          <a href="#" @click.prevent="innerStep = 0">&laquo; Назад</a>
         </div>
           <div class="text-inner text-center">
           <p>Для перехода на следующий шаг, необходимо заполнить таблицу с квартирами.</p>
@@ -62,7 +62,17 @@
       
     </div>
    
-      
+   <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <all-object :object_id="object_id"></all-object>
+        </div>
+        <div class="col-md-6 wrap-edit">
+          <edit-building></edit-building>
+        </div>
+      </div>
+   </div>
+    
  
 
   </div>
@@ -70,6 +80,8 @@
 
 <script>
 import masterMixin from "@/mixin/masterMixin";
+import AllObject from "@/blocks/AllObject";
+import EditBuilding from "@/blocks/edit/building";
 
 export default {
   name: "FlatsImport",
@@ -106,17 +118,20 @@ export default {
       required: {
         email: "",
         active: ""
-      },
+      }
     };
+  },
+  components: {
+    AllObject: AllObject,
+    EditBuilding: EditBuilding
   },
   created() {
     this.getEmail();
   },
-  mounted() {
-  },
+  mounted() {},
   computed: {},
   methods: {
-    showTable(){
+    showTable() {
       this.$emit("showTable", true);
       this.edit_p = true;
     },
@@ -261,4 +276,34 @@ export default {
     text-align: center;
   }
 }
+
+.edit-form {
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 40px;
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  .form-control {
+    height: 42px;
+    padding-left: 17px;
+  }
+}
+.wrap-edit{
+  &:before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: -600px;
+    bottom: 0;
+    background: #f9f9f9;
+  }
+  > div{
+    position: relative;
+    z-index: 1;
+  }
+}
+
 </style>

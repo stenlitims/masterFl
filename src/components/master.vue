@@ -268,6 +268,7 @@ export default {
 <style lang="scss">
 .master-inner {
   overflow-y: auto;
+  overflow-x: hidden;
 }
 .page-master {
   display: flex;

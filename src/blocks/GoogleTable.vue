@@ -35,9 +35,10 @@ export default {
       showConfirmButton: false
     });
     $.ajax({
-      url: this.$root.mainurl +
+      url:
+        this.$root.mainurl +
         "/api?action=updateSpreadsheetProducts&gproject_id=" +
-        + this.object_id,
+        +this.object_id,
       dataType: "json"
     })
       .done(function(response) {
@@ -48,7 +49,6 @@ export default {
         }
       })
       .fail(function(jqXHR, textStatus) {
-
         swal("Ошибка!", textStatus, "error");
       });
   },
@@ -69,16 +69,24 @@ export default {
         // timer: 2000,
         showConfirmButton: false
       });
-      var url = this.$root.mainurl + "/api/?gproject_id=" + this.object_id + "&action=spreadsheet2db";
+      var url =
+        this.$root.mainurl +
+        "/api/?gproject_id=" +
+        this.object_id +
+        "&action=spreadsheet2db";
       $.ajax({
         url: url,
         dataType: "json"
       })
-        .done(function(response) {
+        .done(response => {
           if (response.error) {
             swal("Ошибка!", response.error.message, "error");
           } else {
             swal("Обновлено!", response.data.message, "success");
+            setTimeout(() => {
+              this.$emit("closeTable", true);
+              swal.closeModal();
+            }, 1000);
           }
         })
         .fail(function(jqXHR, textStatus) {
@@ -86,7 +94,7 @@ export default {
           swal("Ошибка!", jqXHR.responseText, "error");
         });
     },
-    close(){
+    close() {
       this.$emit("closeTable", true);
     }
   }
@@ -117,7 +125,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  a{
+  a {
     color: #fff;
   }
 }
@@ -150,7 +158,7 @@ export default {
   color: #fff;
   font-size: 12px;
   position: relative;
-  &:hover{
+  &:hover {
     color: #fff;
   }
 }
