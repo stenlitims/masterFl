@@ -2,23 +2,26 @@
 <div>
   
   <div class="all-object">
+    
     <div class="list-ob">
       <h3 class="text-center">{{object.name}}</h3>
-      <div class="item" v-for="(building, i) in buildings" :key="i">
-       <div class="line"><div class="name">Дом {{building.name}} <i></i> </div> 
-       <button @click="edit(building, 'building')" class="btn btn-md waves-effect">Заполнить</button></div> 
-        <div class="in-list">
-          <div class="item" v-for="(section, si) in sections[i]" :key="si">
-            <div class="line"><div class="name">Секция {{section.name}} <i></i></div> 
-            <button @click="edit(section, 'section')" class="btn btn-md waves-effect">Заполнить</button> </div>
-            <div class="in-list">
-              <div class="item">
-               <div class="line"> <div class="name">Этаж 1</div> <button class="btn btn-md waves-effect">Заполнить</button>  </div>
-                <div class="in-list">
-                  <div class="item" v-for="(plan, pi) in plans[si]" :key="pi">
-                  <div class="line">  <div class="name">Планировка {{plan.name}} <i></i> </div>
-                   <button  @click="edit(plan, 'plan')" class="btn btn-md waves-effect">Заполнить</button> </div>
-                    <div class="in-list">
+      <div class="of-list c-sc">
+        <div class="item" v-for="(building, i) in buildings" :key="i">
+        <div :class="{'active':active_id == building.id, 'complete':completeForm == building.id}" class="line"><div class="name">Дом {{building.name}} <i></i> </div> 
+        <button @click="edit(building, 'EditBuilding')" class="btn btn-md waves-effect">Заполнить</button></div> 
+          <div class="in-list">
+            <div class="item" v-for="(section, si) in sections[i]" :key="si">
+              <div :class="{'active':active_id == section.id}" class="line"><div class="name">Секция {{section.name}} <i></i></div> 
+              <button @click="edit(section, 'section')" class="btn btn-md waves-effect">Заполнить</button> </div>
+              <div class="in-list">
+                <div class="item">
+                <div class="line"> <div class="name">Этаж 1</div> <button class="btn btn-md waves-effect">Заполнить</button>  </div>
+                  <div class="in-list">
+                    <div class="item" v-for="(plan, pi) in plans[si]" :key="pi">
+                    <div  :class="{'active':active_id == plan.id}" class="line">  <div class="name">Планировка {{plan.name}} <i></i> </div>
+                    <button  @click="edit(plan, 'plan')" class="btn btn-md waves-effect">Заполнить</button> </div>
+                      <div class="in-list">
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -27,6 +30,7 @@
           </div>
         </div>
       </div>
+      
     </div>
   </div>
 </div>
@@ -44,19 +48,28 @@ export default {
       sections: [],
       floors: [],
       plans: [],
+      active_id: null,
+      completeForm: null
     };
   },
   created() {
-     this.getObject();
+    this.getObject();
+    this.$bus.on("completeForm", this.setCompleteForm);
+  },
+  beforeDestroy() {
+    this.$bus.off("completeForm", this.setCompleteForm);
   },
   mounted() {},
   computed: {},
   methods: {
+    setCompleteForm(id) {
+      this.completeForm = id;
+    },
     getObject() {
       $.post(
         this.$root.apiurl,
         {
-          action: 'getAllObject',
+          action: "getAllObject",
           object_id: this.object_id
         },
         data => {
@@ -67,51 +80,92 @@ export default {
             this.floors = data.floors;
             this.plans = data.plans;
             this.object = data.object;
+            this.edit(this.buildings[0], "EditBuilding");
           }
         },
         "json"
-      )
+      );
     },
-    edit(data, type){
-      console.log(data, type);
+    edit(data, type) {
+      //console.log(data, type);
+      this.active_id = data.id;
+      this.$bus.emit("formData", data);
+      this.$emit("typeForm", type);
     }
   }
 };
 </script>
 
 <style lang="scss">
-.all-object{
+.all-object {
   display: flex;
   justify-content: flex-end;
-  .list-ob{
-    h3{
+  padding-top: 30px;
+  .list-ob {
+    h3 {
       margin-top: 0;
       margin-bottom: 20px;
     }
   }
 }
-.list-ob{
-  max-width: 500px;
-  .in-list{
+.list-ob {
+  max-width: 600px;
+  .in-list {
     padding-left: 20px;
   }
-  .line{
+  .line {
     margin-bottom: 8px;
     display: flex;
-    .name{
+    .name {
       width: 90%;
-      padding: 10px 30px 10px 15px;
+      padding: 10px 40px 10px 15px;
       border-radius: 5px;
-      border: 2px solid #E5E5E5;
+      border: 2px solid #e5e5e5;
       margin-right: 5px;
     }
-    .btn{
+    .btn {
       min-width: 110px;
-      background: #5fbeaa;
-      outline: none;
-      color: #fff;
+    }
+    &.active {
+      .name,
+      .btn {
+        background: #f3f3f3;
+        color: #797979;
+      }
+    }
+    &.complete {
+      .name {
+        position: relative;
+        i {
+          position: absolute;
+          right: 7px;
+          top: 50%;
+          transform: translate(0, -50%);
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          background: #33b275;
+          &:before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 5px;
+            height: 10px;
+            border-bottom: 2px solid #fff;
+            border-right: 2px solid #fff;
+            transform: translate(-50%, -60%) rotate(45deg);
+          }
+        }
+      }
     }
   }
 }
 
+.of-list {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 15px;
+  padding-top: 3px;
+}
 </style>

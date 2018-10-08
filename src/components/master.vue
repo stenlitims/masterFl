@@ -163,7 +163,7 @@ export default {
     }
   },
   methods: {
-    setSpreadsheetId(data){
+    setSpreadsheetId(data) {
       this.spreadsheet_id = data;
     },
     setObjId(id) {
@@ -218,7 +218,7 @@ export default {
       return load;
     },
     footerBtn(e) {
-    //  console.log(e);
+      //  console.log(e);
 
       if (e == "next") {
         this.steps[this.step].complete = true;
@@ -313,10 +313,10 @@ export default {
     }
     .btn-default {
       border-radius: 5px;
-      &.not-active{
-        background: #D1D5DA !important;
-        border-color: #D1D5DA !important;
-        color: #7F7F7F !important;
+      &.not-active {
+        background: #d1d5da !important;
+        border-color: #d1d5da !important;
+        color: #7f7f7f !important;
         cursor: default !important;
       }
     }
@@ -325,10 +325,10 @@ export default {
       margin-left: auto;
       margin-right: auto;
       margin-bottom: 40px;
-      a{
-        color: #18B0AD;
+      a {
+        color: #18b0ad;
         text-decoration: underline;
-        &:hover{
+        &:hover {
           text-decoration: none;
         }
       }
@@ -362,10 +362,18 @@ export default {
     transform: translate(0, 0);
   }
 }
+.master-inner {
+  .btn {
+    background: #5fbeaa;
+    outline: none;
+    color: #fff;
+  }
+}
 
-.loader{
+.loader {
   position: relative;
-  &:before,  &:after{
+  &:before,
+  &:after {
     content: "";
     position: absolute;
     top: 0;
@@ -374,12 +382,13 @@ export default {
     left: 0;
     z-index: 500;
   }
-  &:before{
-    background: rgba(255,255,255,.5);
+  &:before {
+    background: rgba(255, 255, 255, 0.5);
   }
-  &:after{
+  &:after {
     z-index: 501;
-    background: url(https://flatris.com.ua/assets/images/preloader.svg) no-repeat center center;
+    background: url(https://flatris.com.ua/assets/images/preloader.svg)
+      no-repeat center center;
   }
 }
 

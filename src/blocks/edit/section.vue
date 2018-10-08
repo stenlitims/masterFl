@@ -1,17 +1,17 @@
 <template>
 <div>
   <div class="edit-form">
-    <h4 class="text-center">Дом {{form.name}}</h4>
+    <h4 class="text-center">Секция {{form.name}}</h4>
     <div class="form-group">
-      <label>Адрес дома</label> 
-      <input type="text" v-model="form.address" placeholder="укажите адрес дома" class="form-control">
+      <label>Адрес секции</label> 
+      <input type="text" v-model="form.address" placeholder="укажите адрес секции если он есть" class="form-control">
     </div>
     <div class="form-group">
-      <label>Статус строительства дома</label> 
+      <label>Статус строительства секции</label> 
       <input type="text" v-model="form.status" placeholder="строится / введен в эксплуатацию / в проекте" class="form-control">
     </div>
     <div class="form-group">
-      <label>Окончание строительства дома</label> 
+      <label>Окончание строительства секции</label> 
       <input type="text" v-model="form.end_of_construction" placeholder="3 квартал 2021 г." class="form-control">
     </div>
     <div v-if="success">

@@ -62,13 +62,21 @@
       
     </div>
    
-   <div class="container">
+   <div class="container"  v-if="activeImport == 'form'">
+      <h3 class="text-center">Добавление информации по объекту</h3>
+      <div class="text-inner text-center">
+        <a href="#" @click.prevent="activeImport = 2">&laquo; Назад</a>
+      </div>
+      <div class="text-inner text-center">
+        <p>Данный этап не является обязательным. Вы можете пропустить его и вернуться к заполнению в любое время.</p>
+      </div>
       <div class="row">
         <div class="col-md-6">
           <all-object :object_id="object_id"></all-object>
         </div>
         <div class="col-md-6 wrap-edit">
-          <edit-building></edit-building>
+          <component :is="typeForm"></component>
+          
         </div>
       </div>
    </div>
@@ -82,6 +90,7 @@
 import masterMixin from "@/mixin/masterMixin";
 import AllObject from "@/blocks/AllObject";
 import EditBuilding from "@/blocks/edit/building";
+import EditSection from "@/blocks/edit/section";
 
 export default {
   name: "FlatsImport",
@@ -106,11 +115,13 @@ export default {
         }
       ],
       innerStep: 0,
-      activeImport: false,
+      activeImport: 'form',
+     // activeImport: null,
       spreadsheet_id: null,
       link_table: null,
       edit_p: false,
       pleloader: false,
+      typeForm: 'EditBuilding',
       form: {
         email: "",
         active: ""
@@ -127,10 +138,17 @@ export default {
   },
   created() {
     this.getEmail();
+    this.$bus.on('saveTable', this.showForm);
+  },
+  beforeDestroy() {
+    this.$bus.off('saveTable', this.showForm);
   },
   mounted() {},
   computed: {},
   methods: {
+    showForm(){
+      this.activeImport = 'form';
+    },
     showTable() {
       this.$emit("showTable", true);
       this.edit_p = true;
@@ -281,7 +299,7 @@ export default {
   max-width: 400px;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 40px;
+  padding-top: 30px;
   .form-group {
     margin-bottom: 1.5rem;
   }

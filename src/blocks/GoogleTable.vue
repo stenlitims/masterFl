@@ -85,6 +85,7 @@ export default {
             swal("Обновлено!", response.data.message, "success");
             setTimeout(() => {
               this.$emit("closeTable", true);
+              this.$bus.emit('saveTable', true);
               swal.closeModal();
             }, 1000);
           }
