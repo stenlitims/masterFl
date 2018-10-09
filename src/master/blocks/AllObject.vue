@@ -20,7 +20,7 @@
                     
                     <div class="item" v-for="(plan, pi) in plans[si]" :key="pi">
                       <div style="display:none">{{completeForm}}</div>
-                    <div :class="{'active':active_id == plan.id}" class="line">
+                    <div :class="{'active':active_id == plan.id, 'complete': plan.complete}" class="line">
                         <div class="name">Планировка {{plan.name}} <i></i> </div>
                     <button  @click="edit(plan, 'EditPlan')" class="btn btn-md waves-effect">Заполнить</button> </div>
                       <div class="in-list">
@@ -77,7 +77,7 @@ export default {
         },
         data => {
           if (data) {
-            console.log(data);
+           // console.log(data);
             this.buildings = data.buildings;
             this.sections = data.sections;
             this.floors = data.floors;

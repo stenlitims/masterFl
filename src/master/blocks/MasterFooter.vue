@@ -13,7 +13,7 @@
             
           </div>
           <div>
-            <div v-if="step < steps.length">
+            <div v-if="step < steps.length - 1">
             <button @click="nav('next')" :class="{'not-active': btnActive != true}" class="btn btn-next btn-md waves-effect">Далее</button>
             </div>
           </div>

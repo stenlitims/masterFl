@@ -79,10 +79,10 @@
 
 <script>
 import masterMixin from "@/mixin/masterMixin";
-import AllObject from "@/blocks/AllObject";
-import EditBuilding from "@/blocks/edit/building";
-import EditSection from "@/blocks/edit/section";
-import EditPlan from "@/blocks/edit/plan";
+import AllObject from "@/master/blocks/AllObject";
+import EditBuilding from "@/master/blocks/edit/building";
+import EditSection from "@/master/blocks/edit/section";
+import EditPlan from "@/master/blocks/edit/plan";
 
 export default {
   name: "FlatsImport",
@@ -107,8 +107,8 @@ export default {
         }
       ],
       innerStep: 0,
-      activeImport: "form",
-     // activeImport: 2,
+      //activeImport: "form",
+      activeImport: 2,
       spreadsheet_id: null,
       link_table: null,
       edit_p: false,
@@ -129,7 +129,7 @@ export default {
     AllObject: AllObject,
     EditBuilding: EditBuilding,
     EditSection: EditSection,
-    EditPlan: EditPlan,
+    EditPlan: EditPlan
   },
   created() {
     this.getEmail();
@@ -145,6 +145,7 @@ export default {
   methods: {
     showForm() {
       this.activeImport = "form";
+      this.form.active = true;
     },
     setTypeForm(data) {
       this.typeForm = data.type;
@@ -203,27 +204,15 @@ export default {
       );
     },
     send(w) {
-      // console.log(w);
+      
       if (w == "prev") {
         this.$emit("footerBtn", w);
         return;
       }
-      this.errors = [];
       this.findError();
-
-      this.errors = [];
-
-      if (!this.form.name) {
-        this.errors.push("Требуется указать имя.");
-      }
-      if (!this.form.adress) {
-        this.errors.push("Требуется указать адресс.");
-      }
-
-      if (!this.errors.length) {
-        this.$emit("eventChild", true);
-        this.success = true;
-      }
+      if (this.error.length) return false;
+      this.$emit("footerBtn", w);
+      this.success = true;
     }
   }
 };

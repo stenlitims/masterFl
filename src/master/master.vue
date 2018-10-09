@@ -62,11 +62,11 @@ let steps = {
         name: "Шахматка квартир",
         comp: "FlatsImport",
         complete: false,
-        btnActive: false
+        btnActive: true
       },
       {
         name: "Детализация",
-        comp: "formO",
+        comp: "stepFinish",
         complete: false,
         btnActive: false
       }
@@ -97,15 +97,16 @@ let steps = {
   }
 };
 
-import GoogleTable from "@/blocks/GoogleTable";
+import GoogleTable from "@/master/blocks/GoogleTable";
 
-import MasterHeader from "@/blocks/MasterHeader";
-import MasterFooter from "@/blocks/MasterFooter";
-import cartObject from "@/forms/cartObject";
-import salesDep from "@/forms/salesDep";
-import FlatsImport from "@/forms/FlatsImport";
-import amoFirst from "@/forms/amo/amo1";
-import amoTv from "@/forms/amo/amo2";
+import MasterHeader from "@/master/blocks/MasterHeader";
+import MasterFooter from "@/master/blocks/MasterFooter";
+import cartObject from "@/master/forms/object/cartObject";
+import salesDep from "@/master/forms/object/salesDep";
+import FlatsImport from "@/master/forms/object/FlatsImport";
+import amoFirst from "@/master/forms/amo/amo1";
+import amoTv from "@/master/forms/amo/amo2";
+import stepFinish from "@/master/forms/finish";
 
 export default {
   name: "Master",
@@ -132,7 +133,8 @@ export default {
     FlatsImport: FlatsImport,
     amoFirst: amoFirst,
     amoTv: amoTv,
-    GoogleTable: GoogleTable
+    GoogleTable: GoogleTable,
+    stepFinish: stepFinish,
   },
   created() {
     this.setMaster();

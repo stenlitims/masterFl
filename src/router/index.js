@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Master from '@/components/master'
+import Master from '@/master/master.vue'
 
 
 
@@ -17,3 +17,4 @@ export default new Router({
     component: Master,
   }]
 })
+
