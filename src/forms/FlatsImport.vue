@@ -21,9 +21,6 @@
 
       <div v-if="innerStep == 0">
         <div class="text-inner text-center">
-          <a href="#" @click.prevent="activeImport = false">&laquo; Назад</a>
-        </div>
-        <div class="text-inner text-center">
           <p>Мы интегрировали google таблицы во Flatris, что бы вам было удобно заполнять и редактировать таблицу с квартирами в любом месте и с любого устройства.</p>
           <p>Что бы начать заполнять таблицу с квартирами укажите вашу почту на gmail</p>
         </div>
@@ -43,9 +40,6 @@
 
       </div>
        <div v-if="innerStep == 1">
-         <div class="text-inner text-center">
-          <a href="#" @click.prevent="innerStep = 0">&laquo; Назад</a>
-        </div>
           <div class="text-inner text-center">
           <p>Для перехода на следующий шаг, необходимо заполнить таблицу с квартирами.</p>
           <p>Если возникнут сложности, посмотрите <a href=""> короткое видео как заполнять таблицу</a></p>
@@ -55,7 +49,7 @@
           <a href="#"
               @click.prevent="showTable"
            target="_blank" class="btn-default btn-md waves-effect waves-light">ЗАПОЛНИТЬ ТАБЛИЦУ С КВАРТИРАМИ</a> <br><br>
-          <a href="#" :class="{'not-active': edit_p == false}" class="btn-default btn-md waves-effect waves-light">РЕДАКТИРОВАТЬ ПРАВА ДОСТУПА К ТАБЛИЦЕ</a>
+          <a href="#" class="btn-default btn-md waves-effect waves-light">РЕДАКТИРОВАТЬ ПРАВА ДОСТУПА К ТАБЛИЦЕ</a>
         </div>
 
       </div>
@@ -65,17 +59,14 @@
    <div class="container"  v-if="activeImport == 'form'">
       <h3 class="text-center">Добавление информации по объекту</h3>
       <div class="text-inner text-center">
-        <a href="#" @click.prevent="activeImport = 2">&laquo; Назад</a>
-      </div>
-      <div class="text-inner text-center">
         <p>Данный этап не является обязательным. Вы можете пропустить его и вернуться к заполнению в любое время.</p>
       </div>
       <div class="row">
         <div class="col-md-6">
-          <all-object :object_id="object_id"></all-object>
+          <all-object @typeForm="setTypeForm" :object_id="object_id"></all-object>
         </div>
         <div class="col-md-6 wrap-edit">
-          <component :is="typeForm"></component>
+          <component :is="typeForm" :form="formData"></component>
           
         </div>
       </div>
@@ -91,6 +82,7 @@ import masterMixin from "@/mixin/masterMixin";
 import AllObject from "@/blocks/AllObject";
 import EditBuilding from "@/blocks/edit/building";
 import EditSection from "@/blocks/edit/section";
+import EditPlan from "@/blocks/edit/plan";
 
 export default {
   name: "FlatsImport",
@@ -115,13 +107,14 @@ export default {
         }
       ],
       innerStep: 0,
-      activeImport: 'form',
-     // activeImport: null,
+      activeImport: "form",
+     // activeImport: 2,
       spreadsheet_id: null,
       link_table: null,
       edit_p: false,
       pleloader: false,
-      typeForm: 'EditBuilding',
+      typeForm: "EditBuilding",
+      formData: {},
       form: {
         email: "",
         active: ""
@@ -134,20 +127,28 @@ export default {
   },
   components: {
     AllObject: AllObject,
-    EditBuilding: EditBuilding
+    EditBuilding: EditBuilding,
+    EditSection: EditSection,
+    EditPlan: EditPlan,
   },
   created() {
     this.getEmail();
-    this.$bus.on('saveTable', this.showForm);
+    this.$bus.on("saveTable", this.showForm);
+    this.$bus.on("formData", this.setTypeForm);
   },
   beforeDestroy() {
-    this.$bus.off('saveTable', this.showForm);
+    this.$bus.off("saveTable", this.showForm);
+    this.$bus.off("formData", this.setTypeForm);
   },
   mounted() {},
   computed: {},
   methods: {
-    showForm(){
-      this.activeImport = 'form';
+    showForm() {
+      this.activeImport = "form";
+    },
+    setTypeForm(data) {
+      this.typeForm = data.type;
+      this.formData = data;
     },
     showTable() {
       this.$emit("showTable", true);
@@ -308,8 +309,8 @@ export default {
     padding-left: 17px;
   }
 }
-.wrap-edit{
-  &:before{
+.wrap-edit {
+  &:before {
     content: "";
     position: absolute;
     top: 0;
@@ -318,10 +319,9 @@ export default {
     bottom: 0;
     background: #f9f9f9;
   }
-  > div{
+  > div {
     position: relative;
     z-index: 1;
   }
 }
-
 </style>

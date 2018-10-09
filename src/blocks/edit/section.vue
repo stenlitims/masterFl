@@ -31,30 +31,19 @@
 <script>
 import masterMixinForm from "@/mixin/masterMixinForm";
 
-
 export default {
-  name: "EditBuilding",
+  name: "EditSection",
   mixins: [masterMixinForm],
   data() {
     return {
-      action: "setBuilding"
+      action: "setSection"
     };
   },
-
   mounted() {},
   computed: {},
-  methods: {
-  
-  }
+  methods: {}
 };
 </script>
 
 <style lang="scss">
-.edit-form{
-   h4 {
-      margin-top: 0;
-      margin-bottom: 20px;
-      font-size: 20px;
-    }
-}
 </style>

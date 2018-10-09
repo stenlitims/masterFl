@@ -106,7 +106,7 @@ export default {
     };
   },
   created() {
-   // this.$bus.on("cartObject", this.send);
+    // this.$bus.on("cartObject", this.send);
     this.getData();
   },
   updated() {},
@@ -117,8 +117,23 @@ export default {
   },
   methods: {
     getData() {
-      //  console.log(this.object_id);
+      if (!this.object_id) {
+        $.post(
+          this.$root.apiurl,
+          {
+            action: "getCurrency"
+          },
+          data => {
+            if (data) {
+              this.currency = data.currency_list;
+            }
+          },
+          "json"
+        );
+      }
+
       if (!this.object_id || this.dataLoad) return;
+
       $.post(
         this.$root.apiurl,
         {
@@ -142,7 +157,6 @@ export default {
       );
     },
     send(e) {
-
       if (e == "prev") {
         this.$emit("footerBtn", e);
         return true;

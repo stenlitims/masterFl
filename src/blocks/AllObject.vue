@@ -7,19 +7,22 @@
       <h3 class="text-center">{{object.name}}</h3>
       <div class="of-list c-sc">
         <div class="item" v-for="(building, i) in buildings" :key="i">
-        <div :class="{'active':active_id == building.id, 'complete':completeForm == building.id}" class="line"><div class="name">Дом {{building.name}} <i></i> </div> 
+        <div :class="{'active':active_id == building.id, 'complete': building.complete}" class="line"><div class="name">Дом {{building.name}} <i></i> </div> 
         <button @click="edit(building, 'EditBuilding')" class="btn btn-md waves-effect">Заполнить</button></div> 
           <div class="in-list">
             <div class="item" v-for="(section, si) in sections[i]" :key="si">
-              <div :class="{'active':active_id == section.id}" class="line"><div class="name">Секция {{section.name}} <i></i></div> 
-              <button @click="edit(section, 'section')" class="btn btn-md waves-effect">Заполнить</button> </div>
+              <div :class="{'active':active_id == section.id, 'complete': section.complete}" class="line"><div class="name">Секция {{section.name}} <i></i></div> 
+              <button @click="edit(section, 'EditSection')" class="btn btn-md waves-effect">Заполнить</button> </div>
               <div class="in-list">
                 <div class="item">
                 <div class="line"> <div class="name">Этаж 1</div> <button class="btn btn-md waves-effect">Заполнить</button>  </div>
                   <div class="in-list">
+                    
                     <div class="item" v-for="(plan, pi) in plans[si]" :key="pi">
-                    <div  :class="{'active':active_id == plan.id}" class="line">  <div class="name">Планировка {{plan.name}} <i></i> </div>
-                    <button  @click="edit(plan, 'plan')" class="btn btn-md waves-effect">Заполнить</button> </div>
+                      <div style="display:none">{{completeForm}}</div>
+                    <div :class="{'active':active_id == plan.id}" class="line">
+                        <div class="name">Планировка {{plan.name}} <i></i> </div>
+                    <button  @click="edit(plan, 'EditPlan')" class="btn btn-md waves-effect">Заполнить</button> </div>
                       <div class="in-list">
                       </div>
                     </div>
@@ -89,8 +92,8 @@ export default {
     edit(data, type) {
       //console.log(data, type);
       this.active_id = data.id;
+      data.type = type;
       this.$bus.emit("formData", data);
-      this.$emit("typeForm", type);
     }
   }
 };

@@ -1,26 +1,14 @@
 export default {
+  props: ["form"],
   data() {
     return {
       success: false,
-      form: {
-
-      },
     }
-  },
-  created() {
-    this.$bus.on("formData", this.setData);
-  },
-
-  beforeDestroy() {
-    this.$bus.off("formData", this.setData);
   },
   watch: {
 
   },
   methods: {
-    setData(data) {
-      this.form = data;
-    },
     sendData() {
       $.post(
         this.$root.apiurl, {
@@ -35,7 +23,6 @@ export default {
             this.$bus.emit("completeForm", this.form.id);
             setTimeout(() => {
               this.success = false;
-
             }, 2000);
           }
         },
