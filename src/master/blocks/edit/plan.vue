@@ -50,26 +50,29 @@
       <div class="col-sm-6">
         <div class="form-group">
           <label>Планировка 2D</label>
-          <input type="file" name="img" id="img" class="form-control" placeholder="Файл">
+          <input type="file" name="img" accept="image/*" id="img" class="form-control" placeholder="Файл">
           <div class="img" v-if="form.img">
             <img :src="form.img" />
+            <div class="del-btn" @click="delFile('img_3d')"><span>+</span></div>
           </div>
         </div>
 
         <div class="form-group">
           <label>Планировка 3D</label>
-          <input type="file" name="img_3d" id="img_3d" class="form-control" placeholder="Файл">
+          <input type="file" name="img_3d" accept="image/*" id="img_3d" class="form-control" placeholder="Файл">
           <div class="img" v-if="form.img_3d">
             <img :src="form.img_3d" />
+            <div class="del-btn" @click="delFile('img_3d')"><span>+</span></div>
           </div>
         </div>
 
 
         <div class="form-group">
           <label>PDF для печати</label>
-          <input type="file" name="pdf" id="pdf" class="form-control" placeholder="Файл">
+          <input type="file" name="pdf" id="pdf" accept="application/pdf" class="form-control" placeholder="Файл">
           <div class="img" v-if="form.pdf">
             <a :href="form.pdf" target="_blank">Просмотреть</a>
+            <a href="#"  @click="delFile('pdf')">Удалить</a>
           </div>
         </div>
             
@@ -106,6 +109,9 @@ export default {
   mounted() {},
   computed: {},
   methods: {
+    delFile(){
+
+    },
     sendPlan() {
       let form_data = new FormData();
       if ($("#img")[0].files.length) {
@@ -162,9 +168,23 @@ export default {
   padding-top: 15px;
   padding-bottom: 20px;
 }
-.img{
-  img{
+.img {
+  position: relative;
+  img {
     max-width: 100%;
   }
+  &:hover{
+    .del-btn{
+      opacity: 1;
+    }
+  }
+}
+.del-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: all .3s ease;
 }
 </style>

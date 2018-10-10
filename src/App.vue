@@ -8,18 +8,17 @@
 
 <script>
 export default {
-  name: 'App'
-}
+  name: "App"
+};
 </script>
 
-<style>
+<style lang="scss">
 #app {
 }
 
-body{
+body {
   background: #fff;
 }
-
 
 /* width */
 .c-sc::-webkit-scrollbar {
@@ -33,13 +32,27 @@ body{
 
 /* Handle */
 .c-sc::-webkit-scrollbar-thumb {
-  background: rgb(130,190,177);
+  background: rgb(130, 190, 177);
 }
 
 /* Handle on hover */
 .c-sc::-webkit-scrollbar-thumb:hover {
-  background: rgb(95,190,170);
+  background: rgb(95, 190, 170);
 }
 
-
+.del-btn {
+  background: #ff4124;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  color: #fff;
+  text-align: center;
+  line-height: 25px;
+  cursor: pointer;
+  span {
+    transform: rotate(45deg);
+    display: block;
+    font-size: 20px;
+  }
+}
 </style>

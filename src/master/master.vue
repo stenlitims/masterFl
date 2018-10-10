@@ -134,7 +134,7 @@ export default {
     amoFirst: amoFirst,
     amoTv: amoTv,
     GoogleTable: GoogleTable,
-    stepFinish: stepFinish,
+    stepFinish: stepFinish
   },
   created() {
     this.setMaster();
@@ -272,6 +272,15 @@ export default {
   overflow-y: auto;
   overflow-x: hidden;
 }
+
+input[type="text"].form-control,
+input[type="email"].form-control,
+input[type="file"].form-control,
+select.form-control {
+  background: #e7f1f7 !important;
+  border: none !important;
+}
+
 .page-master {
   display: flex;
   flex-direction: column;
@@ -284,13 +293,6 @@ export default {
     padding-right: 15px;
   }
 
-  input[type="text"],
-  input[type="email"],
-  input[type="file"],
-  select {
-    background: #e7f1f7 !important;
-    border: none !important;
-  }
   .center {
     // min-width: 800px;
     margin-bottom: 20px;

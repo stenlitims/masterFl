@@ -49,7 +49,9 @@
           <a href="#"
               @click.prevent="showTable"
            target="_blank" class="btn-default btn-md waves-effect waves-light">ЗАПОЛНИТЬ ТАБЛИЦУ С КВАРТИРАМИ</a> <br><br>
-          <a href="#" class="btn-default btn-md waves-effect waves-light">РЕДАКТИРОВАТЬ ПРАВА ДОСТУПА К ТАБЛИЦЕ</a>
+          <a href="#"
+          @click.prevent="activeImport = 'googleEmails'"
+           class="btn-default btn-md waves-effect waves-light">РЕДАКТИРОВАТЬ ПРАВА ДОСТУПА К ТАБЛИЦЕ</a>
         </div>
 
       </div>
@@ -71,6 +73,10 @@
         </div>
       </div>
    </div>
+
+   <div class="container"  v-if="activeImport == 'googleEmails'">
+    <google-emails @saveEmails="saveEmails"></google-emails>
+   </div>
     
  
 
@@ -83,6 +89,7 @@ import AllObject from "@/master/blocks/AllObject";
 import EditBuilding from "@/master/blocks/edit/building";
 import EditSection from "@/master/blocks/edit/section";
 import EditPlan from "@/master/blocks/edit/plan";
+import googleEmails from "@/master/blocks/googleEmails";
 
 export default {
   name: "FlatsImport",
@@ -109,6 +116,7 @@ export default {
       innerStep: 0,
       //activeImport: "form",
       activeImport: 2,
+      //activeImport: 'googleEmails',
       spreadsheet_id: null,
       link_table: null,
       edit_p: false,
@@ -129,7 +137,8 @@ export default {
     AllObject: AllObject,
     EditBuilding: EditBuilding,
     EditSection: EditSection,
-    EditPlan: EditPlan
+    EditPlan: EditPlan,
+    googleEmails: googleEmails,
   },
   created() {
     this.getEmail();
@@ -140,9 +149,17 @@ export default {
     this.$bus.off("saveTable", this.showForm);
     this.$bus.off("formData", this.setTypeForm);
   },
-  mounted() {},
+  mounted() {
+     if(this.steps[this.step].complete){
+       this.form.active = true;
+     }
+  },
   computed: {},
   methods: {
+    saveEmails(){
+      this.activeImport = 2;
+      this.innerStep = 1
+    },
     showForm() {
       this.activeImport = "form";
       this.form.active = true;

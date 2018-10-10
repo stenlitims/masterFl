@@ -27,7 +27,7 @@
         <div class="col-lg-6">
             <div class="form-group">
               <label>Логотип</label>
-              <input type="file" name="img" id="logo" class="form-control" placeholder="Файл">
+              <input type="file" name="img" id="logo" accept="image/*" class="form-control" placeholder="Файл">
             </div>
             <div class="obj-logo" v-if="form.logo">
               <img :src="form.logo" /><br>

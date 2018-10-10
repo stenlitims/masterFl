@@ -1,6 +1,13 @@
 <template>
   <div class="form">
-    финиш
+
+    <div class="text-center img">
+      <img src="https://test.flatris.com.ua/assets/panel/img/wedding.png" alt="">
+    </div>
+    <div class="text-inner text-center">
+      <p>Поздравляем! Вы успешно добавили новый объект.</p>
+      <p>Посмотреть созданную шахматку можно <a href="#">тут</a>  или на странице <a href="#">Объекты</a> </p>
+    </div>
 
   </div>
 </template>
@@ -35,6 +42,11 @@ export default {
 };
 </script>
 
-<style lang="scss">
-
+<style lang="scss" scoped>
+  .img{
+    margin-bottom: 30px;
+    img{
+      max-width: 180px;
+    }
+  }
 </style>
