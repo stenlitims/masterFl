@@ -281,6 +281,13 @@ select.form-control {
   border: none !important;
 }
 
+input[disabled].form-control,
+input[disabled].form-control,
+input[disabled].form-control,
+select[disabled].form-control {
+  opacity: 0.6;
+}
+
 .page-master {
   display: flex;
   flex-direction: column;
@@ -371,6 +378,9 @@ select.form-control {
     background: #5fbeaa;
     outline: none;
     color: #fff;
+  }
+  .btn-cancel {
+    background: #FF7A59;
   }
 }
 

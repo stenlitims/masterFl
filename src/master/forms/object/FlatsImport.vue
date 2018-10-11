@@ -75,7 +75,7 @@
    </div>
 
    <div class="container"  v-if="activeImport == 'googleEmails'">
-    <google-emails @saveEmails="saveEmails"></google-emails>
+    <google-emails @saveEmails="saveEmails" :spreadsheet_id="spreadsheet_id"></google-emails>
    </div>
     
  
@@ -89,6 +89,7 @@ import AllObject from "@/master/blocks/AllObject";
 import EditBuilding from "@/master/blocks/edit/building";
 import EditSection from "@/master/blocks/edit/section";
 import EditPlan from "@/master/blocks/edit/plan";
+import EditFloor from "@/master/blocks/edit/floor";
 import googleEmails from "@/master/blocks/googleEmails";
 
 export default {
@@ -114,8 +115,8 @@ export default {
         }
       ],
       innerStep: 0,
-      //activeImport: "form",
-      activeImport: 2,
+      activeImport: "form",
+    //  activeImport: 2,
       //activeImport: 'googleEmails',
       spreadsheet_id: null,
       link_table: null,
@@ -138,6 +139,7 @@ export default {
     EditBuilding: EditBuilding,
     EditSection: EditSection,
     EditPlan: EditPlan,
+    EditFloor: EditFloor,
     googleEmails: googleEmails,
   },
   created() {
@@ -184,12 +186,18 @@ export default {
       $.post(
         this.$root.apiurl,
         {
-          action: "getEmail"
+          action: "getEmail",
+          object_id: this.object_id
         },
         data => {
           if (data) {
             // console.log(data);
             if (this.isGmailAddress(data.email)) {
+              if(data.spreadsheet_id != ''){
+                this.spreadsheet_id = data.spreadsheet_id;
+                this.$emit("spreadsheetId", this.spreadsheet_id);
+                this.innerStep = 1;
+              }
               this.form.email = data.email;
             }
           }

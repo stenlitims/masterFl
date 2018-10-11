@@ -6,16 +6,26 @@
     <div class="list-ob">
       <h3 class="text-center">{{object.name}}</h3>
       <div class="of-list c-sc">
+
+
         <div class="item" v-for="(building, i) in buildings" :key="i">
-        <div :class="{'active':active_id == building.id, 'complete': building.complete}" class="line"><div class="name">Дом {{building.name}} <i></i> </div> 
-        <button @click="edit(building, 'EditBuilding')" class="btn btn-md waves-effect">Заполнить</button></div> 
+          <div :class="{'active':active_id == building.id, 'complete': building.complete}" class="line"><div class="name">Дом {{building.name}} <i></i> </div> 
+          <button @click="edit(building, 'EditBuilding')" class="btn btn-md waves-effect">Заполнить</button></div> 
           <div class="in-list">
+
+
             <div class="item" v-for="(section, si) in sections[i]" :key="si">
               <div :class="{'active':active_id == section.id, 'complete': section.complete}" class="line"><div class="name">Секция {{section.name}} <i></i></div> 
               <button @click="edit(section, 'EditSection')" class="btn btn-md waves-effect">Заполнить</button> </div>
               <div class="in-list">
+
                 <div class="item">
-                <div class="line"> <div class="name">Этаж 1</div> <button class="btn btn-md waves-effect">Заполнить</button>  </div>
+                <div class="line" 
+                 :class="{'active':active_id == floor.id}"
+                 v-for="(floor, fi) in floors[si]" :key="fi"> 
+                  <div class="name">Этаж  {{floor.name}}</div>
+                  
+                  <button @click="edit(floor, 'EditFloor')" class="btn btn-md waves-effect">Заполнить</button>  </div>
                   <div class="in-list">
                     
                     <div class="item" v-for="(plan, pi) in plans[si]" :key="pi">
@@ -26,10 +36,13 @@
                       <div class="in-list">
                       </div>
                     </div>
+
                   </div>
                 </div>
               </div>
             </div>
+
+
           </div>
         </div>
       </div>

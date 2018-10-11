@@ -53,7 +53,7 @@
           <input type="file" name="img" accept="image/*" id="img" class="form-control" placeholder="Файл">
           <div class="img" v-if="form.img">
             <img :src="form.img" />
-            <div class="del-btn" @click="delFile('img_3d')"><span>+</span></div>
+            <div class="del-btn" @click="delFile('img')"><span>+</span></div>
           </div>
         </div>
 
@@ -103,15 +103,20 @@ export default {
   mixins: [masterMixinForm],
   data() {
     return {
-      action: "setPlan"
+      action: "setPlan",
+      actionDel: "delPlanFile",
     };
   },
   mounted() {},
+  watch: {
+    form() {
+      $("#img").val("");
+      $("#img_3d").val("");
+      $("#pdf").val("");
+    }
+  },
   computed: {},
   methods: {
-    delFile(){
-
-    },
     sendPlan() {
       let form_data = new FormData();
       if ($("#img")[0].files.length) {
@@ -142,6 +147,8 @@ export default {
           if (data.type == "success") {
             this.success = true;
             this.form.complete = true;
+            if (data.data.img) this.form.img = data.data.img;
+            if (data.data.img_3d) this.form.img_3d = data.data.img_3d;
             this.$bus.emit("completeForm", this.form.id);
             setTimeout(() => {
               this.success = false;
@@ -170,11 +177,12 @@ export default {
 }
 .img {
   position: relative;
+  min-height: 50px;
   img {
     max-width: 100%;
   }
-  &:hover{
-    .del-btn{
+  &:hover {
+    .del-btn {
       opacity: 1;
     }
   }
@@ -185,6 +193,6 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
   opacity: 0;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 </style>

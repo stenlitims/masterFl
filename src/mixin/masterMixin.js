@@ -38,7 +38,27 @@ export default {
         if (!this.form[item]) {
           this.error.push(item);
         }
+        if(this.required[item] == 'email' && !this.isAddress(this.form[item])){
+          this.error.push(item);
+        }
+        if(this.required[item] == 'phone' && !this.isPhone(this.form[item])){
+          this.error.push(item);
+        }
       }
+    },
+    isAddress(email) {
+      let pattern = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,})$/;
+      if (pattern.test(email)) {
+        return true;
+      }
+      return false;
+    },
+    isPhone(phone) {
+      let pattern = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+      if (pattern.test(phone)) {
+        return true;
+      }
+      return false;
     },
     post(input){
       $.post(

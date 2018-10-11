@@ -64,9 +64,9 @@ export default {
       },
       required: {
         sales_department_address: "",
-        sales_department_phone: "",
-       // sales_department_schedule: "",
-        sales_department_email: ""
+        sales_department_phone: "phone",
+        // sales_department_schedule: "",
+        sales_department_email: "email"
       }
     };
   },
@@ -91,9 +91,10 @@ export default {
         },
         data => {
           if (data) {
-           // console.log(data);
+            // console.log(data);
             this.form.sales_department_address = data.sales_department_address;
-            this.form.sales_department_schedule = data.sales_department_schedule;
+            this.form.sales_department_schedule =
+              data.sales_department_schedule;
             this.form.sales_department_email = data.sales_department_email;
             this.form.sales_department_phone = data.sales_department_phone;
             this.dataLoad = true;
@@ -108,29 +109,27 @@ export default {
         return true;
       }
 
-    
-
       if (!this.form.sales_department_address) {
         this.errors.push("Требуется указать -  Адрес");
       }
-      if (!this.form.sales_department_email) {
-        this.errors.push("Требуется указать -  Email");
+      if (!this.isAddress(this.form.sales_department_email)) {
+        this.errors.push("неверный Email");
       }
-      if (!this.form.sales_department_phone) {
-        this.errors.push("Требуется указать -  Телефон");
+      if (!this.isPhone(this.form.sales_department_phone)) {
+        this.errors.push("неверный  Телефон");
       }
+
+      setTimeout(() => {
+        this.errors = [];
+      }, 3000);
 
       this.findError();
       if (this.error.length) return false;
-
-
 
       if (!this.formChange && this.object_id) {
         this.$emit("footerBtn", e);
         return true;
       }
-
-
 
       let fdata = this.form;
       fdata.action = "getGproject";
@@ -140,7 +139,6 @@ export default {
         this.$root.apiurl,
         fdata,
         data => {
-
           if (!data.errors) {
             this.$emit("footerBtn", e);
             this.formChange = false;
