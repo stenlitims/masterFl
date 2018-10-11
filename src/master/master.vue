@@ -42,60 +42,9 @@
 </template>
 
 <script>
-let steps = {
-  object: {
-    name: "Создание нового объекта",
-    steps: [
-      {
-        name: "Карточка ЖК",
-        comp: "cartObject",
-        complete: false,
-        btnActive: false
-      },
-      {
-        name: "Отдел продаж",
-        comp: "salesDep",
-        complete: false,
-        btnActive: false
-      },
-      {
-        name: "Шахматка квартир",
-        comp: "FlatsImport",
-        complete: false,
-        btnActive: true
-      },
-      {
-        name: "Детализация",
-        comp: "stepFinish",
-        complete: false,
-        btnActive: false
-      }
-    ]
-  },
-  amo: {
-    name: "Интеграция с AmoCRM",
-    steps: [
-      {
-        name: "Подключение виджета",
-        comp: "amoFirst",
-        complete: false,
-        btnActive: false
-      },
-      {
-        name: "Синхронизация с AmoCRM",
-        comp: "amoTv",
-        complete: false,
-        btnActive: false
-      },
-      {
-        name: "Настройка воронки",
-        comp: "FlatsImport",
-        complete: false,
-        btnActive: false
-      }
-    ]
-  }
-};
+
+import steps from "@/data/steps";
+
 
 import GoogleTable from "@/master/blocks/GoogleTable";
 
@@ -104,8 +53,14 @@ import MasterFooter from "@/master/blocks/MasterFooter";
 import cartObject from "@/master/forms/object/cartObject";
 import salesDep from "@/master/forms/object/salesDep";
 import FlatsImport from "@/master/forms/object/FlatsImport";
+
 import amoFirst from "@/master/forms/amo/amo1";
 import amoTv from "@/master/forms/amo/amo2";
+
+import mirKv1 from "@/master/forms/mirkv/mir1";
+
+import webCh1 from "@/master/forms/webchess/webch1";
+
 import stepFinish from "@/master/forms/finish";
 
 export default {
@@ -134,7 +89,9 @@ export default {
     amoFirst: amoFirst,
     amoTv: amoTv,
     GoogleTable: GoogleTable,
-    stepFinish: stepFinish
+    stepFinish: stepFinish,
+    mirKv1: mirKv1,
+    webCh1: webCh1,
   },
   created() {
     this.setMaster();
@@ -201,6 +158,7 @@ export default {
           // console.log(data);
           if (data.steps && firstLoad) {
             for (let item in data.steps) {
+              if (!this.steps[item]) break;
               if (data.steps[item].complete == "false") {
                 this.steps[item].complete = false;
               } else {
@@ -308,7 +266,8 @@ select[disabled].form-control {
       margin-bottom: 40px;
       font-size: 24px;
     }
-    form {
+    form,
+    .form {
       .row {
         justify-content: center;
         .form-group {
@@ -380,7 +339,7 @@ select[disabled].form-control {
     color: #fff;
   }
   .btn-cancel {
-    background: #FF7A59;
+    background: #ff7a59;
   }
 }
 
@@ -409,7 +368,8 @@ select[disabled].form-control {
 @media (min-width: 800px) {
   .page-master {
     .center {
-      form {
+      form,
+      .form {
         max-width: 800px;
         margin-left: auto;
         margin-right: auto;

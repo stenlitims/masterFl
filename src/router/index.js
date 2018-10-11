@@ -15,6 +15,18 @@ export default new Router({
     path: '/amo/:id',
     name: 'amo',
     component: Master,
+  }, {
+    path: '/mirkv/:id',
+    name: 'mirkv',
+    component: Master,
+  }, {
+    path: '/webchess/:id',
+    name: 'webchess',
+    component: Master,
+  }, {
+    path: '/newagent/:id',
+    name: 'newagent',
+    component: Master,
   }]
 })
 

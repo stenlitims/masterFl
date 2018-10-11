@@ -1,5 +1,5 @@
 <template>
-  <div class="form" :class="{'loader': pleloader == true}">
+  <div class="" :class="{'loader': pleloader == true}">
 
     <div v-if="!activeImport">
       <h3 class="text-center">Как вы хотите внести данные по квартирам?</h3>
@@ -115,8 +115,8 @@ export default {
         }
       ],
       innerStep: 0,
-      activeImport: "form",
-    //  activeImport: 2,
+    //  activeImport: "form",
+      activeImport: 2,
       //activeImport: 'googleEmails',
       spreadsheet_id: null,
       link_table: null,

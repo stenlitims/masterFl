@@ -70,7 +70,7 @@
         <div class="form-group">
           <label>PDF для печати</label>
           <input type="file" name="pdf" id="pdf" accept="application/pdf" class="form-control" placeholder="Файл">
-          <div class="img" v-if="form.pdf">
+          <div class="pdf text-center" v-if="form.pdf">
             <a :href="form.pdf" target="_blank">Просмотреть</a>
             <a href="#"  @click="delFile('pdf')">Удалить</a>
           </div>
@@ -104,7 +104,7 @@ export default {
   data() {
     return {
       action: "setPlan",
-      actionDel: "delPlanFile",
+      actionDel: "delPlanFile"
     };
   },
   mounted() {},
@@ -149,6 +149,7 @@ export default {
             this.form.complete = true;
             if (data.data.img) this.form.img = data.data.img;
             if (data.data.img_3d) this.form.img_3d = data.data.img_3d;
+            if (data.data.pdf) this.form.pdf = data.data.pdf;
             this.$bus.emit("completeForm", this.form.id);
             setTimeout(() => {
               this.success = false;
@@ -184,6 +185,16 @@ export default {
   &:hover {
     .del-btn {
       opacity: 1;
+    }
+  }
+}
+.pdf {
+  padding-top: 10px;
+  a {
+    text-decoration: underline;
+    margin: 0 5px;
+    &:hover {
+      text-decoration: none;
     }
   }
 }

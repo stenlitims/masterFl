@@ -18,55 +18,26 @@
 </template>
 
 <script>
+import masterMixin from "@/mixin/masterMixin";
 export default {
-  name: "form1",
-  props: ["steps", "step"],
+  name: "amo2",
+  mixins: [masterMixin],
   data() {
     return {
-      errors: [],
-      success: false,
-      form: {
-        email: "",
-        key: ""
-      },
-      required: {
-        email: "",
-        key: "",
-      },
-      error: []
+      form: {},
+      required: {}
     };
   },
-  created() {
-    this.$emit("eventChild", true);
-  },
-  updated() {
-    this.error = [];
-    for (let item in this.required) {
-      //  console.log(item);
-
-      if (this.form[item] == "") {
-        this.error.push(item);
-      }
-    }
-    this.$emit("eventChild", !this.error.length);
-  },
+  created() {},
+  updated() {},
   methods: {
-    send() {
-      console.log(this.form);
-
-      this.errors = [];
-
-      if (!this.form.name) {
-        this.errors.push("Требуется указать имя.");
-      }
-      if (!this.form.adress) {
-        this.errors.push("Требуется указать адресс.");
+    send(e) {
+      if (e == "prev") {
+        this.$emit("footerBtn", e);
+        return true;
       }
 
-      if (!this.errors.length) {
-        this.$emit("eventChild", true);
-        this.success = true;
-      }
+      this.$emit("footerBtn", e);
     }
   }
 };
