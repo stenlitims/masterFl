@@ -49,6 +49,13 @@ body {
   text-align: center;
   line-height: 25px;
   cursor: pointer;
+  &.abs{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: all .3s ease;
+  }
   span {
     transform: rotate(45deg);
     display: block;

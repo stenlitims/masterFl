@@ -1,6 +1,10 @@
 let steps = {
   object: {
     name: "Создание нового объекта",
+    finish: `
+    <p>Поздравляем! Вы успешно добавили новый объект.</p>
+      <p>Посмотреть созданную шахматку можно <a href="#">тут</a>  или на странице <a href="#">Объекты</a> </p>
+    `,
     steps: [{
         name: "Карточка ЖК",
         comp: "cartObject",
@@ -29,6 +33,7 @@ let steps = {
   },
   amo: {
     name: "Интеграция с AmoCRM",
+    finish: ``,
     steps: [{
         name: "Подключение виджета",
         comp: "amoFirst",
@@ -45,6 +50,7 @@ let steps = {
   },
   mirkv: {
     name: "Интеграция с Мир Квартир",
+    finish: ``,
     steps: [{
         name: "Выбор объекта",
         comp: "mirKv1",
@@ -67,6 +73,7 @@ let steps = {
   },
   webchess: {
     name: "Создание веб-шахматки для сайта",
+    finish: ``,
     steps: [{
         name: "Настройка полей",
         comp: "webCh1",
@@ -95,6 +102,7 @@ let steps = {
   },
   newagent: {
     name: "Добавление нового агента",
+    finish: ``,
     steps: [{
         name: "Карточка агента",
         comp: "amoFirst",

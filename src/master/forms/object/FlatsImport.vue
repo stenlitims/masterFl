@@ -115,8 +115,8 @@ export default {
         }
       ],
       innerStep: 0,
-    //  activeImport: "form",
-      activeImport: 2,
+      activeImport: "form",
+    //  activeImport: 2,
       //activeImport: 'googleEmails',
       spreadsheet_id: null,
       link_table: null,

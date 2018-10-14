@@ -54,7 +54,8 @@ export default {
       return false;
     },
     isPhone(phone) {
-      let pattern = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+   //   let pattern = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+      let pattern = /^\+?(?=.*\d)[\d ]+$/;
       if (pattern.test(phone)) {
         return true;
       }

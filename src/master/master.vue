@@ -9,7 +9,7 @@
         ></master-header>
         
         <div class="container center">
-        <div style="display:none"> {{$route.name}} </div>
+        <div style="display:none">{{$route.name}} {{$route.params.oid}}</div>
           <transition name="center" mode="out-in">
             <component :is="component"
              @btnActive="setBtnActive"
@@ -21,13 +21,19 @@
              :steps="steps" 
              :step="step"
              :object_id="object_id"
+             :finish="finish"
              ></component>
           </transition>
         </div>
     </div>
    
 
-    <master-footer :steps="steps" :step="step" :object_id="object_id"></master-footer>
+    <master-footer
+      @firstLoad="firstLoad"
+     :steps="steps"
+     :step="step" 
+     :namep="namep" 
+     :object_id="object_id"></master-footer>
 
 
     <div v-if="showGtable">
@@ -42,9 +48,7 @@
 </template>
 
 <script>
-
 import steps from "@/data/steps";
-
 
 import GoogleTable from "@/master/blocks/GoogleTable";
 
@@ -76,7 +80,14 @@ export default {
       btn: false,
       pleload: false,
       showGtable: false,
-      spreadsheet_id: null
+      spreadsheet_id: null,
+      m_object_id: false,
+      newm: false,
+      first_load: true,
+      url: {
+        name: "",
+        oid: ""
+      }
     };
   },
   components: {
@@ -91,7 +102,7 @@ export default {
     GoogleTable: GoogleTable,
     stepFinish: stepFinish,
     mirKv1: mirKv1,
-    webCh1: webCh1,
+    webCh1: webCh1
   },
   created() {
     this.setMaster();
@@ -105,8 +116,14 @@ export default {
     $(".page-master").addClass("active");
   },
   updated() {
-    if (this.namep != this.$route.name) {
+    if (this.url.name != this.$route.name) {
+      this.url.name = this.$route.name;
       this.setMaster();
+      this.setComp();
+    }
+    if (this.url.oid != this.$route.params.oid) {
+      this.url.oid = this.$route.params.oid;
+      this.getMaster(true);
     }
   },
   computed: {
@@ -121,30 +138,90 @@ export default {
       }
     }
   },
+  watch: {
+    steps(){
+      // console.log(543675);
+      // this.setMaster();
+      // this.setComp();
+    }
+  },
   methods: {
+    setMaster() {
+      let name = this.$route.name.split("_");
+      //  console.log(this.$route.name);
+      if (name[0] == "new") {
+        this.namep = name[1];
+        this.newm = true;
+      } else {
+        this.namep = name[0];
+        this.newm = false;
+        for (let item in steps[this.namep].steps) {
+          steps[this.namep].steps[item].complete = true;
+        }
+      }
+
+      this.steps = steps[this.namep].steps;
+      this.name = steps[this.namep].name;
+      this.finish = steps[this.namep].finish;
+    },
+    setComp() {
+      //   console.log(this.$route);
+      let st = this.$route.params.id - 1;
+      if (this.steps[st]) {
+        if (this.steps[st].complete) {
+          this.step = st;
+        } else {
+          this.setSpep(0);
+        }
+
+        // console.log(this.step);
+      }
+    },
+
+    setSpep(n) {
+      if (n != undefined) {
+        this.step = n;
+      }
+      if (this.step == false) this.step = 0;
+      let params = {
+        id: +this.step + 1
+      };
+      this.$router.push({ name: this.$route.name, params: params });
+    },
+
     setSpreadsheetId(data) {
       this.spreadsheet_id = data;
     },
     setObjId(id) {
       if (id) this.object_id = id;
     },
-    setMaster() {
-      this.namep = this.$route.name;
-      this.steps = steps[this.$route.name].steps;
-      this.name = steps[this.$route.name].name;
-      this.step = 0;
-    },
+
     getMaster(firstLoad) {
+      if (this.$route.params.oid) {
+      //  console.log(this.$route.params);
+        this.object_id = this.$route.params.oid;
+        return;
+      }
+
+      if (!this.newm) {
+        return;
+      }
+
       let data = {};
       data["master"] = this.namep;
       data["steps"] = this.steps;
       data["step"] = this.step;
-      data["object_id"] = this.object_id;
+      if (this.first_load) {
+        if (this.object_id) data["object_id"] = this.object_id;
+      }
 
       let action = "getState";
-      if (!firstLoad) {
+      if (!this.first_load) {
         action = "setState";
       }
+      // if (this.$route.params.oid == 0) {
+      //   action = "getState";
+      // }
 
       let load = false;
 
@@ -155,8 +232,9 @@ export default {
           data: data
         },
         data => {
-          // console.log(data);
-          if (data.steps && firstLoad) {
+            
+          if (data.steps && this.first_load) {
+          //  console.log(data);
             for (let item in data.steps) {
               if (!this.steps[item]) break;
               if (data.steps[item].complete == "false") {
@@ -165,11 +243,18 @@ export default {
                 this.steps[item].complete = true;
               }
             }
-            this.step = +data.step;
+            if (!data.object_id) {
+              this.step = 0;
+            } else {
+              this.step = +data.step;
+            }
+
+
+
             if (data.object_id) this.object_id = data.object_id;
-            location.hash = "/" + this.namep + "/" + (+this.step + 1);
-            //  console.log(this.steps);
+            this.setSpep(this.step);
             load = true;
+            this.first_load = false;
           }
         },
         "json"
@@ -178,14 +263,9 @@ export default {
       return load;
     },
     footerBtn(e) {
-      //  console.log(e);
-
       if (e == "next") {
         this.steps[this.step].complete = true;
         this.steps[this.step].active = true;
-        if (this.step + 1 == this.steps.length) {
-          //   return;
-        }
         this.step = this.step + 1;
       }
       if (e == "prev") {
@@ -196,29 +276,18 @@ export default {
       }
 
       if (this.steps[this.step]) {
-        location.hash = "/" + this.namep + "/" + (+this.step + 1);
-        // console.log(this.step, this.steps[this.step].comp);
+        this.setSpep(this.step);
       }
     },
-    setComp() {
-      //   console.log(this.$route);
-      let st = this.$route.params.id - 1;
-      if (this.steps[st]) {
-        if (this.steps[st].complete) {
-          this.step = st;
-        } else {
-          location.hash = "/" + this.namep + "/1";
-        }
 
-        // console.log(this.step);
-      }
-    },
     setBtnActive(e) {
       this.steps[this.step].btnActive = e;
     },
-    setSpep(n) {
-      this.step = n;
-      location.hash = "/" + this.namep + "/" + (+this.step + 1);
+    firstLoad(){
+      this.first_load = true;
+      this.object_id = null;
+      this.step = 0;
+    //  this.steps = {};
     }
   }
 };

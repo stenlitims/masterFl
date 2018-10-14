@@ -1,8 +1,8 @@
 <template>
 <div>
-  <div class="edit-form">
+  <div class="edit-form" :class="{'loader': loader}">
     <h4 class="text-center">Планировка  {{form.name}}</h4>
-    <div class="wrap c-sc">
+    <div class="wrap c-sc" >
 
     
     <div class="row">
@@ -72,7 +72,7 @@
           <input type="file" name="pdf" id="pdf" accept="application/pdf" class="form-control" placeholder="Файл">
           <div class="pdf text-center" v-if="form.pdf">
             <a :href="form.pdf" target="_blank">Просмотреть</a>
-            <a href="#"  @click="delFile('pdf')">Удалить</a>
+            <a href="#"  @click.prevent="delFile('pdf')">Удалить</a>
           </div>
         </div>
             
@@ -97,14 +97,16 @@
 
 <script>
 import masterMixinForm from "@/mixin/masterMixinForm";
+import files from "@/mixin/files";
 
 export default {
   name: "EditPlan",
-  mixins: [masterMixinForm],
+  mixins: [masterMixinForm, files],
   data() {
     return {
       action: "setPlan",
-      actionDel: "delPlanFile"
+      actionDel: "delPlanFile",
+      loader: false
     };
   },
   mounted() {},
@@ -135,6 +137,8 @@ export default {
         if (this.form[item]) form_data.append(item, this.form[item]);
       }
 
+      this.loader = true;
+
       $.ajax({
         url: this.$root.apiurl,
         dataType: "json",
@@ -150,6 +154,7 @@ export default {
             if (data.data.img) this.form.img = data.data.img;
             if (data.data.img_3d) this.form.img_3d = data.data.img_3d;
             if (data.data.pdf) this.form.pdf = data.data.pdf;
+            this.loader = false;
             this.$bus.emit("completeForm", this.form.id);
             setTimeout(() => {
               this.success = false;
@@ -179,8 +184,10 @@ export default {
 .img {
   position: relative;
   min-height: 50px;
+  text-align: center;
   img {
     max-width: 100%;
+    max-height: 200px;
   }
   &:hover {
     .del-btn {

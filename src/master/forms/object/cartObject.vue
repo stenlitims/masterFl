@@ -31,6 +31,7 @@
             </div>
             <div class="obj-logo" v-if="form.logo">
               <img :src="form.logo" /><br>
+              <div class="del-btn abs" @click="delFile('logo')"><span>+</span></div>
             </div>
         </div>
 
@@ -64,19 +65,6 @@
       </div>
 
       
-      <div v-if="success">
-        <div class="alert alert-success text-center" role="alert">
-          Спасибо данные сохранены. <br>
-          <b>Нажмите кнопку далле</b>
-        </div>
-      </div>
-
-
-      
-      <div class="btns text-center">
-        <!-- <button type="button" @click="send" class="btn-default btn-md waves-effect waves-light">Сохранить</button> -->
-      </div>
-      
     </form>
 
   </div>
@@ -84,10 +72,12 @@
 
 <script>
 import masterMixin from "@/mixin/masterMixin";
+import files from "@/mixin/files";
 
 export default {
   name: "cartObject",
-  mixins: [masterMixin],
+  // props: ['loads'],
+  mixins: [masterMixin, files],
   data() {
     return {
       form: {
@@ -102,6 +92,7 @@ export default {
         address: "",
         currency: ""
       },
+      actionDel: "delObjectFile",
       currency: ["USD", "UAH", "RUB"]
     };
   },
@@ -112,12 +103,15 @@ export default {
   updated() {},
   watch: {
     object_id() {
+      this.dataLoad = false;
       this.getData();
+   //   console.log(234);
     }
   },
   methods: {
     getData() {
       if (!this.object_id) {
+        this.form = {};
         $.post(
           this.$root.apiurl,
           {
@@ -131,8 +125,11 @@ export default {
           "json"
         );
       }
+      
 
       if (!this.object_id || this.dataLoad) return;
+
+      // if (!this.object_id) return;
 
       $.post(
         this.$root.apiurl,
@@ -148,6 +145,7 @@ export default {
             this.form.logo = data.logo;
             this.form.currency = data.currency;
             this.form.address = data.address;
+            this.form.id = data.id;
             this.form.sales_department_site = data.sales_department_site;
             this.currency = data.currency_list;
             this.dataLoad = true;
@@ -226,9 +224,19 @@ export default {
 }
 .obj-logo {
   margin-top: -15px;
+  display: inline-block;
+  position: relative;
+  .del-btn {
+    opacity: 0;
+  }
+  &:hover {
+    .del-btn {
+      opacity: 1;
+    }
+  }
   img {
     max-width: 100%;
-    max-height: 80px;
+    max-height: 100px;
   }
 }
 </style>

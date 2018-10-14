@@ -9,19 +9,23 @@
         <button @click="sendFile" class="btn btn-md waves-effect">Загрузить</button>
       </div>
       
-      <div class="img" v-if="form.img">
+      
+    </div>
+    <div v-if="form.img">
+      <div class="img" >
         <img :src="form.img" />
-        <div class="del-btn" @click="delFile('img')"><span>+</span></div>
+        <div class="del-btn abs" @click="delFile('img')"><span>+</span></div>
+      </div>
+      <div class="form-group">
+        <label>Отметить планировки на этаже</label>
+        <button class="btn btn-md w-100 waves-effect">Отметить</button>
       </div>
     </div>
     
+    
 
 
-    <div class="form-group">
-      <label>Отметить планировки на этаже</label>
-      <button class="btn btn-md w-100 waves-effect">Отметить</button>
-   
-    </div>
+    
 
 
     <div v-if="success">
@@ -37,10 +41,11 @@
 
 <script>
 import masterMixinForm from "@/mixin/masterMixinForm";
+import files from "@/mixin/files";
 
 export default {
   name: "EditBuilding",
-  mixins: [masterMixinForm],
+  mixins: [masterMixinForm, files],
   data() {
     return {
       action: "setFloor",
@@ -100,6 +105,22 @@ export default {
   width: 100px;
   padding-top: 16px;
   padding-bottom: 16px;
+}
+.img {
+  position: relative;
+  text-align: center;
+  .del-btn {
+    opacity: 0;
+  }
+  &:hover {
+    .del-btn {
+      opacity: 1;
+    }
+  }
+  img {
+    max-width: 100%;
+    max-height: 200px;
+  }
 }
 .wrap-input {
   position: relative;

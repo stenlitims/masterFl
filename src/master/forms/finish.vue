@@ -4,9 +4,7 @@
     <div class="text-center img">
       <img src="https://test.flatris.com.ua/assets/panel/img/wedding.png" alt="">
     </div>
-    <div class="text-inner text-center">
-      <p>Поздравляем! Вы успешно добавили новый объект.</p>
-      <p>Посмотреть созданную шахматку можно <a href="#">тут</a>  или на странице <a href="#">Объекты</a> </p>
+    <div class="text-inner text-center" v-html="finish">
     </div>
 
   </div>
@@ -18,6 +16,7 @@ import masterMixin from "@/mixin/masterMixin";
 export default {
   name: "finish",
   mixins: [masterMixin],
+  props: ["finish"],
   data() {
     return {
       form: {

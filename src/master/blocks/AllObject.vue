@@ -1,11 +1,17 @@
 <template>
 <div>
   
-  <div class="all-object">
+  <div class="all-object" :class="{'loader': loader}">
     
     <div class="list-ob">
       <h3 class="text-center">{{object.name}}</h3>
       <div class="of-list c-sc">
+
+
+
+
+      
+
 
 
         <div class="item" v-for="(building, i) in buildings" :key="i">
@@ -17,34 +23,38 @@
             <div class="item" v-for="(section, si) in sections[i]" :key="si">
               <div :class="{'active':active_id == section.id, 'complete': section.complete}" class="line"><div class="name">Секция {{section.name}} <i></i></div> 
               <button @click="edit(section, 'EditSection')" class="btn btn-md waves-effect">Заполнить</button> </div>
-              <div class="in-list">
+              <div class="in-list" v-if="floors">
 
-                <div class="item">
-                <div class="line" 
-                 :class="{'active':active_id == floor.id}"
-                 v-for="(floor, fi) in floors[si]" :key="fi"> 
-                  <div class="name">Этаж  {{floor.name}}</div>
-                  
-                  <button @click="edit(floor, 'EditFloor')" class="btn btn-md waves-effect">Заполнить</button>  </div>
-                  <div class="in-list">
+                <div class="item" v-for="(floor, fi) in floors[si]" :key="fi">
+                  <div class="line" :class="{'active':active_id == floor.id}"> 
+                    <div class="name">Этаж  {{floor.name}}</div>
+                    <button @click="edit(floor, 'EditFloor')" class="btn btn-md waves-effect">Заполнить</button>  
+                  </div>
+                  <div class="in-list" v-if="floor">
                     
-                    <div class="item" v-for="(plan, pi) in plans[si]" :key="pi">
-                      <div style="display:none">{{completeForm}}</div>
-                    <div :class="{'active':active_id == plan.id, 'complete': plan.complete}" class="line">
-                        <div class="name">Планировка {{plan.name}} <i></i> </div>
-                    <button  @click="edit(plan, 'EditPlan')" class="btn btn-md waves-effect">Заполнить</button> </div>
-                      <div class="in-list">
-                      </div>
-                    </div>
-
+                
+                        <div class="item" v-for="(plan, pi) in floor.plans" :key="pi">
+                          <div style="display:none">{{completeForm}}</div>
+                          <div :class="{'active':active_id == plans[si][plan].id, 'complete': plans[si][plan].complete}" class="line">
+                            <div class="name">Планировка {{plans[si][plan].name}} <i></i> </div>
+                          <button  @click="edit(plans[si][plan], 'EditPlan')" class="btn btn-md waves-effect">Заполнить</button> </div>
+                          <div class="in-list">
+                          </div>
+                        </div>
+                   
+                    
                   </div>
                 </div>
+
               </div>
             </div>
 
 
           </div>
         </div>
+
+
+
       </div>
       
     </div>
@@ -65,7 +75,8 @@ export default {
       floors: [],
       plans: [],
       active_id: null,
-      completeForm: null
+      completeForm: null,
+      loader: true
     };
   },
   created() {
@@ -96,7 +107,8 @@ export default {
             this.floors = data.floors;
             this.plans = data.plans;
             this.object = data.object;
-            this.edit(this.buildings[0], "EditBuilding");
+            this.edit(this.buildings[Object.keys(this.buildings)[0]], "EditBuilding");
+            this.loader = false;
           }
         },
         "json"
@@ -117,6 +129,7 @@ export default {
   display: flex;
   justify-content: flex-end;
   padding-top: 30px;
+  min-height: 300px;
   .list-ob {
     h3 {
       margin-top: 0;

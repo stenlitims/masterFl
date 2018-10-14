@@ -8,7 +8,12 @@ Vue.use(Router)
 
 export default new Router({
   routes: [{
-    path: '/object/:id',
+  //  path: '/new_object/:oid/step/:id',
+    path: '/new_object/:id',
+    name: 'new_object',
+    component: Master,
+  },{
+    path: '/object/:oid/step/:id',
     name: 'object',
     component: Master,
   }, {

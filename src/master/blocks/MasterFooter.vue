@@ -6,7 +6,9 @@
                 <button @click="nav('prev')" class="btn btn-md btn-prev waves-effect">
                   Назад</button>
             </div>
-            <a href="#" @click.prevent="hideModal" class="close-master">Закрыть</a>
+            <div v-if="step != steps.length - 1">
+              <a href="#" @click.prevent="hideModal" class="close-master">Закрыть</a>
+            </div>
 
 
             <button @click="clear" class="btn btn-md btn-clear waves-effect">Очистить</button>
@@ -15,6 +17,9 @@
           <div>
             <div v-if="step < steps.length - 1">
             <button @click="nav('next')" :class="{'not-active': btnActive != true}" class="btn btn-next btn-md waves-effect">Далее</button>
+            </div>
+            <div v-if="step == steps.length - 1">
+            <button @click="finish()" class="btn btn-finish btn-md waves-effect">Финиш</button>
             </div>
           </div>
       </div>
@@ -25,20 +30,13 @@
 <script>
 export default {
   name: "MasterFooter",
-  props: ["steps", "step", "object_id"],
+  props: ["steps", "step", "object_id", "namep"],
   data() {
     return {
       // steps: []
     };
   },
   computed: {
-    // complete() {
-    //   //  console.log(this.steps);
-    //   if (this.steps[this.step].complete) {
-    //     return true;
-    //   }
-    //   return false;
-    // },
     btnActive() {
       if (this.steps[this.step].btnActive) {
         return true;
@@ -47,13 +45,35 @@ export default {
     }
   },
   methods: {
+    finish() {
+      let data = {};
+      data["master"] = this.namep;
+      data["steps"] = this.steps;
+      data["step"] = this.step;
+
+      $.post(
+        this.$root.apiurl,
+        {
+          action: "setState",
+          finish: 1,
+          data: data
+        },
+        data => {
+          //console.log(data);
+          if (data.type == 'success') {
+            this.hideModal();
+          }
+        },
+        "json"
+      );
+    },
     nav(w) {
       this.$bus.emit(this.steps[this.step].comp, w);
-      // if (this.complete || w == "prev") {
-      //   this.$emit("footerBtn", w);
-      // }
     },
     hideModal() {
+      //  this.$router.go(-1);
+
+      this.$emit("firstLoad", true);
       $(".page-master").removeClass("active");
     },
     clear() {
@@ -64,7 +84,7 @@ export default {
           {
             action: "removeGproject",
             object_id: this.object_id,
-            master: this.$route.name
+            master: "object"
           },
           data => {
             if (data) {
