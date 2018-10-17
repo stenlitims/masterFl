@@ -72,7 +72,6 @@ export default {
   .header-info {
     display: flex;
     justify-content: space-between;
-    color: #000;
     font-weight: bold;
     margin-bottom: 20px;
     font-size: 18px;
@@ -88,7 +87,7 @@ export default {
       position: absolute;
       left: 20px;
       right: 20px;
-      background: #b1a7a8;
+      background: #ECF0F4;
       height: 2px;
       top: 50%;
       transform: translate(0, -50%);
@@ -100,7 +99,7 @@ export default {
       left: 20px;
       right: 20px;
       > div {
-        background: #33b275;
+        background: #5FBEAA;
         height: 4px;
         transition: width 0.3s linear;
       }
@@ -110,15 +109,14 @@ export default {
       z-index: 2;
       &.active {
         .cl {
-          border: 8px solid #33b275;
-          box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2);
+          border: 4px solid #5FBEAA;
         }
       }
       &.complete {
         cursor: pointer;
         &.active {
           .cl {
-            border: 8px solid #33b275;
+            border: 4px solid #5FBEAA;
             box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2);
             background: #fff;
             &:before {
@@ -127,7 +125,7 @@ export default {
           }
         }
         .cl {
-          background: #33b275;
+          background: #5FBEAA;
           border: none;
 
           &:before {
@@ -147,14 +145,13 @@ export default {
         width: 30px;
         height: 30px;
         border-radius: 50%;
-        border: 2px solid #b1a7a8;
+        border: 2px solid #ECF0F4;
         background: #fff;
       }
       .title {
         position: absolute;
         left: 50%;
         bottom: -30px;
-        color: #000;
         transform: translate(-50%, 0);
         min-width: 200px;
         text-align: center;

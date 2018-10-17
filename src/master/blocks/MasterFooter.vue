@@ -106,7 +106,7 @@ export default {
   right: 0;
   bottom: 0;
   z-index: 30;
-  border-top: 2px solid rgb(235, 235, 235);
+  border-top: 2px solid #CBD6E2;
   a {
     color: #3fc2af;
   }

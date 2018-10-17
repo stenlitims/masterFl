@@ -8,7 +8,7 @@
     <div class="text-inner text-center" v-html="finishTxt">
     </div>
     <div class="text-center">
-      <a href="#" class="btn-line btn-md waves-effect">Перейти на главную страницу</a>
+      <a href="#" @click.prevent="finish" class="btn-line btn-md waves-effect">Перейти на главную страницу</a>
     </div>
 
   </div>
@@ -19,10 +19,9 @@
 <script>
 export default {
   name: "finish",
-  props: ["finishTxt"],
+  props: ["finishTxt", "steps", "step", "object_id", "namep"],
   data() {
-    return {
-    };
+    return {};
   },
   created() {},
   updated() {},
@@ -30,8 +29,8 @@ export default {
     finish() {
       let data = {};
       data["master"] = this.namep;
-      data["steps"] = this.steps;
-      data["step"] = this.step;
+  //    data["steps"] = this.steps;
+   //   data["step"] = this.step;
 
       $.post(
         this.$root.apiurl,
@@ -41,20 +40,16 @@ export default {
           data: data
         },
         data => {
-          //console.log(data);
           if (data.type == "success") {
-            this.hideModal();
+            $(".page-master").removeClass("active");
+            this.$emit("clearData", true);
+            setTimeout(() => {
+              this.$router.push({ name: "MainPage" });
+            }, 300);
           }
         },
         "json"
       );
-    },
-    send(w) {
-      if (w == "prev") {
-        this.$emit("footerBtn", w);
-        return;
-      }
-      console.log("finish");
     }
   }
 };
@@ -67,7 +62,7 @@ export default {
     max-width: 180px;
   }
 }
-.finish-wrap{
+.finish-wrap {
   display: flex;
   height: 70vh;
   justify-content: center;

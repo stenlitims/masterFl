@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="wrap-v-master">
+    <div class="main">
       <router-view/>
     </div>
   </div>
@@ -14,6 +14,7 @@ export default {
 
 <style lang="scss">
 #app {
+  color: #33475b;
 }
 
 body {
@@ -101,17 +102,38 @@ body {
     }
   }
   &.not-active {
-    background: #d2d6db !important;
-    border-color: #d2d6db !important;
-    color: #808080 !important;
+    background:  #eaf0f6 !important;
+    border-color:  #eaf0f6 !important;
+    color: #b0c1d4 !important;
     &:after,
     &:before {
-      border-color: #808080;
+      border-color: #b0c1d4;
     }
   }
 }
 
 a.btn-line {
   color: #ff7a59;
+}
+
+input[type="text"].form-control,
+input[type="email"].form-control,
+input[type="file"].form-control,
+select.form-control {
+  background: #F5F8FA;
+  border: 2px solid #cbd6e2;
+  border-radius: 8px;
+  font-size: 16px;
+  &:focus{
+    border: 2px solid #5FBEAA;
+  }
+}
+
+input[disabled].form-control,
+select[disabled].form-control {
+  opacity: 0.6;
+}
+.btn-md {
+    padding: 10px 24px;
 }
 </style>

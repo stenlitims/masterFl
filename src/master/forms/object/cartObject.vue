@@ -19,7 +19,7 @@
           <div class="form-group">
             <label>Валюта продаж</label>
             <select v-model="form.currency" class="form-control">
-              <option v-for="(item, i) in currency" :key="i">{{item}}</option>
+              <option v-for="(item, i) in currency" :value="i" :key="i">{{i}} - {{item}} </option>
             </select>
           </div>
         </div>
@@ -120,6 +120,7 @@ export default {
           data => {
             if (data) {
               this.currency = data.currency_list;
+              this.form.currency = "USD";
             }
           },
           "json"

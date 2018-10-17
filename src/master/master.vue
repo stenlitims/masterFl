@@ -18,6 +18,7 @@
              @showTable="showGtable = true"
              @closeTable="showGtable = false"
              @spreadsheetId="setSpreadsheetId"
+             @clearData="clearData"
              :steps="steps" 
              :step="step"
              :object_id="object_id"
@@ -120,6 +121,8 @@ export default {
   mounted() {
     setTimeout(() => {
       $(".page-master").addClass("active");
+
+   
     }, 200);
   },
   updated() {
@@ -152,6 +155,7 @@ export default {
 
   methods: {
     setMaster() {
+      let stepTemp = Object.assign({}, steps);
       let name = this.$route.name.split("_");
       //  console.log(this.$route.name);
       if (name[0] == "new") {
@@ -160,15 +164,16 @@ export default {
       } else {
         this.namep = name[0];
         this.newm = false;
-        for (let item in steps[this.namep].steps) {
-          steps[this.namep].steps[item].complete = true;
+
+        for (let item in stepTemp[this.namep].steps) {
+          stepTemp[this.namep].steps[item].complete = true;
         }
       }
 
-      this.steps = steps[this.namep].steps;
-      this.name = steps[this.namep].name;
+      this.steps = stepTemp[this.namep].steps;
+      this.name = stepTemp[this.namep].name;
       if (name[0] == "new") {
-        this.finish = steps[this.namep].finish;
+        this.finish = stepTemp[this.namep].finish;
       }
     },
     setComp() {
@@ -223,13 +228,16 @@ export default {
         if (this.object_id) data["object_id"] = this.object_id;
       }
 
+      if (!this.object_id) {
+        for (let item in this.steps) {
+          this.steps[item].complete = false;
+        }
+      }
+
       let action = "getState";
       if (!this.first_load) {
         action = "setState";
       }
-      // if (this.$route.params.oid == 0) {
-      //   action = "getState";
-      // }
 
       let load = false;
 
@@ -241,7 +249,6 @@ export default {
         },
         data => {
           if (data.steps && this.first_load) {
-            //  console.log(data);
             for (let item in data.steps) {
               if (!this.steps[item]) break;
               if (data.steps[item].complete == "false") {
@@ -292,6 +299,10 @@ export default {
 
     setBtnActive(e) {
       this.steps[this.step].btnActive = e;
+    },
+
+    clearData() {
+      this.steps = [];
     }
     // firstLoad() {
     //   this.first_load = true;
@@ -308,21 +319,6 @@ export default {
 .master-inner {
   overflow-y: auto;
   overflow-x: hidden;
-}
-
-input[type="text"].form-control,
-input[type="email"].form-control,
-input[type="file"].form-control,
-select.form-control {
-  background: #e7f1f7 !important;
-  border: none !important;
-}
-
-input[disabled].form-control,
-input[disabled].form-control,
-input[disabled].form-control,
-select[disabled].form-control {
-  opacity: 0.6;
 }
 
 .page-master {

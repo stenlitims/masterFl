@@ -63,7 +63,8 @@ export default {
     sendFile() {
       let form_data = new FormData();
       if ($("#img")[0].files.length) {
-        form_data.append("img", $("#img")[0].files[0]);
+        form_data.append("n_img", $("#img")[0].files[0]);
+        form_data.append("id", this.form.id);
       } else {
         return;
       }
@@ -79,6 +80,7 @@ export default {
         data: form_data,
         type: "POST",
         success: data => {
+
           if (data.type == "success") {
             // this.success = true;
             this.form.complete = true;
@@ -126,7 +128,7 @@ export default {
   position: relative;
   input {
     height: 56px;
-    padding-top: 15px;
+    padding-top: 13px;
   }
   .btn {
     position: absolute;
