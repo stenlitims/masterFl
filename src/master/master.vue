@@ -1,7 +1,7 @@
 <template>
   <div class="page-master set-modal">
     <div class="master-inner">
-        <master-header 
+        <master-header v-if="step != 'finish'"
         :steps="steps" 
         :step="step" 
         :name="name"
@@ -21,18 +21,20 @@
              :steps="steps" 
              :step="step"
              :object_id="object_id"
-             :finish="finish"
+             :finishTxt="finish"
+             :namep="namep" 
              ></component>
           </transition>
         </div>
     </div>
    
 
-    <master-footer
-      @firstLoad="firstLoad"
+
+    <master-footer v-if="step != 'finish'"
      :steps="steps"
      :step="step" 
-     :namep="namep" 
+     :namep="namep"
+     :finishTxt="finish"
      :object_id="object_id"></master-footer>
 
 
@@ -57,6 +59,7 @@ import MasterFooter from "@/master/blocks/MasterFooter";
 import cartObject from "@/master/forms/object/cartObject";
 import salesDep from "@/master/forms/object/salesDep";
 import FlatsImport from "@/master/forms/object/FlatsImport";
+import objectDetail from "@/master/forms/object/object4";
 
 import amoFirst from "@/master/forms/amo/amo1";
 import amoTv from "@/master/forms/amo/amo2";
@@ -84,6 +87,7 @@ export default {
       m_object_id: false,
       newm: false,
       first_load: true,
+      finish: null,
       url: {
         name: "",
         oid: ""
@@ -97,6 +101,7 @@ export default {
     cartObject: cartObject,
     salesDep: salesDep,
     FlatsImport: FlatsImport,
+    objectDetail: objectDetail,
     amoFirst: amoFirst,
     amoTv: amoTv,
     GoogleTable: GoogleTable,
@@ -113,21 +118,26 @@ export default {
     }, 3000);
   },
   mounted() {
-    $(".page-master").addClass("active");
+    setTimeout(() => {
+      $(".page-master").addClass("active");
+    }, 200);
   },
   updated() {
-    if (this.url.name != this.$route.name) {
-      this.url.name = this.$route.name;
-      this.setMaster();
-      this.setComp();
-    }
-    if (this.url.oid != this.$route.params.oid) {
-      this.url.oid = this.$route.params.oid;
-      this.getMaster(true);
-    }
+    // if (this.url.name != this.$route.name) {
+    //   this.url.name = this.$route.name;
+    // //  this.setMaster();
+    //  // this.setComp();
+    // }
+    // if (this.url.oid != this.$route.params.oid) {
+    //   this.url.oid = this.$route.params.oid;
+    //  // this.getMaster(true);
+    // }
   },
   computed: {
     component() {
+      if (this.step == "finish") {
+        return "stepFinish";
+      }
       if (!this.steps[this.step]) {
         return "cartObject";
       } else {
@@ -138,13 +148,8 @@ export default {
       }
     }
   },
-  watch: {
-    steps(){
-      // console.log(543675);
-      // this.setMaster();
-      // this.setComp();
-    }
-  },
+  watch: {},
+
   methods: {
     setMaster() {
       let name = this.$route.name.split("_");
@@ -162,7 +167,9 @@ export default {
 
       this.steps = steps[this.namep].steps;
       this.name = steps[this.namep].name;
-      this.finish = steps[this.namep].finish;
+      if (name[0] == "new") {
+        this.finish = steps[this.namep].finish;
+      }
     },
     setComp() {
       //   console.log(this.$route);
@@ -192,13 +199,14 @@ export default {
     setSpreadsheetId(data) {
       this.spreadsheet_id = data;
     },
-    setObjId(id) {
-      if (id) this.object_id = id;
+    setObjId(data) {
+      if (data.id) this.object_id = data.id;
+      if (!this.newm) this.name = data.name;
     },
 
     getMaster(firstLoad) {
       if (this.$route.params.oid) {
-      //  console.log(this.$route.params);
+        //  console.log(this.$route.params);
         this.object_id = this.$route.params.oid;
         return;
       }
@@ -232,9 +240,8 @@ export default {
           data: data
         },
         data => {
-            
           if (data.steps && this.first_load) {
-          //  console.log(data);
+            //  console.log(data);
             for (let item in data.steps) {
               if (!this.steps[item]) break;
               if (data.steps[item].complete == "false") {
@@ -249,8 +256,6 @@ export default {
               this.step = +data.step;
             }
 
-
-
             if (data.object_id) this.object_id = data.object_id;
             this.setSpep(this.step);
             load = true;
@@ -263,6 +268,11 @@ export default {
       return load;
     },
     footerBtn(e) {
+      if (e.finish) {
+        this.step = "finish";
+        return;
+      }
+
       if (e == "next") {
         this.steps[this.step].complete = true;
         this.steps[this.step].active = true;
@@ -282,13 +292,13 @@ export default {
 
     setBtnActive(e) {
       this.steps[this.step].btnActive = e;
-    },
-    firstLoad(){
-      this.first_load = true;
-      this.object_id = null;
-      this.step = 0;
-    //  this.steps = {};
     }
+    // firstLoad() {
+    //   this.first_load = true;
+    //   this.object_id = null;
+    //   this.step = 0;
+    //   //  this.steps = {};
+    // }
   }
 };
 </script>

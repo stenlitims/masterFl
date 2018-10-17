@@ -49,12 +49,12 @@ body {
   text-align: center;
   line-height: 25px;
   cursor: pointer;
-  &.abs{
+  &.abs {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    transition: all .3s ease;
+    transition: all 0.3s ease;
   }
   span {
     transform: rotate(45deg);
@@ -63,4 +63,55 @@ body {
   }
 }
 
+.btn-line {
+  background: #fff;
+  border: 2px solid #ff7a59;
+  color: #ff7a59;
+  box-shadow: none;
+  outline: none;
+  border-radius: 8px;
+  &:before {
+  }
+  &.btn-prev {
+    &:before {
+      margin-right: 4px;
+      content: "";
+      width: 5px;
+      height: 5px;
+      display: inline-block;
+      transform: rotate(135deg);
+      vertical-align: middle;
+      border-right: 1px solid #ff7a59;
+      border-bottom: 1px solid #ff7a59;
+      margin-top: -1px;
+    }
+  }
+  &.btn-next {
+    &:after {
+      margin-left: 6px;
+      content: "";
+      width: 5px;
+      height: 5px;
+      display: inline-block;
+      transform: rotate(-45deg);
+      vertical-align: middle;
+      border-right: 1px solid #ff7a59;
+      border-bottom: 1px solid #ff7a59;
+      margin-top: -1px;
+    }
+  }
+  &.not-active {
+    background: #d2d6db !important;
+    border-color: #d2d6db !important;
+    color: #808080 !important;
+    &:after,
+    &:before {
+      border-color: #808080;
+    }
+  }
+}
+
+a.btn-line {
+  color: #ff7a59;
+}
 </style>

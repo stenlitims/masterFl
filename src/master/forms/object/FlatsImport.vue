@@ -57,22 +57,6 @@
       </div>
       
     </div>
-   
-   <div class="container"  v-if="activeImport == 'form'">
-      <h3 class="text-center">Добавление информации по объекту</h3>
-      <div class="text-inner text-center">
-        <p>Данный этап не является обязательным. Вы можете пропустить его и вернуться к заполнению в любое время.</p>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <all-object @typeForm="setTypeForm" :object_id="object_id"></all-object>
-        </div>
-        <div class="col-md-6 wrap-edit">
-          <component :is="typeForm" :form="formData"></component>
-          
-        </div>
-      </div>
-   </div>
 
    <div class="container"  v-if="activeImport == 'googleEmails'">
     <google-emails @saveEmails="saveEmails" :spreadsheet_id="spreadsheet_id"></google-emails>
@@ -85,11 +69,6 @@
 
 <script>
 import masterMixin from "@/mixin/masterMixin";
-import AllObject from "@/master/blocks/AllObject";
-import EditBuilding from "@/master/blocks/edit/building";
-import EditSection from "@/master/blocks/edit/section";
-import EditPlan from "@/master/blocks/edit/plan";
-import EditFloor from "@/master/blocks/edit/floor";
 import googleEmails from "@/master/blocks/googleEmails";
 
 export default {
@@ -115,9 +94,7 @@ export default {
         }
       ],
       innerStep: 0,
-      activeImport: "form",
-    //  activeImport: 2,
-      //activeImport: 'googleEmails',
+      activeImport: 2,
       spreadsheet_id: null,
       link_table: null,
       edit_p: false,
@@ -135,12 +112,7 @@ export default {
     };
   },
   components: {
-    AllObject: AllObject,
-    EditBuilding: EditBuilding,
-    EditSection: EditSection,
-    EditPlan: EditPlan,
-    EditFloor: EditFloor,
-    googleEmails: googleEmails,
+    googleEmails: googleEmails
   },
   created() {
     this.getEmail();
@@ -151,19 +123,17 @@ export default {
     this.$bus.off("saveTable", this.showForm);
     this.$bus.off("formData", this.setTypeForm);
   },
-  mounted() {
-     if(this.steps[this.step].complete){
-       this.form.active = true;
-     }
+  mounted() {},
+  updated() {
+   
   },
   computed: {},
   methods: {
-    saveEmails(){
+    saveEmails() {
       this.activeImport = 2;
-      this.innerStep = 1
+      this.innerStep = 1;
     },
     showForm() {
-      this.activeImport = "form";
       this.form.active = true;
     },
     setTypeForm(data) {
@@ -193,10 +163,11 @@ export default {
           if (data) {
             // console.log(data);
             if (this.isGmailAddress(data.email)) {
-              if(data.spreadsheet_id != ''){
+              if (data.spreadsheet_id != "") {
                 this.spreadsheet_id = data.spreadsheet_id;
                 this.$emit("spreadsheetId", this.spreadsheet_id);
                 this.innerStep = 1;
+                this.form.active = true;
               }
               this.form.email = data.email;
             }
@@ -229,7 +200,6 @@ export default {
       );
     },
     send(w) {
-      
       if (w == "prev") {
         this.$emit("footerBtn", w);
         return;
@@ -307,35 +277,6 @@ export default {
   text-align: center;
   input {
     text-align: center;
-  }
-}
-
-.edit-form {
-  max-width: 400px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-top: 30px;
-  .form-group {
-    margin-bottom: 1.5rem;
-  }
-  .form-control {
-    height: 42px;
-    padding-left: 17px;
-  }
-}
-.wrap-edit {
-  &:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: -600px;
-    bottom: 0;
-    background: #f9f9f9;
-  }
-  > div {
-    position: relative;
-    z-index: 1;
   }
 }
 </style>

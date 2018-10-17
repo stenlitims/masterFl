@@ -3,24 +3,34 @@
       <div class="container">
           <div class="prev-block">
             <div v-if="step > 0">
-                <button @click="nav('prev')" class="btn btn-md btn-prev waves-effect">
+                <button @click="nav('prev')" class="btn-line btn-md btn-prev waves-effect">
                   Назад</button>
             </div>
-            <div v-if="step != steps.length - 1">
+            <div>
               <a href="#" @click.prevent="hideModal" class="close-master">Закрыть</a>
             </div>
 
 
-            <button @click="clear" class="btn btn-md btn-clear waves-effect">Очистить</button>
+            <!-- <button @click="clear" class="btn btn-md btn-clear waves-effect">Очистить</button> -->
             
           </div>
-          <div>
+          <div class="next-block">
             <div v-if="step < steps.length - 1">
-            <button @click="nav('next')" :class="{'not-active': btnActive != true}" class="btn btn-next btn-md waves-effect">Далее</button>
+            <button @click="nav('next')" :class="{'not-active': btnActive != true}" class="btn-line btn-next btn-md waves-effect">Далее</button>
             </div>
-            <div v-if="step == steps.length - 1">
-            <button @click="finish()" class="btn btn-finish btn-md waves-effect">Финиш</button>
+
+            <div v-if="finishTxt" class="finish-btns">
+              <div v-if="steps[step].comp == 'objectDetail'">
+              <button @click="finish(true)" class="btn-line btn-finish btn-md  btn-next waves-effect">Пропустить</button>
+              </div>
+
+              <div v-if="step == steps.length - 1">
+              <button @click="finish(false)" :class="{'not-active': btnActive != true}" class="btn-line btn-finish btn-md  btn-next waves-effect">Завершить</button>
+              </div>
             </div>
+
+            
+
           </div>
       </div>
 
@@ -30,14 +40,16 @@
 <script>
 export default {
   name: "MasterFooter",
-  props: ["steps", "step", "object_id", "namep"],
+  props: ["steps", "step", "object_id", "namep", "finishTxt"],
   data() {
     return {
       // steps: []
+     // show: true
     };
   },
   computed: {
     btnActive() {
+      if (this.step == 'finish') return false;
       if (this.steps[this.step].btnActive) {
         return true;
       }
@@ -45,27 +57,8 @@ export default {
     }
   },
   methods: {
-    finish() {
-      let data = {};
-      data["master"] = this.namep;
-      data["steps"] = this.steps;
-      data["step"] = this.step;
-
-      $.post(
-        this.$root.apiurl,
-        {
-          action: "setState",
-          finish: 1,
-          data: data
-        },
-        data => {
-          //console.log(data);
-          if (data.type == 'success') {
-            this.hideModal();
-          }
-        },
-        "json"
-      );
+    finish(e) {
+      this.$bus.emit(this.steps[this.step].comp, {finish: e});
     },
     nav(w) {
       this.$bus.emit(this.steps[this.step].comp, w);
@@ -73,8 +66,11 @@ export default {
     hideModal() {
       //  this.$router.go(-1);
 
-      this.$emit("firstLoad", true);
+      //    this.$emit("firstLoad", true);
       $(".page-master").removeClass("active");
+      setTimeout(() => {
+        this.$router.push({ name: "MainPage" });
+      }, 300);
     },
     clear() {
       let clear = confirm("Очистить мастер?");
@@ -121,7 +117,6 @@ export default {
   }
   .btn-next {
     //  opacity: 0.6;
-    border-radius: 5px;
   }
 
   .btn-clear {
@@ -130,58 +125,24 @@ export default {
     padding: 4px 8px;
   }
 
-  .btn {
-    background: #fff;
-    border: 2px solid #ff7a59;
-    color: #ff7a59;
-    box-shadow: none;
-    outline: none;
-    &:before {
-    }
-    &.btn-prev {
-      &:before {
-        margin-right: 4px;
-        content: "";
-        width: 5px;
-        height: 5px;
-        display: inline-block;
-        transform: rotate(135deg);
-        vertical-align: middle;
-        border-right: 1px solid #ff7a59;
-        border-bottom: 1px solid #ff7a59;
-        margin-top: -1px;
-      }
-    }
-    &.btn-next {
-      &:after {
-        margin-left: 6px;
-        content: "";
-        width: 5px;
-        height: 5px;
-        display: inline-block;
-        transform: rotate(-45deg);
-        vertical-align: middle;
-        border-right: 1px solid #ff7a59;
-        border-bottom: 1px solid #ff7a59;
-        margin-top: -1px;
-      }
-    }
-    &.not-active {
-      background: #d2d6db !important;
-      border-color: #d2d6db !important;
-      color: #808080 !important;
-      &:after,
-      &:before {
-        border-color: #808080;
-      }
-    }
-  }
-  .prev-block {
+  .prev-block,
+  .next-block {
     display: flex;
     align-items: center;
+  }
+  .prev-block {
     button {
       margin-right: 20px;
     }
   }
+  .next-block {
+    button {
+      margin-left: 30px;
+    }
+  }
+}
+.finish-btns{
+  display: flex;
+  align-items: center;
 }
 </style>

@@ -1,5 +1,5 @@
 export default {
-  props: ["steps", "step", "object_id"],
+  props: ["steps", "step", "object_id", "namep"],
   data() {
     return {
       errors: [],

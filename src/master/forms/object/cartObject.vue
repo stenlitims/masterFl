@@ -149,6 +149,7 @@ export default {
             this.form.sales_department_site = data.sales_department_site;
             this.currency = data.currency_list;
             this.dataLoad = true;
+            this.$emit("objId", data);
           }
         },
         "json"
@@ -203,7 +204,7 @@ export default {
         success: data => {
           // console.log(data);
           if (!data.errors) {
-            if (!this.object_id) this.$emit("objId", data.id);
+            if (!this.object_id) this.$emit("objId", data);
             this.formChange = false;
             this.$emit("footerBtn", e);
           } else {

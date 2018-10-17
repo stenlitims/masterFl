@@ -25,9 +25,9 @@ let steps = {
       },
       {
         name: "Детализация",
-        comp: "stepFinish",
+        comp: "objectDetail",
         complete: false,
-        btnActive: false
+        btnActive: true
       }
     ]
   },
