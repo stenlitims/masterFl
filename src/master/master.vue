@@ -121,8 +121,6 @@ export default {
   mounted() {
     setTimeout(() => {
       $(".page-master").addClass("active");
-
-   
     }, 200);
   },
   updated() {
@@ -235,7 +233,7 @@ export default {
       }
 
       let action = "getState";
-      if (!this.first_load) {
+      if (!firstLoad) {
         action = "setState";
       }
 
@@ -248,7 +246,7 @@ export default {
           data: data
         },
         data => {
-          if (data.steps && this.first_load) {
+          if (data.steps) {
             for (let item in data.steps) {
               if (!this.steps[item]) break;
               if (data.steps[item].complete == "false") {
@@ -403,6 +401,8 @@ export default {
   background: #fff;
   transition: all 0.4s ease;
   transform: translate(100%, 0);
+  z-index: 1050;
+  overflow: hidden;
   &.active {
     transform: translate(0, 0);
   }
@@ -415,28 +415,6 @@ export default {
   }
   .btn-cancel {
     background: #ff7a59;
-  }
-}
-
-.loader {
-  position: relative;
-  &:before,
-  &:after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    z-index: 500;
-  }
-  &:before {
-    background: rgba(255, 255, 255, 0.5);
-  }
-  &:after {
-    z-index: 501;
-    background: url(https://flatris.com.ua/assets/images/preloader.svg)
-      no-repeat center center;
   }
 }
 

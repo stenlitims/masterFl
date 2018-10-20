@@ -15,8 +15,13 @@
           
         </div>
       </div>
-  
 
+
+  
+    <edit-floorplan 
+    v-if="editFloorPlan"
+    :data="formData"
+    ></edit-floorplan>
  
     
  
@@ -31,6 +36,7 @@ import EditBuilding from "@/master/blocks/edit/building";
 import EditSection from "@/master/blocks/edit/section";
 import EditPlan from "@/master/blocks/edit/plan";
 import EditFloor from "@/master/blocks/edit/floor";
+import EditFloorPlan from "@/master/blocks/edit/floorPlans";
 
 export default {
   name: "FlatsImport",
@@ -43,11 +49,12 @@ export default {
       pleloader: false,
       typeForm: "EditBuilding",
       formData: {},
+      editFloorPlan: false,
       form: {
         active: ""
       },
       required: {
-        active: "",
+        active: ""
       }
     };
   },
@@ -56,18 +63,23 @@ export default {
     EditBuilding: EditBuilding,
     EditSection: EditSection,
     EditPlan: EditPlan,
-    EditFloor: EditFloor
+    EditFloor: EditFloor,
+    EditFloorplan: EditFloorPlan
   },
   created() {
     this.$bus.on("formData", this.setTypeForm);
+    this.$bus.on("editFloorPlan", this.openFloorPlan);
   },
   beforeDestroy() {
     this.$bus.off("formData", this.setTypeForm);
+    this.$bus.off("editFloorPlan", this.openFloorPlan);
   },
-  mounted() {
-  },
+  mounted() {},
   computed: {},
   methods: {
+    openFloorPlan(e) {
+      this.editFloorPlan = e;
+    },
     setTypeForm(data) {
       this.typeForm = data.type;
       this.formData = data;
@@ -90,7 +102,6 @@ export default {
         this.$emit("footerBtn", w);
         return;
       }
-      
 
       this.findError();
       if (this.error.length) return false;

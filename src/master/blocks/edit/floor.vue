@@ -18,7 +18,7 @@
       </div>
       <div class="form-group">
         <label>Отметить планировки на этаже</label>
-        <button class="btn btn-md w-100 waves-effect">Отметить</button>
+        <button @click="openFloorPlan" class="btn btn-md w-100 waves-effect">Отметить</button>
       </div>
     </div>
     
@@ -60,6 +60,9 @@ export default {
   mounted() {},
   computed: {},
   methods: {
+    openFloorPlan() {
+      this.$bus.emit("editFloorPlan", true);
+    },
     sendFile() {
       let form_data = new FormData();
       if ($("#img")[0].files.length) {
@@ -80,12 +83,15 @@ export default {
         data: form_data,
         type: "POST",
         success: data => {
-
           if (data.type == "success") {
             // this.success = true;
-            this.form.complete = true;
-            if (data.data.img) this.form.img = data.data.img;
-            this.$bus.emit("completeForm", this.form.id);
+
+            if (data.data.img) {
+              this.form.img = data.data.img;
+              this.form.complete = true;
+              this.$bus.emit("completeForm", this.form.id);
+            }
+
             //  setTimeout(() => {
             //   this.success = false;
             //  }, 2000);
@@ -110,6 +116,7 @@ export default {
 }
 .img {
   position: relative;
+  margin-bottom: 10px;
   text-align: center;
   .del-btn {
     opacity: 0;

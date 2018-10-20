@@ -11,7 +11,7 @@
             </div>
 
 
-            <!-- <button @click="clear" class="btn btn-md btn-clear waves-effect">Очистить</button> -->
+            <!-- <button @click="clear" class="btn btn-md btn-clear waves-effect">Очистить</button>  -->
             
           </div>
           <div class="next-block">

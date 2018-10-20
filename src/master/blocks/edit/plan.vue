@@ -185,6 +185,7 @@ export default {
   position: relative;
   min-height: 50px;
   text-align: center;
+  margin-top: 10px;
   img {
     max-width: 100%;
     max-height: 200px;

@@ -136,4 +136,46 @@ select[disabled].form-control {
 .btn-md {
     padding: 10px 24px;
 }
+
+
+
+.loader {
+  position: relative;
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 500;
+  }
+  &:before {
+    background: rgba(255, 255, 255, 0.5);
+  }
+  &:after {
+    z-index: 501;
+    background: url(https://flatris.com.ua/assets/images/preloader.svg)
+      no-repeat center center;
+  }
+}
+
+
+.def-modal{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 999;
+  background: #fff;
+  .close-m{
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    z-index: 555;
+  }
+}
+
 </style>

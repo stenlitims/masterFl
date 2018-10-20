@@ -26,8 +26,8 @@
               <div class="in-list" v-if="floors">
 
                 <div class="item" v-for="(floor, fi) in floors[si]" :key="fi">
-                  <div class="line" :class="{'active':active_id == floor.id}"> 
-                    <div class="name">Этаж  {{floor.name}}</div>
+                  <div class="line" :class="{'active':active_id == floor.id, 'complete': floor.complete}"> 
+                    <div class="name">Этаж  {{floor.name}} <i></i></div>
                     <button @click="edit(floor, 'EditFloor')" class="btn btn-md waves-effect">Заполнить</button>  
                   </div>
                   <div class="in-list" v-if="floor">
@@ -35,9 +35,9 @@
                 
                         <div class="item" v-for="(plan, pi) in floor.plans" :key="pi">
                           <div style="display:none">{{completeForm}}</div>
-                          <div :class="{'active':active_id == plans[si][plan].id, 'complete': plans[si][plan].complete}" class="line">
+                         <div :class="{'active':active_id == plans[si][plan].id, 'complete': plans[si][plan].complete}" class="line">
                             <div class="name">Планировка {{plans[si][plan].name}} <i></i> </div>
-                          <button  @click="edit(plans[si][plan], 'EditPlan')" class="btn btn-md waves-effect">Заполнить</button> </div>
+                          <button  @click="edit(plans[si][plan], 'EditPlan')" class="btn btn-md waves-effect">Заполнить</button> </div> 
                           <div class="in-list">
                           </div>
                         </div>
@@ -82,9 +82,11 @@ export default {
   created() {
     this.getObject();
     this.$bus.on("completeForm", this.setCompleteForm);
+    this.$bus.on("updateList", this.updateList);
   },
   beforeDestroy() {
     this.$bus.off("completeForm", this.setCompleteForm);
+    this.$bus.off("updateList", this.updateList);
   },
   mounted() {},
   computed: {},
@@ -92,7 +94,10 @@ export default {
     setCompleteForm(id) {
       this.completeForm = id;
     },
-    getObject() {
+    updateList() {
+      this.getObject(true);
+    },
+    getObject(upd) {
       $.post(
         this.$root.apiurl,
         {
@@ -101,13 +106,21 @@ export default {
         },
         data => {
           if (data) {
-           // console.log(data);
+            // console.log(data);
+            if (upd) {
+              this.floors = [];
+            }
             this.buildings = data.buildings;
             this.sections = data.sections;
             this.floors = data.floors;
             this.plans = data.plans;
             this.object = data.object;
-            this.edit(this.buildings[Object.keys(this.buildings)[0]], "EditBuilding");
+            if (!upd) {
+              this.edit(
+                this.buildings[Object.keys(this.buildings)[0]],
+                "EditBuilding"
+              );
+            }
             this.loader = false;
           }
         },
@@ -154,6 +167,7 @@ export default {
     }
     .btn {
       min-width: 110px;
+      padding: 10px 14px;
     }
     &.active {
       .name,

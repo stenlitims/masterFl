@@ -83,8 +83,10 @@ export default {
             swal("Ошибка!", response.error.message, "error");
           } else {
             swal("Обновлено!", response.data.message, "success");
+
+            this.generateFloors();
             setTimeout(() => {
-              this.$emit("closeTable", true);
+            //  this.$emit("closeTable", true);
               this.$bus.emit('saveTable', true);
               swal.closeModal();
             }, 1000);
@@ -94,6 +96,20 @@ export default {
           console.log(jqXHR);
           swal("Ошибка!", jqXHR.responseText, "error");
         });
+    },
+    generateFloors(){
+      $.post(
+        this.$root.apiurl,
+        {
+          action: 'generateFloors',
+          object_id: this.object_id
+        },
+        data => {
+          if (data) {
+          }
+        },
+        "json"
+      );
     },
     close() {
       this.$emit("closeTable", true);
