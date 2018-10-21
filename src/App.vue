@@ -178,4 +178,12 @@ select[disabled].form-control {
   }
 }
 
+.alert{
+  p{
+    &:last-child{
+      margin-bottom: 0;
+    }
+  }
+}
+
 </style>

@@ -33,7 +33,7 @@ let steps = {
   },
   amo: {
     name: "Интеграция с AmoCRM",
-    finish: ``,
+    finish: `<p>Поздравляем! Вы успешно подключили Flatris к AmoCRM.</p>`,
     steps: [{
         name: "Подключение виджета",
         comp: "amoFirst",
@@ -50,7 +50,7 @@ let steps = {
   },
   mirkv: {
     name: "Интеграция с Мир Квартир",
-    finish: ``,
+    finish: `Поздравляем! Вы успешно создали файл(ы) для размещения на "Мир квартир"`,
     steps: [{
         name: "Выбор объекта",
         comp: "mirKv1",
@@ -73,7 +73,7 @@ let steps = {
   },
   webchess: {
     name: "Создание веб-шахматки для сайта",
-    finish: ``,
+    finish: `Поздравляем! Вы успешно создали веб-шахматку для вашего сайта.`,
     steps: [{
         name: "Настройка полей",
         comp: "webCh1",
@@ -100,12 +100,12 @@ let steps = {
       }
     ]
   },
-  newagent: {
+  agent: {
     name: "Добавление нового агента",
-    finish: ``,
+    finish: `Поздравляем! Вы успешно добавили нового агента.`,
     steps: [{
         name: "Карточка агента",
-        comp: "amoFirst",
+        comp: "agent1",
         complete: false,
         btnActive: false
       },

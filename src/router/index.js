@@ -23,20 +23,20 @@ export default new Router({
       name: 'object',
       component: Master,
     }, {
-      path: '/amo/:id',
-      name: 'amo',
+      path: '/new_amo/:id',
+      name: 'new_amo',
       component: Master,
     }, {
-      path: '/mirkv/:id',
-      name: 'mirkv',
+      path: '/new_mirkv/:id',
+      name: 'new_mirkv',
       component: Master,
     }, {
-      path: '/webchess/:id',
-      name: 'webchess',
+      path: '/new_webchess/:id',
+      name: 'new_webchess',
       component: Master,
     }, {
-      path: '/newagent/:id',
-      name: 'newagent',
+      path: '/new_agent/:id',
+      name: 'new_agent',
       component: Master,
     }
   ]

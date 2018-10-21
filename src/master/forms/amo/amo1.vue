@@ -6,22 +6,30 @@
     </div>
     <div class="form">
         <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-12">
           <div class="form-group">
             <label>Логин FLATRIS</label>
-            <input type="email" class="form-control" placeholder="info@flatris.com.ua"  v-model="form.email">
+            <input type="email" class="form-control" placeholder="info@flatris.com.ua"  v-model="form.api_login">
           </div>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-12">
           <div class="form-group">
             <label>Ключ API FLATRIS</label>
-            <input type="text" class="form-control"  v-model="form.key">
+            <input type="text" class="form-control"  v-model="form.api_key">
           </div>
         </div>
 
       </div>
-      <div class="btns text-center">
+      <div class="btns text-center form-group">
         <button class="btn btn-md waves-effect">ПОДКЛЮЧИТЬ</button>
+      </div>
+
+      <div v-if="errors.length">
+        <div class="alert alert-danger text-center" role="alert">
+          <p v-for="(item, i) in errors" :key="i">
+            {{item}}
+          </p>
+        </div>
       </div>
     </div>
    
@@ -37,11 +45,10 @@ export default {
   mixins: [masterMixin],
   data() {
     return {
-      errors: [],
-      success: false,
+      connected: false,
       form: {
-        email: "info@flatris.com.ua",
-        key: "a33226e855f072ad7ccfafb5d8f9e00413db198a",
+        api_login: "",
+        api_key: "",
         active: ""
       },
       required: {
@@ -49,13 +56,38 @@ export default {
       }
     };
   },
-  created() {},
+  created() {
+    $.post(
+      this.$root.apiurl,
+      {
+        action: "getApiKey"
+      },
+      data => {
+        if (data) {
+          this.form.api_login = data.api_login;
+          this.form.api_key = data.api_key;
+        }
+      },
+      "json"
+    );
+  },
   updated() {},
-  mounted(){
+  mounted() {
     this.$emit("btnActive", !this.error.length);
   },
   methods: {
     send(e) {
+      this.errors = [];
+      if(!this.connected){
+        this.errors.push('Не подключено');
+        setTimeout(()=>{
+          this.errors = [];
+        }, 1000);
+        return;
+      }
+
+
+
       if (e == "prev") {
         this.$emit("footerBtn", e);
         return true;

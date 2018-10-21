@@ -69,6 +69,8 @@ import mirKv1 from "@/master/forms/mirkv/mir1";
 
 import webCh1 from "@/master/forms/webchess/webch1";
 
+import agent1 from "@/master/forms/agent/agent1";
+
 import stepFinish from "@/master/forms/finish";
 
 export default {
@@ -108,7 +110,8 @@ export default {
     GoogleTable: GoogleTable,
     stepFinish: stepFinish,
     mirKv1: mirKv1,
-    webCh1: webCh1
+    webCh1: webCh1,
+    agent1: agent1,
   },
   created() {
     this.setMaster();
@@ -415,6 +418,10 @@ export default {
   }
   .btn-cancel {
     background: #ff7a59;
+  }
+  h4{
+    font-size: 20px;
+    line-height: 1.4;
   }
 }
 

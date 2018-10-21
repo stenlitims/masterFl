@@ -67,7 +67,7 @@ export default {
         input,
         data => {
           if (data) {
-              return data;
+            //  return data;
           }
         },
         "json"
