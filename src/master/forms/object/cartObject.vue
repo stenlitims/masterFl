@@ -25,14 +25,18 @@
         </div>
         
         <div class="col-lg-6">
-            <div class="form-group">
-              <label>Логотип</label>
-              <input type="file" name="img" id="logo" accept="image/*" class="form-control" placeholder="Файл">
+            <div class="form-group" >
+              <label>Логотип</label><br>
+              <input  v-if="!form.logo" 
+              type="file" name="img" id="logo" accept="image/*" class="form-control" placeholder="Файл">
+
+              <div v-if="form.logo" class="obj-logo">
+                <img :src="form.logo" /><br>
+                <div class="del-btn abs" @click="delFile('logo')"><span>+</span></div>
+              </div>
+
             </div>
-            <div class="obj-logo" v-if="form.logo">
-              <img :src="form.logo" /><br>
-              <div class="del-btn abs" @click="delFile('logo')"><span>+</span></div>
-            </div>
+            
         </div>
 
         <div class="col-lg-12">
@@ -105,7 +109,7 @@ export default {
     object_id() {
       this.dataLoad = false;
       this.getData();
-   //   console.log(234);
+      //   console.log(234);
     }
   },
   methods: {
@@ -126,7 +130,6 @@ export default {
           "json"
         );
       }
-      
 
       if (!this.object_id || this.dataLoad) return;
 
@@ -179,9 +182,12 @@ export default {
       if (this.errors.length) return false;
 
       let form_data = new FormData();
-      if ($("#logo")[0].files.length) {
-        form_data.append("img", $("#logo")[0].files[0]);
+      if ($("#logo").length > 0) {
+        if ($("#logo")[0].files.length) {
+          form_data.append("img", $("#logo")[0].files[0]);
+        }
       }
+
       let action = "addGproject";
       if (this.object_id) {
         action = "getGproject";
@@ -225,9 +231,9 @@ export default {
   }
 }
 .obj-logo {
-  margin-top: -15px;
   display: inline-block;
   position: relative;
+  margin-bottom: 0px;
   .del-btn {
     opacity: 0;
   }

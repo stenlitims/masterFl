@@ -7,12 +7,13 @@
         <p>Данный этап не является обязательным. Вы можете пропустить его и вернуться к заполнению в любое время.</p>
       </div>
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-lg-6">
           <all-object 
           @allData="setAllData"
           @typeForm="setTypeForm" :object_id="object_id"></all-object>
         </div>
-        <div class="col-md-6 wrap-edit">
+        <div class="col-lg-6 wrap-edit mob-modal">
+          <div @click="closeModal" class="close-modal"></div>
           <component :is="typeForm" :form="formData"></component>
           
         </div>
@@ -68,10 +69,10 @@ export default {
       editallPlans: false,
       allData: {},
       form: {
-        active: ""
+          active: ""
       },
       required: {
-        active: ""
+          active: ""
       }
     };
   },
@@ -98,7 +99,7 @@ export default {
   mounted() {},
   computed: {},
   methods: {
-    setAllData(data){
+    setAllData(data) {
       this.allData = data;
     },
     openFloorPlan(e) {
@@ -119,6 +120,11 @@ export default {
       }
       return false;
     },
+    closeModal(e) {
+      $(e.target)
+        .parent()
+        .removeClass("active");
+    },
     send(w) {
       if (w == "prev") {
         this.$emit("footerBtn", w);
@@ -131,8 +137,11 @@ export default {
       }
 
       this.findError();
+
       if (this.error.length) return false;
+      w.finish = true;
       this.$emit("footerBtn", w);
+
       this.success = true;
     }
   }
@@ -169,6 +178,31 @@ export default {
   > div {
     position: relative;
     z-index: 1;
+  }
+}
+
+.wrap-eform {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 15px;
+  padding-top: 3px;
+}
+
+@media (max-width: 991px) {
+  .list-ob {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .wrap-edit:before {
+    content: none;
+  }
+  .wrap-eform{
+    max-height: calc(100vh - 200px);
+    margin-bottom: 15px;
+  }
+  .edit-form{
+    padding-top: 0;
   }
 }
 </style>

@@ -17,7 +17,16 @@ export default {
       } else {
         return 'Отмечено - 0';
       }
-
+    },
+    mobClass() {
+      if (this.$root.isMobile) {
+        return {
+          'wrap-eform': true,
+          'c-sc': true
+        };
+      } else {
+        return {};
+      }
     }
   },
   methods: {

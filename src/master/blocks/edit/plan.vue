@@ -2,7 +2,7 @@
 <div>
   <div class="edit-form" :class="{'loader': loader}">
     <h4 class="text-center">Планировка  {{form.name}}</h4>
-    <div class="wrap c-sc" >
+    <div class="wrap-eform c-sc" >
 
     
     <div class="row">
@@ -182,16 +182,6 @@ export default {
 .edit-form {
   max-width: 93%;
 }
-.wrap {
-  max-height: 400px;
-  overflow-y: auto;
-  padding-right: 15px;
-  padding-top: 3px;
-}
-.btns {
-  padding-top: 15px;
-  padding-bottom: 20px;
-}
 .img {
   position: relative;
   min-height: 50px;
@@ -226,4 +216,9 @@ export default {
   opacity: 0;
   transition: all 0.3s ease;
 }
+
+@media (max-width: 991px) {
+  
+}
+
 </style>

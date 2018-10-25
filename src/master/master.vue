@@ -111,7 +111,7 @@ export default {
     stepFinish: stepFinish,
     mirKv1: mirKv1,
     webCh1: webCh1,
-    agent1: agent1,
+    agent1: agent1
   },
   created() {
     this.setMaster();
@@ -120,23 +120,17 @@ export default {
     setTimeout(() => {
       this.pleload = true;
     }, 3000);
+    this.$bus.on("hideModal", this.hideModal);
+  },
+  beforeDestroy() {
+    this.$bus.off("hideModal", this.hideModal);
   },
   mounted() {
     setTimeout(() => {
       $(".page-master").addClass("active");
     }, 200);
   },
-  updated() {
-    // if (this.url.name != this.$route.name) {
-    //   this.url.name = this.$route.name;
-    // //  this.setMaster();
-    //  // this.setComp();
-    // }
-    // if (this.url.oid != this.$route.params.oid) {
-    //   this.url.oid = this.$route.params.oid;
-    //  // this.getMaster(true);
-    // }
-  },
+  updated() {},
   computed: {
     component() {
       if (this.step == "finish") {
@@ -304,13 +298,13 @@ export default {
 
     clearData() {
       this.steps = [];
+    },
+    hideModal() {
+      $(".page-master").removeClass("active");
+      setTimeout(() => {
+        this.$router.push({ name: "MainPage" });
+      }, 300);
     }
-    // firstLoad() {
-    //   this.first_load = true;
-    //   this.object_id = null;
-    //   this.step = 0;
-    //   //  this.steps = {};
-    // }
   }
 };
 </script>
@@ -325,7 +319,7 @@ export default {
 .page-master {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+//  min-height: 100vh;
   padding-bottom: 80px;
   .container {
     max-width: 1200px;
@@ -399,8 +393,10 @@ export default {
   position: fixed;
   top: 0;
   right: 0;
-  bottom: 0;
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   left: 0;
+
   background: #fff;
   transition: all 0.4s ease;
   transform: translate(100%, 0);
@@ -419,7 +415,7 @@ export default {
   .btn-cancel {
     background: #ff7a59;
   }
-  h4{
+  h4 {
     font-size: 20px;
     line-height: 1.4;
   }
@@ -492,6 +488,40 @@ export default {
   }
   .page-master .center form .row .form-group {
     margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 991px) {
+  .page-master .center .text-inner {
+    margin-bottom: 25px;
+  }
+  .page-master .center h3 {
+    font-size: 22px;
+    margin-bottom: 25px;
+  }
+  .page-master .center {
+    padding-top: 5px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  .master-inner, .set-modal{
+    overflow: auto;
+  }
+}
+@media (max-width: 576px) {
+  .page-master .center {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .page-master .center h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+  .page-master .text-inner {
+    font-size: 13px;
+  }
+  .page-master{
+    padding-bottom: 59px;
   }
 }
 </style>

@@ -173,17 +173,12 @@ select[disabled].form-control {
 .def-modal {
   position: fixed;
   top: 0;
-  bottom: 0;
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   right: 0;
   left: 0;
   z-index: 999;
   background: #fff;
-  .close-m {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    z-index: 555;
-  }
 }
 
 .alert {
@@ -246,7 +241,7 @@ select[disabled].form-control {
     text-align: center;
     margin-top: 0px;
     height: 138px;
-    img{
+    img {
       max-height: 100%;
     }
     &:hover {
@@ -254,6 +249,88 @@ select[disabled].form-control {
         opacity: 1;
       }
     }
+  }
+}
+
+.close-modal-all {
+  position: absolute !important;
+  z-index: 50;
+  top: 0px;
+  right: 5px;
+  padding: 10px 15px;
+  font-size: 36px;
+  line-height: 1;
+  color: #000;
+  opacity: 0.7;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  &:hover {
+    opacity: 1;
+  }
+  &:before {
+    line-height: 1;
+    content: "\00d7";
+    height: 36px;
+    display: block;
+  }
+}
+
+@media (min-width: 991px) {
+  .mob-el {
+    display: none;
+  }
+}
+
+@media (max-width: 991px) {
+  .mob-modal {
+    position: fixed;
+    top: 0;
+    background: #fff;
+    left: 0;
+    right: 0;
+    z-index: 500;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    padding-top: 30px;
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+
+    &.active {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+
+  .close-modal {
+    position: absolute !important;
+    z-index: 50;
+    top: 0px;
+    right: 5px;
+    padding: 10px 15px;
+    font-size: 36px;
+    line-height: 1;
+    color: #000;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+    &:hover {
+      opacity: 1;
+    }
+    &:before {
+      line-height: 1;
+      content: "\00d7";
+      height: 36px;
+      display: block;
+    }
+  }
+
+  .mob-none {
+    display: none;
+  }
+
+  .p-modal {
+    padding-top: 60px;
   }
 }
 </style>

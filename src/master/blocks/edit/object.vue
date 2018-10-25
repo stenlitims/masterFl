@@ -1,8 +1,8 @@
 <template>
 <div>
   <div class="edit-form" :class="{'loader': loader}">
-    <h4 class="text-center">Дом {{form.name}}</h4>
-   <div class="wrap c-sc">
+    <h4 class="text-center">{{form.name}}</h4>
+    <div :class="mobClass">
      <div class="row">
        <div class="col-sm-6">
         <div class="form-group">

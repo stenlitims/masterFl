@@ -1,6 +1,6 @@
 <template>
-<div class="floor-plan def-modal" :class="{'loader': loader}">
-  <div class="close-m btn btn-md" @click="close">x</div>  
+<div class="floor-plan def-modal p-modal" :class="{'loader': loader}">
+  <div class="close-modal-all" @click="close"></div>
   <div style="display:none"><img id="imageFilePreview" :src="data.img" style="max-height:200px;max-width:200px;"></div>
   <div id="map" class="map"></div>
   <div v-if="success">

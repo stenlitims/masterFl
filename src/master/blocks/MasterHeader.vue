@@ -1,9 +1,10 @@
 <template>
   <div class="master-header">
+      <div @click="hideModal" class="close-modal mob-el"></div>
       <div class="container">
         <div class="header-info">
-          <div>{{name}}</div>
-          <div>Шаг {{stepsh}} из {{steps.length}}</div>
+          <div class="name">{{name}}</div>
+          <div class="n-steps">Шаг {{stepsh}} из {{steps.length}}</div>
         </div>
         <div class="step-list-wrap">
           <div class="step-list">
@@ -55,6 +56,9 @@ export default {
       if (this.steps[n].complete || this.steps[n - 1].complete) {
         this.$emit("setSpep", n);
       }
+    },
+    hideModal() {
+      this.$bus.emit("hideModal", true);
     }
   }
 };
@@ -87,7 +91,7 @@ export default {
       position: absolute;
       left: 20px;
       right: 20px;
-      background: #ECF0F4;
+      background: #ecf0f4;
       height: 2px;
       top: 50%;
       transform: translate(0, -50%);
@@ -99,7 +103,7 @@ export default {
       left: 20px;
       right: 20px;
       > div {
-        background: #5FBEAA;
+        background: #5fbeaa;
         height: 4px;
         transition: width 0.3s linear;
       }
@@ -109,14 +113,14 @@ export default {
       z-index: 2;
       &.active {
         .cl {
-          border: 4px solid #5FBEAA;
+          border: 4px solid #5fbeaa;
         }
       }
       &.complete {
         cursor: pointer;
         &.active {
           .cl {
-            border: 4px solid #5FBEAA;
+            border: 4px solid #5fbeaa;
             box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2);
             background: #fff;
             &:before {
@@ -125,7 +129,7 @@ export default {
           }
         }
         .cl {
-          background: #5FBEAA;
+          background: #5fbeaa;
           border: none;
 
           &:before {
@@ -145,7 +149,7 @@ export default {
         width: 30px;
         height: 30px;
         border-radius: 50%;
-        border: 2px solid #ECF0F4;
+        border: 2px solid #ecf0f4;
         background: #fff;
       }
       .title {
@@ -181,6 +185,33 @@ export default {
   }
   .master-header .step-list .item.complete .cl:before {
     width: 7px;
+  }
+}
+
+@media (max-width: 991px) {
+  .step-list-wrap {
+    display: none;
+  }
+  .master-header {
+    padding-bottom: 0;
+    padding-top: 20px;
+  }
+  .master-header .header-info {
+    font-size: 14px;
+  }
+
+  .master-header .header-info {
+    display: block;
+    text-align: center;
+  }
+  .header-info {
+    .n-steps {
+      font-weight: normal;
+    }
+    .name {
+      font-size: 16px;
+      margin-bottom: 7px;
+    }
   }
 }
 </style>
