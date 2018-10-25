@@ -8,7 +8,9 @@
       </div>
       <div class="row">
         <div class="col-md-6">
-          <all-object @typeForm="setTypeForm" :object_id="object_id"></all-object>
+          <all-object 
+          @allData="setAllData"
+          @typeForm="setTypeForm" :object_id="object_id"></all-object>
         </div>
         <div class="col-md-6 wrap-edit">
           <component :is="typeForm" :form="formData"></component>
@@ -22,6 +24,17 @@
     v-if="editFloorPlan"
     :data="formData"
     ></edit-floorplan>
+
+
+    <editall-plans 
+    v-if="editallPlans"
+    :data="formData"
+    :allData="allData"
+    ></editall-plans>
+
+    
+
+
  
     
  
@@ -32,11 +45,13 @@
 <script>
 import masterMixin from "@/mixin/masterMixin";
 import AllObject from "@/master/blocks/AllObject";
+import EditObject from "@/master/blocks/edit/object";
 import EditBuilding from "@/master/blocks/edit/building";
 import EditSection from "@/master/blocks/edit/section";
 import EditPlan from "@/master/blocks/edit/plan";
 import EditFloor from "@/master/blocks/edit/floor";
 import EditFloorPlan from "@/master/blocks/edit/floorPlans";
+import EditallPlans from "@/master/blocks/edit/allPlans";
 
 export default {
   name: "FlatsImport",
@@ -50,6 +65,8 @@ export default {
       typeForm: "EditBuilding",
       formData: {},
       editFloorPlan: false,
+      editallPlans: false,
+      allData: {},
       form: {
         active: ""
       },
@@ -64,21 +81,31 @@ export default {
     EditSection: EditSection,
     EditPlan: EditPlan,
     EditFloor: EditFloor,
-    EditFloorplan: EditFloorPlan
+    EditFloorplan: EditFloorPlan,
+    EditallPlans: EditallPlans,
+    EditObject: EditObject
   },
   created() {
     this.$bus.on("formData", this.setTypeForm);
     this.$bus.on("editFloorPlan", this.openFloorPlan);
+    this.$bus.on("editallPlan", this.editallPlan);
   },
   beforeDestroy() {
     this.$bus.off("formData", this.setTypeForm);
     this.$bus.off("editFloorPlan", this.openFloorPlan);
+    this.$bus.off("editallPlan", this.editallPlan);
   },
   mounted() {},
   computed: {},
   methods: {
+    setAllData(data){
+      this.allData = data;
+    },
     openFloorPlan(e) {
       this.editFloorPlan = e;
+    },
+    editallPlan(e) {
+      this.editallPlans = e;
     },
     setTypeForm(data) {
       this.typeForm = data.type;
@@ -118,6 +145,9 @@ export default {
   margin-left: auto;
   margin-right: auto;
   padding-top: 30px;
+  &.t-col {
+    max-width: 93%;
+  }
   .form-group {
     margin-bottom: 1.5rem;
   }

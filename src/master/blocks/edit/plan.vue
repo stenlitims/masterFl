@@ -8,10 +8,6 @@
     <div class="row">
       <div class="col-sm-6">
         <div class="form-group">
-          <label>Название</label> 
-          <input type="text" v-model="form.name" placeholder="" class="form-control">
-        </div>
-        <div class="form-group">
           <label>Кол-во комнат</label> 
           <input type="text" v-model="form.rooms" placeholder="" class="form-control">
         </div>
@@ -48,18 +44,24 @@
         
       </div>
       <div class="col-sm-6">
-        <div class="form-group">
+        <div class="form-group text-center">
           <label>Планировка 2D</label>
-          <input type="file" name="img" accept="image/*" id="img" class="form-control" placeholder="Файл">
+          <label v-if="!form.img" class="btn btn-md w-100 waves-effect up-file">
+            <span class="name">Загрузить</span>
+            <input type="file" name="img" accept="image/*" id="img" class="form-control" placeholder="Файл">
+          </label>
           <div class="img" v-if="form.img">
             <img :src="form.img" />
             <div class="del-btn" @click="delFile('img')"><span>+</span></div>
           </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group text-center">
           <label>Планировка 3D</label>
-          <input type="file" name="img_3d" accept="image/*" id="img_3d" class="form-control" placeholder="Файл">
+          <label v-if="!form.img_3d" class="btn btn-md w-100 waves-effect up-file">
+            <span class="name">Загрузить</span>
+            <input type="file" name="img_3d" accept="image/*" id="img_3d" class="form-control" placeholder="Файл">
+          </label>
           <div class="img" v-if="form.img_3d">
             <img :src="form.img_3d" />
             <div class="del-btn" @click="delFile('img_3d')"><span>+</span></div>
@@ -67,9 +69,12 @@
         </div>
 
 
-        <div class="form-group">
+        <div class="form-group  text-center">
           <label>PDF для печати</label>
-          <input type="file" name="pdf" id="pdf" accept="application/pdf" class="form-control" placeholder="Файл">
+          <label v-if="!form.pdf" class="btn btn-md w-100 waves-effect up-file">
+            <span class="name">Загрузить</span>
+            <input type="file" name="pdf" accept="application/pdf" id="pdf" class="form-control" placeholder="Файл">
+          </label>
           <div class="pdf text-center" v-if="form.pdf">
             <a :href="form.pdf" target="_blank">Просмотреть</a>
             <a href="#"  @click.prevent="delFile('pdf')">Удалить</a>
@@ -121,14 +126,20 @@ export default {
   methods: {
     sendPlan() {
       let form_data = new FormData();
-      if ($("#img")[0].files.length) {
-        form_data.append("n_img", $("#img")[0].files[0]);
+      if ($("#img").length) {
+        if ($("#img")[0].files.length) {
+          form_data.append("n_img", $("#img")[0].files[0]);
+        }
       }
-      if ($("#img_3d")[0].files.length) {
-        form_data.append("n_img_3d", $("#img_3d")[0].files[0]);
+      if ($("#img_3d").length) {
+        if ($("#img_3d")[0].files.length) {
+          form_data.append("n_img_3d", $("#img_3d")[0].files[0]);
+        }
       }
-      if ($("#pdf")[0].files.length) {
-        form_data.append("n_pdf", $("#pdf")[0].files[0]);
+      if ($("#pdf").length) {
+        if ($("#pdf")[0].files.length) {
+          form_data.append("n_pdf", $("#pdf")[0].files[0]);
+        }
       }
 
       form_data.append("action", this.action);
@@ -185,10 +196,11 @@ export default {
   position: relative;
   min-height: 50px;
   text-align: center;
-  margin-top: 10px;
+  margin-top: 0px;
+  height: 137px;
   img {
     max-width: 100%;
-    max-height: 200px;
+    max-height: 100%;
   }
   &:hover {
     .del-btn {

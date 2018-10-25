@@ -10,6 +10,17 @@
 export default {
   name: "App"
 };
+
+$(document).on("change", ".up-file input", function() {
+  var lbl = $(this)
+    .parent()
+    .find(".name");
+  var file_name;
+  file_name = $(this).val();
+  if (!file_name.length) return;
+  file_name = file_name.replace("C:\\fakepath\\", "");
+  lbl.text(file_name);
+});
 </script>
 
 <style lang="scss">
@@ -102,8 +113,8 @@ body {
     }
   }
   &.not-active {
-    background:  #eaf0f6 !important;
-    border-color:  #eaf0f6 !important;
+    background: #eaf0f6 !important;
+    border-color: #eaf0f6 !important;
     color: #b0c1d4 !important;
     &:after,
     &:before {
@@ -120,12 +131,12 @@ input[type="text"].form-control,
 input[type="email"].form-control,
 input[type="file"].form-control,
 select.form-control {
-  background: #F5F8FA;
+  background: #f5f8fa;
   border: 2px solid #cbd6e2;
   border-radius: 8px;
   font-size: 16px;
-  &:focus{
-    border: 2px solid #5FBEAA;
+  &:focus {
+    border: 2px solid #5fbeaa;
   }
 }
 
@@ -134,10 +145,8 @@ select[disabled].form-control {
   opacity: 0.6;
 }
 .btn-md {
-    padding: 10px 24px;
+  padding: 10px 24px;
 }
-
-
 
 .loader {
   position: relative;
@@ -161,8 +170,7 @@ select[disabled].form-control {
   }
 }
 
-
-.def-modal{
+.def-modal {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -170,7 +178,7 @@ select[disabled].form-control {
   left: 0;
   z-index: 999;
   background: #fff;
-  .close-m{
+  .close-m {
     position: absolute;
     right: 20px;
     top: 20px;
@@ -178,12 +186,74 @@ select[disabled].form-control {
   }
 }
 
-.alert{
-  p{
-    &:last-child{
+.alert {
+  p {
+    &:last-child {
       margin-bottom: 0;
     }
   }
 }
 
+.up-file {
+  position: relative;
+  margin-bottom: 3px;
+  input {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    opacity: 0;
+  }
+}
+
+.img {
+  position: relative;
+  img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+  .del-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+}
+
+.wrap-input {
+  position: relative;
+  input {
+    //  height: 56px;
+    //   padding-top: 13px;
+  }
+  .btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+.wrap-edit {
+  .img {
+    position: relative;
+    min-height: 50px;
+    text-align: center;
+    margin-top: 0px;
+    height: 138px;
+    img{
+      max-height: 100%;
+    }
+    &:hover {
+      .del-btn {
+        opacity: 1;
+      }
+    }
+  }
+}
 </style>

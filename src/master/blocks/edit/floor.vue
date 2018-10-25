@@ -1,8 +1,8 @@
 <template>
 <div>
-  <div class="edit-form">
+  <div class="edit-form" :class="{'loader': loader}">
     <h4 class="text-center">Этаж {{form.name}}</h4>
-    <div class="form-group">
+    <div  v-if="!form.img" class="form-group">
       <label>Загрузить план этажа</label>
       <div class="wrap-input">
         <input type="file" name="img" accept="image/*" id="img" class="form-control" placeholder="Файл">
@@ -118,6 +118,7 @@ export default {
   position: relative;
   margin-bottom: 10px;
   text-align: center;
+  height: 200px;
   .del-btn {
     opacity: 0;
   }
@@ -131,17 +132,5 @@ export default {
     max-height: 200px;
   }
 }
-.wrap-input {
-  position: relative;
-  input {
-    height: 56px;
-    padding-top: 13px;
-  }
-  .btn {
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-  }
-}
+
 </style>

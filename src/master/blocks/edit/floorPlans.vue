@@ -89,6 +89,7 @@ export default {
           window.features_data = data.features_data;
           this.features_data = data.features_data;
           this.plans = data.plans;
+          delete window.loadsScriptOb;
           if (!window.loadsScript) {
             this.loadsScript();
           } else {
@@ -119,7 +120,7 @@ export default {
       $.getScript("https://openlayers.org/en/v4.6.4/build/ol.js", () => {
         $.getScript("https://cdn.jsdelivr.net/npm/ol-contextmenu", () => {
           $.getScript(
-            "https://test.flatris.com.ua/assets/js/floors-editor.js?v=922",
+            "https://test.flatris.com.ua/assets/panel/js/floors-editor.js?v=922",
             () => {
               this.loader = false;
               window.loadsScript = true;

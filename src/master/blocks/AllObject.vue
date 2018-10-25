@@ -4,13 +4,15 @@
   <div class="all-object" :class="{'loader': loader}">
     
     <div class="list-ob">
-      <h3 class="text-center">{{object.name}}</h3>
       <div class="of-list c-sc">
 
 
 
-
       
+       <div class="item">
+          <div :class="{'active':active_id == object.id, 'complete': object.complete}" class="line"><div class="name">{{object.name}} <i></i> </div> 
+          <button @click="edit(object, 'EditObject')" class="btn btn-md waves-effect">Заполнить</button></div>  
+          <div class="in-list">
 
 
 
@@ -49,6 +51,9 @@
               </div>
             </div>
 
+          </div>
+
+          </div>
 
           </div>
         </div>
@@ -76,7 +81,8 @@ export default {
       plans: [],
       active_id: null,
       completeForm: null,
-      loader: true
+      loader: true,
+      randUpd: 1
     };
   },
   created() {
@@ -94,10 +100,10 @@ export default {
     setCompleteForm(id) {
       this.completeForm = id;
     },
-    updateList() {
-      this.getObject(true);
+    updateList(upd, type) {
+      this.getObject(true, type);
     },
-    getObject(upd) {
+    getObject(upd, type = false) {
       $.post(
         this.$root.apiurl,
         {
@@ -109,17 +115,28 @@ export default {
             // console.log(data);
             if (upd) {
               this.floors = [];
+              this.sections = [];
+              this.buildings = [];
+              this.object = [];
             }
+            this.$emit("allData", data);
             this.buildings = data.buildings;
             this.sections = data.sections;
             this.floors = data.floors;
             this.plans = data.plans;
             this.object = data.object;
             if (!upd) {
-              this.edit(
-                this.buildings[Object.keys(this.buildings)[0]],
-                "EditBuilding"
-              );
+              this.edit(this.object, "EditObject");
+            } else {
+              if (type == 'EditObject') {
+                this.edit(this.object, type);
+              }
+              // if (type == 'EditBuilding') {
+              //   this.edit(this.buildings, type);
+              // }
+              // if (type == 'EditSection') {
+              //   this.edit(this.sections, type);
+              // }
             }
             this.loader = false;
           }
