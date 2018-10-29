@@ -147,6 +147,10 @@ export default {
   .master-footer {
     padding-top: 10px;
     padding-bottom: 10px;
+    transition: all .3s ease;
+    &.hide{
+      transform: translate(0, 100%);
+    }
     .btn-md {
       padding: 6px 18px;
     }

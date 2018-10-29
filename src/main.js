@@ -3,13 +3,23 @@
 import Vue from 'vue'
 import VueBus from 'vue-bus'
 import App from './App'
+//import cusCheckbox from "@/components/global/checkbox"
 import router from './router'
+import SlideUpDown from 'vue-slide-up-down'
+
+import VueLodash from 'vue-lodash'
+
+const options = { name: 'lodash' } // customize the way you want to call it
+
+Vue.use(VueLodash, options) // options is optional
 
 Vue.use(VueBus);
 
 
 Vue.config.productionTip = false
+//Vue.component('cusCheckbox', cusCheckbox)
 
+Vue.component('slide-up-down', SlideUpDown)
 
 /* eslint-disable no-new */
 APP = new Vue({
@@ -44,3 +54,6 @@ window.addEventListener('resize', () => {
   let vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty('--vh', `${vh}px`);
 });
+
+
+

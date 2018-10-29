@@ -153,6 +153,7 @@ export default {
       return false;
     },
     getEmail() {
+      this.pleloader = true;
       $.post(
         this.$root.apiurl,
         {
@@ -170,6 +171,7 @@ export default {
                 this.form.active = true;
               }
               this.form.email = data.email;
+              this.pleloader = false;
             }
           }
         },

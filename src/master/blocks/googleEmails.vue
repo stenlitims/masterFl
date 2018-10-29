@@ -224,4 +224,13 @@ export default {
     cursor: pointer;
   }
 }
+
+
+@media (max-width: 567px) {
+  .list-email{
+    max-width: 260px;
+  }
+}
+
+
 </style>

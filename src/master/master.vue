@@ -5,7 +5,7 @@
         :steps="steps" 
         :step="step" 
         :name="name"
-        @setSpep="setSpep"
+        @setStep="setStep"
         ></master-header>
         
         <div class="container center">
@@ -66,6 +66,7 @@ import amoFirst from "@/master/forms/amo/amo1";
 import amoTv from "@/master/forms/amo/amo2";
 
 import mirKv1 from "@/master/forms/mirkv/mir1";
+import mirKv2 from "@/master/forms/mirkv/mir2";
 
 import webCh1 from "@/master/forms/webchess/webch1";
 
@@ -110,6 +111,7 @@ export default {
     GoogleTable: GoogleTable,
     stepFinish: stepFinish,
     mirKv1: mirKv1,
+    mirKv2: mirKv2,
     webCh1: webCh1,
     agent1: agent1
   },
@@ -121,9 +123,11 @@ export default {
       this.pleload = true;
     }, 3000);
     this.$bus.on("hideModal", this.hideModal);
+    this.$bus.on("setStep", this.setStep);
   },
   beforeDestroy() {
     this.$bus.off("hideModal", this.hideModal);
+    this.$bus.off("setStep", this.setStep);
   },
   mounted() {
     setTimeout(() => {
@@ -178,14 +182,14 @@ export default {
         if (this.steps[st].complete) {
           this.step = st;
         } else {
-          this.setSpep(0);
+          this.setStep(0);
         }
 
         // console.log(this.step);
       }
     },
 
-    setSpep(n) {
+    setStep(n) {
       if (n != undefined) {
         this.step = n;
       }
@@ -223,7 +227,7 @@ export default {
         if (this.object_id) data["object_id"] = this.object_id;
       }
 
-      if (!this.object_id) {
+      if (!this.object_id && this.namep == 'object') {
         for (let item in this.steps) {
           this.steps[item].complete = false;
         }
@@ -259,7 +263,7 @@ export default {
             }
 
             if (data.object_id) this.object_id = data.object_id;
-            this.setSpep(this.step);
+            this.setStep(this.step);
             load = true;
             this.first_load = false;
           }
@@ -279,6 +283,7 @@ export default {
         this.steps[this.step].complete = true;
         this.steps[this.step].active = true;
         this.step = this.step + 1;
+        console.log(this.step, this.steps);
       }
       if (e == "prev") {
         if (this.step == 0) return;
@@ -288,7 +293,7 @@ export default {
       }
 
       if (this.steps[this.step]) {
-        this.setSpep(this.step);
+        this.setStep(this.step);
       }
     },
 
@@ -319,13 +324,23 @@ export default {
 .page-master {
   display: flex;
   flex-direction: column;
-//  min-height: 100vh;
+  //  min-height: 100vh;
   padding-bottom: 80px;
   .container {
     max-width: 1200px;
     width: none;
     padding-left: 15px;
     padding-right: 15px;
+  }
+
+  .form-group {
+    margin-bottom: 30px;
+    input[type="text"],
+    input[type="email"],
+    input[type="file"],
+    select {
+      height: 44px;
+    }
   }
 
   .center {
@@ -340,15 +355,6 @@ export default {
     .form {
       .row {
         justify-content: center;
-        .form-group {
-          margin-bottom: 30px;
-        }
-        input[type="text"],
-        input[type="email"],
-        input[type="file"],
-        select {
-          height: 44px;
-        }
       }
     }
     .btn-default {
@@ -418,11 +424,22 @@ export default {
   h4 {
     font-size: 20px;
     line-height: 1.4;
+    margin-top: 0;
+    margin-bottom: 30px;
   }
 }
 
 @media (min-width: 800px) {
   .page-master {
+    .row{
+      margin-right: -20px;
+      margin-left: -20px;
+      > div{
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+    }
+
     .center {
       form,
       .form {
@@ -504,7 +521,8 @@ export default {
     padding-left: 30px;
     padding-right: 30px;
   }
-  .master-inner, .set-modal{
+  .master-inner,
+  .set-modal {
     overflow: auto;
   }
 }
@@ -520,7 +538,7 @@ export default {
   .page-master .text-inner {
     font-size: 13px;
   }
-  .page-master{
+  .page-master {
     padding-bottom: 59px;
   }
 }

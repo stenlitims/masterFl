@@ -54,12 +54,12 @@ let steps = {
     steps: [{
         name: "Выбор объекта",
         comp: "mirKv1",
-        complete: false,
+        complete: true,
         btnActive: false
       },
       {
         name: "Настройка",
-        comp: "amoTv",
+        comp: "mirKv2",
         complete: false,
         btnActive: false
       },

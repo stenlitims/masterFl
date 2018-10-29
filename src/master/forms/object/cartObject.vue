@@ -1,7 +1,7 @@
 <template>
   <div class="form">
     <h3 class="text-center">Заполните данные по объекту</h3>
-    <form action="">
+    <form action="" :class="{'loader2': !dataLoad}">
       <div class="row">
         <div class="col-lg-6">
           <div class="form-group">
@@ -27,8 +27,11 @@
         <div class="col-lg-6">
             <div class="form-group" >
               <label>Логотип</label><br>
-              <input  v-if="!form.logo" 
-              type="file" name="img" id="logo" accept="image/*" class="form-control" placeholder="Файл">
+
+              <label v-if="!form.logo" class="btn btn-md w-100 waves-effect up-file">
+                <span class="name">Загрузить</span>
+                <input type="file" name="img" accept="image/*" id="logo" class="form-control" placeholder="Файл">
+              </label>
 
               <div v-if="form.logo" class="obj-logo">
                 <img :src="form.logo" /><br>

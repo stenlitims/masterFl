@@ -12,7 +12,7 @@
               <div :style="width"></div>
             </div>
               <div class="item" 
-              @click="setSpep(i)"
+              @click="setStep(i)"
               :class="{'active': i == step, 'complete': item.complete}" v-for="(item, i) in steps" :key="i">
                 <div class="cl"></div>
                 <div class="title">{{item.name}}</div>
@@ -45,16 +45,16 @@ export default {
     },
     width() {
       let width = (100 / (this.steps.length - 1)) * this.step;
-      // console.log(width);
       return {
         width: width + "%"
       };
     }
   },
   methods: {
-    setSpep(n) {
+    setStep(n) {
+   //   console.log(n, this.steps);
       if (this.steps[n].complete || this.steps[n - 1].complete) {
-        this.$emit("setSpep", n);
+        this.$emit("setStep", n);
       }
     },
     hideModal() {

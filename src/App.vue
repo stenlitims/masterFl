@@ -8,7 +8,22 @@
 
 <script>
 export default {
-  name: "App"
+  name: "App",
+  mounted() {
+    if (this.$root.isMobile) {
+      $(document).on(
+        "focus",
+        "input[type=text], input[type=email]",
+        function() {
+          $(".page-master").addClass("hide-footer");
+        }
+      );
+
+      $(document).on("blur", "input[type=text], input[type=email]", function() {
+        $(".page-master").removeClass("hide-footer");
+      });
+    }
+  }
 };
 
 $(document).on("change", ".up-file input", function() {
@@ -170,6 +185,23 @@ select[disabled].form-control {
   }
 }
 
+.loader2 {
+  position: relative;
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 500;
+  }
+  &:before {
+    background: rgba(255, 255, 255, 0.6);
+  }
+}
+
 .def-modal {
   position: fixed;
   top: 0;
@@ -275,6 +307,73 @@ select[disabled].form-control {
   }
 }
 
+.text-border {
+  border: 2px solid #ecf0f4;
+  padding: 20px 30px;
+  border-radius: 3px;
+  ol,
+  ul {
+    padding-left: 15px;
+    margin-bottom: 0;
+  }
+}
+
+.cus-check {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  font-size: 14px;
+  &.big {
+    font-size: 18px;
+    .ch {
+      width: 26px;
+      height: 26px;
+      margin-right: 12px;
+    }
+    input:checked + .ch {
+      &:before {
+        width: 8px;
+        height: 11px;
+        margin-top: -7px;
+        margin-left: -4px;
+      }
+    }
+  }
+  input {
+    position: absolute;
+    opacity: 0;
+    &:checked + .ch {
+      background: #5fbeaa;
+      border-color: #5fbeaa;
+      &:before {
+        content: "";
+        position: absolute;
+        width: 6px;
+        height: 9px;
+        left: 50%;
+        top: 50%;
+        margin-top: -6px;
+        margin-left: -3px;
+        border-right: 2px solid #fff;
+        border-bottom: 2px solid #fff;
+        transform: rotate(40deg);
+      }
+    }
+  }
+  .ch {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    border: 2px solid #cbd6e2;
+    display: inline-block;
+    margin-right: 8px;
+    margin-bottom: -1px;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+}
+
 @media (min-width: 991px) {
   .mob-el {
     display: none;
@@ -331,6 +430,13 @@ select[disabled].form-control {
 
   .p-modal {
     padding-top: 60px;
+  }
+
+  .hide-footer {
+    padding-bottom: 0 !important;
+    .master-footer {
+      transform: translate(0, 100%) !important;
+    }
   }
 }
 </style>

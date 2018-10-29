@@ -1,21 +1,27 @@
 <template>
-  <div class="form">
+  <div class=" ">
     <h3 class="text-center">Подключение виджета</h3>
-    <div class="text-inner text-center">
-      <p>Скопируйте Логин Flatris и Ключ API Flatris и вставьте их в соответствующие поля виджета Flatris в личном кабинете AmoCRM.</p>
-    </div>
-    <div class="form">
+    <div class="">
         <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-6">
           <div class="form-group">
             <label>Логин FLATRIS</label>
             <input type="email" class="form-control" placeholder="info@flatris.com.ua"  v-model="form.api_login">
           </div>
-        </div>
-        <div class="col-lg-12">
           <div class="form-group">
             <label>Ключ API FLATRIS</label>
             <input type="text" class="form-control"  v-model="form.api_key">
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="text-border">
+            <p><b>Инструкция:</b></p>
+            <ol>
+              <li>Откройте AmoCRM и зайдите в раздел интеграции в настройках;</li>
+              <li>Найдите виджет Flatris в общем списке и откройте его;</li>
+              <li>Вставьте Логин Flatris и Ключ API Flatris в соответствующие поля в AmoCRM и нажмите кнопку установить;</li>
+              <li>Нажмите кнопку "ПОДКЛЮЧИТЬ" после выполнения пункта 3.</li>
+            </ol>
           </div>
         </div>
 
@@ -76,17 +82,17 @@ export default {
     this.$emit("btnActive", !this.error.length);
   },
   methods: {
+   
+
     send(e) {
       this.errors = [];
-      if(!this.connected){
-        this.errors.push('Не подключено');
-        setTimeout(()=>{
+      if (!this.connected) {
+        this.errors.push("Не подключено");
+        setTimeout(() => {
           this.errors = [];
         }, 1000);
         return;
       }
-
-
 
       if (e == "prev") {
         this.$emit("footerBtn", e);
