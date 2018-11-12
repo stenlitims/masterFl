@@ -31,8 +31,8 @@ export default new Router({
       name: 'new_mirkv',
       component: Master,
     }, {
-      path: '/new_webchess/:id',
-      name: 'new_webchess',
+      path: '/webchess/:oid/step/:id',
+      name: 'webchess',
       component: Master,
     }, {
       path: '/new_agent/:id',

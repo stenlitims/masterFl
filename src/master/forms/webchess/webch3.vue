@@ -1,14 +1,11 @@
 <template>
   <div class="form">
-    <h4 class="text-center">Укажите, что именно вы хотите передавать на "Мир Квартир"</h4>
-
-    <div class="row">
-      <div class="col-lg-6" v-for="(item, i) in list" :key="i">
-        <chObList class="text-border" :data="data.permissions_tree" :dataId="item"></chObList>
+    <h4 class="text-center">Выберите дома и секции, которые хотите отображать на сайте</h4>
+    <div class="row" v-if="data.permissions_tree">
+      <div class="col-lg-6">
+        <chObList class="text-border" :data="data.permissions_tree" :dataId="object_id"></chObList>
       </div>
     </div>
-    
-
 
   </div>
 </template>
@@ -18,7 +15,7 @@ import masterMixin from "@/mixin/masterMixin";
 import chObList from "@/master/blocks/chObList";
 
 export default {
-  name: "mir1",
+  name: "webCh3",
   mixins: [masterMixin],
   components: {
     chObList
@@ -27,41 +24,30 @@ export default {
     return {
       errors: [],
       success: false,
-      data: [],
-      list: [],
-      form: {
-        active: ""
-      },
-      required: {
-        active: ""
-      }
+      data: {},
+      form: {},
+      upd: false,
+      required: {}
     };
   },
-
   created() {
-    this.data = window.mirKv;
-    this.list = this.selMain();
-    if (!this.list.length) {
-      this.$bus.emit("setStep", 0);
-    }
+    this.getData();
   },
   updated() {},
-  watch: {},
   mounted() {
     this.$emit("btnActive", !this.error.length);
   },
-  computed: {},
   methods: {
-    selMain() {
-      if (!this.data) return [];
-      let data = [];
-      for (let item of this.data.permissions_tree) {
-        if (item.parent == "#" && item.selected) {
-          data.push(item.permissions.object_id);
-        }
-      }
-      return data;
+    getData() {
+      $.get(
+        this.$root.mainurl + "/api?action=getUserPermissions&ut=web",
+        data => {
+          this.data = data.data;
+        },
+        "JSON"
+      );
     },
+
     getPerm() {
       let f = this.lodash.filter(this.data.permissions_tree, item => {
         return item.state.selected == true;
@@ -75,6 +61,7 @@ export default {
 
       return data;
     },
+
     send(e) {
       if (e == "prev") {
         this.$emit("footerBtn", e);
@@ -82,7 +69,7 @@ export default {
       }
 
       let data_to_send = this.getPerm();
-     // console.log(data_to_send);
+    //   console.log(data_to_send);
 
       if (!this.formChange) {
         this.$emit("footerBtn", e);
@@ -92,12 +79,12 @@ export default {
       $.ajax({
         url:
           this.$root.mainurl +
-          "/api?action=updateUserPermissions&ut=mirkvartir",
+          "/api?action=updateUserPermissions&ut=web",
         dataType: "json",
         data: { permissions_data: JSON.stringify(data_to_send) },
         method: "POST"
       })
-        .done((response) => {
+        .done(response => {
           if (response.error) {
             swal("Ошибка!", response.error.message, "error");
           } else {
@@ -111,15 +98,10 @@ export default {
         });
 
       return;
-
-      this.$emit("footerBtn", e);
     }
   }
 };
 </script>
 
-<style lang="scss" scoped>
-.col-lg-6 {
-  margin-bottom: 30px;
-}
+<style lang="scss">
 </style>

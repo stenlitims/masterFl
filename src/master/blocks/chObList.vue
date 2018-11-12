@@ -62,15 +62,20 @@ export default {
       let ch = this.lodash.every(f, item => {
         return item.state.selected == true;
       });
-      let par = this.lodash.find(this.data, { id: item.parent });
-      if (par) par.state.selected = ch;
 
-
+      if (item.parent != "#") {
+        let par = this.lodash.find(this.data, { id: item.parent });
+        if (ch) {
+          par.state.selected = true;
+        } else {
+          par.state.selected = false;
+        }
+      }
 
       let fAll = this.lodash.filter(this.data, it => {
         return (
           it.permissions.gproject_id == item.permissions.gproject_id &&
-          it.parent != '#'
+          it.parent != "#"
         );
       });
 
@@ -78,8 +83,11 @@ export default {
         return item.state.selected == true;
       });
       let main = this.lodash.find(this.data, { id: "gproject_" + this.dataId });
-      main.state.selected = all;
-
+      if (all) {
+        main.state.selected = true;
+      } else {
+        main.state.selected = false;
+      }
     }
   }
 };
@@ -104,7 +112,7 @@ export default {
     cursor: pointer;
     transition: all 0.3s ease;
     &.close {
-      transform: rotate(-40deg);
+      transform: rotate(-45deg) translate(0, 2px);
       border-color: transparent transparent #8d959d transparent;
     }
   }

@@ -51,7 +51,8 @@ let steps = {
   mirkv: {
     name: "Интеграция с Мир Квартир",
     finish: `Поздравляем! Вы успешно создали файл(ы) для размещения на "Мир квартир"`,
-    steps: [{
+    steps: [
+      {
         name: "Выбор объекта",
         comp: "mirKv1",
         complete: true,
@@ -65,7 +66,7 @@ let steps = {
       },
       {
         name: "Создания файла",
-        comp: "amoTv",
+        comp: "mirKv3",
         complete: false,
         btnActive: false
       }
@@ -74,27 +75,40 @@ let steps = {
   webchess: {
     name: "Создание веб-шахматки для сайта",
     finish: `Поздравляем! Вы успешно создали веб-шахматку для вашего сайта.`,
-    steps: [{
-        name: "Настройка полей",
+    steps: [
+      {
+        name: "Выбор языка",
         comp: "webCh1",
         complete: false,
         btnActive: false
       },
       {
-        name: "Объекты для отображения",
-        comp: "amoTv",
+        name: "Настройка полей",
+        comp: "webCh2",
+        complete: false,
+        btnActive: false
+      },
+      {
+        name: "Выбор объектов",
+        comp: "webCh3",
         complete: false,
         btnActive: false
       },
       {
         name: "Подмена статусов",
-        comp: "amoTv",
+        comp: "webCh4",
+        complete: false,
+        btnActive: false
+      },
+      {
+        name: "Интерактивный фасад",
+        comp: "objectDetail",
         complete: false,
         btnActive: false
       },
       {
         name: "Код на сайт",
-        comp: "amoTv",
+        comp: "webCh6",
         complete: false,
         btnActive: false
       }

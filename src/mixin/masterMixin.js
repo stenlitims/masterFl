@@ -20,8 +20,7 @@ export default {
   },
 
   updated() {
-    this.findError();
-    this.$emit("btnActive", !this.error.length);
+   this.errorUpd();
   },
   mounted() {
     $(document).on('change keypress keydown', ".form input, .form select", () => {
@@ -32,6 +31,10 @@ export default {
 
   },
   methods: {
+    errorUpd(){
+      this.findError();
+      this.$emit("btnActive", !this.error.length);
+    },
     findError() {
       this.error = [];
       for (let item in this.required) {

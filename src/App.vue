@@ -145,7 +145,8 @@ a.btn-line {
 input[type="text"].form-control,
 input[type="email"].form-control,
 input[type="file"].form-control,
-select.form-control {
+select.form-control, 
+div.form-control {
   background: #f5f8fa;
   border: 2px solid #cbd6e2;
   border-radius: 8px;
@@ -153,6 +154,10 @@ select.form-control {
   &:focus {
     border: 2px solid #5fbeaa;
   }
+}
+
+div.form-control {
+  height: inherit;
 }
 
 input[disabled].form-control,
@@ -360,6 +365,11 @@ select[disabled].form-control {
         transform: rotate(40deg);
       }
     }
+
+    &:disabled ~ * {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
   }
   .ch {
     width: 20px;
@@ -372,6 +382,24 @@ select[disabled].form-control {
     transition: all 0.3s ease;
     position: relative;
   }
+}
+
+.input-group {
+  input {
+    border-right: none !important;
+  }
+}
+
+.input-group-append {
+  > * {
+    height: 100%;
+    border-radius: 0 5px 5px 0;
+  }
+}
+
+.fields_hidden {
+  opacity: 0.65;
+  pointer-events: none;
 }
 
 @media (min-width: 991px) {

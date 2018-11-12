@@ -7,7 +7,7 @@
           <div >
             <div class="item" v-for="(item, i) in listO" :key="i">
               <label class="cus-check big">
-                <input type="checkbox" @change="selMain" v-model="item.state.selected">
+                <input type="checkbox" @change="selMain" v-model="item.selected">
                 <span class="ch"></span>
                 <span class="title">{{item.text}}</span>
               </label>
@@ -72,6 +72,7 @@ export default {
       let data = [];
       for (let item of this.data.permissions_tree) {
         if (item.parent == "#") {
+         // item.selected = false;
           data.push(item);
         }
       }
@@ -99,17 +100,19 @@ export default {
       if (!this.data) return [];
       let data = [];
       for (let item of this.data.permissions_tree) {
-        if (item.parent == "#" && item.state.selected) {
+        if (item.parent == "#" && item.selected) {
           data.push(item.permissions.object_id);
         }
       }
-      
+
       if (data.length) {
+        //  console.log(data);
         this.form.active = true;
       } else {
         this.form.active = false;
       }
 
+      this.errorUpd();
     },
     send(e) {
       if (e == "prev") {

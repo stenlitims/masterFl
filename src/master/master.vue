@@ -67,8 +67,14 @@ import amoTv from "@/master/forms/amo/amo2";
 
 import mirKv1 from "@/master/forms/mirkv/mir1";
 import mirKv2 from "@/master/forms/mirkv/mir2";
+import mirKv3 from "@/master/forms/mirkv/mir3";
 
 import webCh1 from "@/master/forms/webchess/webch1";
+import webCh2 from "@/master/forms/webchess/webch2";
+import webCh3 from "@/master/forms/webchess/webch3";
+import webCh4 from "@/master/forms/webchess/webch4";
+import webCh5 from "@/master/forms/webchess/webch5";
+import webCh6 from "@/master/forms/webchess/webch6";
 
 import agent1 from "@/master/forms/agent/agent1";
 
@@ -108,11 +114,17 @@ export default {
     objectDetail: objectDetail,
     amoFirst: amoFirst,
     amoTv: amoTv,
-    GoogleTable: GoogleTable,
-    stepFinish: stepFinish,
-    mirKv1: mirKv1,
-    mirKv2: mirKv2,
-    webCh1: webCh1,
+    GoogleTable,
+    stepFinish,
+    mirKv1,
+    mirKv2,
+    mirKv3,
+    webCh1,
+    webCh2,
+    webCh3,
+    webCh4,
+    webCh5,
+    webCh6,
     agent1: agent1
   },
   created() {
@@ -283,7 +295,7 @@ export default {
         this.steps[this.step].complete = true;
         this.steps[this.step].active = true;
         this.step = this.step + 1;
-        console.log(this.step, this.steps);
+       // console.log(this.step, this.steps);
       }
       if (e == "prev") {
         if (this.step == 0) return;
