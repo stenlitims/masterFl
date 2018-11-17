@@ -1,11 +1,21 @@
 <template>
   <div class="">
-   
 
-      <h3 class="text-center">Добавление информации по объекту</h3>
-      <div class="text-inner text-center">
-        <p>Данный этап не является обязательным. Вы можете пропустить его и вернуться к заполнению в любое время.</p>
+
+      <div v-if="$route.name == 'webchess'">
+        <h3 class="text-center">Добавьте визуализации или фото домов для выбора квартир с фасада</h3>
+        <div class="text-inner text-center">
+          <p>Данный этап не является обязательным. Пропустите его если данное представление вам не нужно.</p>
+        </div>
       </div>
+      <div v-else>
+        <h3 class="text-center">Добавление информации по объекту</h3>
+        <div class="text-inner text-center">
+          <p>Данный этап не является обязательным. Вы можете пропустить его и вернуться к заполнению в любое время.</p>
+        </div>
+      </div>
+
+      
       <div class="row">
         <div class="col-lg-6">
           <all-object 
@@ -69,10 +79,10 @@ export default {
       editallPlans: false,
       allData: {},
       form: {
-          active: ""
+        //active: ""
       },
       required: {
-          active: ""
+        //  active: ""
       }
     };
   },
@@ -134,12 +144,15 @@ export default {
       if (w.finish) {
         this.$emit("footerBtn", w);
         return;
+      } else {
+        this.$emit("footerBtn", w);
+        return;
       }
 
       this.findError();
 
       if (this.error.length) return false;
-      w.finish = true;
+      if (w.finish) w.finish = true;
       this.$emit("footerBtn", w);
 
       this.success = true;
@@ -154,6 +167,7 @@ export default {
   margin-left: auto;
   margin-right: auto;
   padding-top: 30px;
+  padding-bottom: 20px;
   &.t-col {
     max-width: 93%;
   }
@@ -197,11 +211,11 @@ export default {
   .wrap-edit:before {
     content: none;
   }
-  .wrap-eform{
+  .wrap-eform {
     max-height: calc(100vh - 200px);
     margin-bottom: 15px;
   }
-  .edit-form{
+  .edit-form {
     padding-top: 0;
   }
 }

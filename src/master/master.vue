@@ -77,6 +77,7 @@ import webCh5 from "@/master/forms/webchess/webch5";
 import webCh6 from "@/master/forms/webchess/webch6";
 
 import agent1 from "@/master/forms/agent/agent1";
+import agent2 from "@/master/forms/agent/agent2";
 
 import stepFinish from "@/master/forms/finish";
 
@@ -125,7 +126,8 @@ export default {
     webCh4,
     webCh5,
     webCh6,
-    agent1: agent1
+    agent1,
+    agent2
   },
   created() {
     this.setMaster();
@@ -350,7 +352,7 @@ export default {
     input[type="text"],
     input[type="email"],
     input[type="file"],
-    select {
+    select.form-control {
       height: 44px;
     }
   }

@@ -108,7 +108,7 @@ export default {
       $("head").append(
         $('<link rel="stylesheet" type="text/css" />').attr(
           "href",
-          "https://openlayers.org/en/v4.6.4/css/ol.css"
+          "https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol.css"
         )
       );
       $("head").append(
@@ -117,7 +117,7 @@ export default {
           "https://cdn.jsdelivr.net/npm/ol-contextmenu@latest/dist/ol-contextmenu.min.css"
         )
       );
-      $.getScript("https://openlayers.org/en/v4.6.4/build/ol.js", () => {
+      $.getScript("https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol.js", () => {
         $.getScript("https://cdn.jsdelivr.net/npm/ol-contextmenu", () => {
           $.getScript(
             "https://test.flatris.com.ua/assets/panel/js/floors-editor.js?v=922",

@@ -142,6 +142,10 @@ a.btn-line {
   color: #ff7a59;
 }
 
+.btn-o{
+  background: #FF7A59;
+}
+
 input[type="text"].form-control,
 input[type="email"].form-control,
 input[type="file"].form-control,

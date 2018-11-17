@@ -125,7 +125,7 @@ let steps = {
       },
       {
         name: "Настройки доступа",
-        comp: "amoTv",
+        comp: "agent2",
         complete: false,
         btnActive: false
       }

@@ -33,7 +33,7 @@ export default {
       errors: [],
       success: false,
       form: {},
-      status: [],
+      status: {},
       upd: false,
       required: {}
     };
@@ -56,7 +56,7 @@ export default {
         data => {
           if (data) {
             this.status = data;
-            console.log(data);
+            //   console.log(data);
           }
         },
         "json"
@@ -69,22 +69,27 @@ export default {
         return true;
       }
 
-      // $.post(
-      //   this.$root.apiurl,
-      //   {
-      //     action: "setWebchessPrLang",
-      //     id: this.object_id,
-      //     lang: lang
-      //   },
-      //   data => {
-      //     if (data) {
-      //       console.log(data);
-      //     }
-      //   },
-      //   "json"
-      // );
+      if (!this.formChange) this.$emit("footerBtn", e);
 
-      this.$emit("footerBtn", e);
+      let status = {};
+      this.lodash.forEach(this.status, (value, key) => {
+        status[value.id] = value.status;
+      });
+
+      $.post(
+        this.$root.apiurl,
+        {
+          action: "setStatus",
+          id: this.object_id,
+          data: status
+        },
+        data => {
+          if (data) {
+            this.$emit("footerBtn", e);
+          }
+        },
+        "json"
+      );
     }
   }
 };
@@ -104,13 +109,25 @@ export default {
   .left-col {
     display: flex;
     justify-content: space-between;
+    position: relative;
+    &:before {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translate(50%, -50%);
+      background-image: url(https://flatris.com.ua/assets/site/images/right-arrow.svg);
+      width: 34px;
+      height: 33px;
+      background-size: cover;
+    }
   }
   .color {
     width: 50px;
     margin-right: 15px;
     border-radius: 12px;
   }
-  .form-control{
+  .form-control {
     height: auto !important;
   }
 }
