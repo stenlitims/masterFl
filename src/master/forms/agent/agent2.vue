@@ -48,6 +48,10 @@ export default {
   },
   methods: {
     getData() {
+      if (!window.agent_id) {
+        this.$bus.emit("setStep", 0);
+      }
+
       if (window.agent) {
         this.data = window.agent;
         this.selMain();
@@ -55,7 +59,8 @@ export default {
       }
       $.get(
         this.$root.mainurl +
-          "/api?action=getUserPermissions&ut=cms&agent_id=1092",
+          "/api?action=getUserPermissions&ut=cms&agent_id=" +
+          window.agent_id,
         data => {
           //  console.log(data);
           this.data = data.data;

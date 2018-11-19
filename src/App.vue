@@ -1,15 +1,28 @@
 <template>
   <div id="app">
+    <mainHeader></mainHeader>
     <div class="main">
+    
       <router-view/>
+    
     </div>
   </div>
 </template>
 
 <script>
+import mainHeader from "@/components/mainHeader";
+import store from "@/store";
+
 export default {
   name: "App",
+  components: {
+    mainHeader
+  },
+  created() {
+    this.$store.commit("loadUser");
+  },
   mounted() {
+    // console.log(this.$store.state.user);
     if (this.$root.isMobile) {
       $(document).on(
         "focus",
@@ -44,7 +57,7 @@ $(document).on("change", ".up-file input", function() {
 }
 
 body {
-  background: #fff;
+  background: #f8f8f8;
 }
 
 /* width */
@@ -65,6 +78,82 @@ body {
 /* Handle on hover */
 .c-sc::-webkit-scrollbar-thumb:hover {
   background: rgb(95, 190, 170);
+}
+
+.main-container {
+  max-width: 1440px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.heading {
+  font-size: 28px;
+  padding-bottom: 10px;
+  margin-bottom: 40px;
+  border-bottom: 2px solid #e6e6e6;
+  padding-left: 15px;
+}
+
+.main-list {
+  .row {
+    margin-right: -20px;
+    margin-left: -20px;
+    > div {
+      padding-left: 20px;
+      padding-right: 20px;
+      margin-bottom: 40px;
+    }
+  }
+  .item {
+    text-align: center;
+    background: #fff;
+    padding: 40px 15px 30px;
+    border: 2px solid #38c0ac;
+    border-radius: 3px;
+    height: 100%;
+  }
+
+  .img {
+    height: 160px;
+    margin-bottom: 20px;
+    img {
+      max-height: 160px;
+      max-width: 100%;
+    }
+  }
+
+  .title {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  .check {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    svg {
+      fill: #fff;
+      width: 40px;
+      height: 40px;
+    }
+    background: #5fbeaa;
+  }
+
+  .btns {
+    margin-bottom: 15px;
+  }
+  .info {
+    a {
+      color: #000;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
 }
 
 .del-btn {
@@ -142,14 +231,14 @@ a.btn-line {
   color: #ff7a59;
 }
 
-.btn-o{
-  background: #FF7A59;
+.btn-o {
+  background: #ff7a59;
 }
 
 input[type="text"].form-control,
 input[type="email"].form-control,
 input[type="file"].form-control,
-select.form-control, 
+select.form-control,
 div.form-control {
   background: #f5f8fa;
   border: 2px solid #cbd6e2;
@@ -293,6 +382,16 @@ select[disabled].form-control {
   }
 }
 
+.btn-default {
+  border-radius: 5px;
+  &.not-active {
+    background: #d1d5da !important;
+    border-color: #d1d5da !important;
+    color: #7f7f7f !important;
+    cursor: default !important;
+  }
+}
+
 .close-modal-all {
   position: absolute !important;
   z-index: 50;
@@ -404,6 +503,19 @@ select[disabled].form-control {
 .fields_hidden {
   opacity: 0.65;
   pointer-events: none;
+}
+
+@media (min-width: 1400px) {
+  .main-list {
+    .row {
+      margin-right: -30px;
+      margin-left: -30px;
+      > div {
+        padding-left: 30px;
+        padding-right: 30px;
+      }
+    }
+  }
 }
 
 @media (min-width: 991px) {

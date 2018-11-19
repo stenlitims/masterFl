@@ -7,13 +7,14 @@ import App from './App'
 import router from './router'
 import SlideUpDown from 'vue-slide-up-down'
 
+import store from './store/index'
 import VueLodash from 'vue-lodash'
 
 const options = { name: 'lodash' } // customize the way you want to call it
 
 Vue.use(VueLodash, options) // options is optional
 
-Vue.use(VueBus);
+Vue.use(VueBus)
 
 
 Vue.config.productionTip = false
@@ -25,6 +26,7 @@ Vue.component('slide-up-down', SlideUpDown)
 APP = new Vue({
   el: '#app',
   router,
+  store,
   components: {
     App
   },

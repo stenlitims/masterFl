@@ -101,7 +101,7 @@ export default {
         this.form,
         data => {
           if (data) {
-            console.log(data);
+            window.aget_id = data.agent_id;
             this.$emit("footerBtn", e);
           }
           

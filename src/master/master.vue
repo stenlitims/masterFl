@@ -145,10 +145,12 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      $(".page-master").addClass("active");
+      $(".page-master").addClass("open");
     }, 200);
   },
-  updated() {},
+  updated() {
+    console.log(234);
+  },
   computed: {
     component() {
       if (this.step == "finish") {
@@ -319,7 +321,8 @@ export default {
       this.steps = [];
     },
     hideModal() {
-      $(".page-master").removeClass("active");
+      console.log(234);
+      $(".page-master").removeClass("open");
       setTimeout(() => {
         this.$router.push({ name: "MainPage" });
       }, 300);
@@ -371,15 +374,7 @@ export default {
         justify-content: center;
       }
     }
-    .btn-default {
-      border-radius: 5px;
-      &.not-active {
-        background: #d1d5da !important;
-        border-color: #d1d5da !important;
-        color: #7f7f7f !important;
-        cursor: default !important;
-      }
-    }
+ 
     .text-inner {
       max-width: 650px;
       margin-left: auto;
@@ -422,7 +417,7 @@ export default {
   transform: translate(100%, 0);
   z-index: 1050;
   overflow: hidden;
-  &.active {
+  &.active, &.open {
     transform: translate(0, 0);
   }
 }

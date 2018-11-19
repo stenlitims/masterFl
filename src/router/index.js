@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Master from '@/master/master.vue'
 import MainPage from '@/components/mainPage.vue'
+import settings from '@/components/settings.vue'
 
 
 
@@ -12,6 +13,11 @@ export default new Router({
       path: '/',
       name: 'MainPage',
       component: MainPage,
+    },
+    {
+      path: '/settings/:id',
+      name: 'settings',
+      component: settings,
     },
     {
       //  path: '/new_object/:oid/step/:id',
