@@ -1,5 +1,5 @@
 <template>
-  <div class="page-master set-modal">
+  <div class="page-master set-modal" :class="{'open': open}">
     <div class="master-inner">
         <master-header v-if="step != 'finish'"
         :steps="steps" 
@@ -99,6 +99,7 @@ export default {
       newm: false,
       first_load: true,
       finish: null,
+      open: false,
       url: {
         name: "",
         oid: ""
@@ -129,6 +130,7 @@ export default {
     agent1,
     agent2
   },
+
   created() {
     this.setMaster();
     this.setComp();
@@ -145,11 +147,12 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      $(".page-master").addClass("open");
+      // $(".page-master").addClass("open");
+      this.open = true;
     }, 200);
   },
   updated() {
-    console.log(234);
+    // console.log(234);
   },
   computed: {
     component() {
@@ -243,7 +246,7 @@ export default {
         if (this.object_id) data["object_id"] = this.object_id;
       }
 
-      if (!this.object_id && this.namep == 'object') {
+      if (!this.object_id && this.namep == "object") {
         for (let item in this.steps) {
           this.steps[item].complete = false;
         }
@@ -299,7 +302,7 @@ export default {
         this.steps[this.step].complete = true;
         this.steps[this.step].active = true;
         this.step = this.step + 1;
-       // console.log(this.step, this.steps);
+        // console.log(this.step, this.steps);
       }
       if (e == "prev") {
         if (this.step == 0) return;
@@ -321,10 +324,11 @@ export default {
       this.steps = [];
     },
     hideModal() {
-      console.log(234);
-      $(".page-master").removeClass("open");
+      this.open = false;
       setTimeout(() => {
-        this.$router.push({ name: "MainPage" });
+        let name = window.routeName ? window.routeName : "MainPage";
+     //   window.routeName = "MainPage";
+        this.$router.push({ name: name });
       }, 300);
     }
   }
@@ -350,16 +354,6 @@ export default {
     padding-right: 15px;
   }
 
-  .form-group {
-    margin-bottom: 30px;
-    input[type="text"],
-    input[type="email"],
-    input[type="file"],
-    select.form-control {
-      height: 44px;
-    }
-  }
-
   .center {
     // min-width: 800px;
     margin-bottom: 20px;
@@ -374,7 +368,7 @@ export default {
         justify-content: center;
       }
     }
- 
+
     .text-inner {
       max-width: 650px;
       margin-left: auto;
@@ -417,7 +411,8 @@ export default {
   transform: translate(100%, 0);
   z-index: 1050;
   overflow: hidden;
-  &.active, &.open {
+  &.active,
+  &.open {
     transform: translate(0, 0);
   }
 }
@@ -440,10 +435,10 @@ export default {
 
 @media (min-width: 800px) {
   .page-master {
-    .row{
+    .row {
       margin-right: -20px;
       margin-left: -20px;
-      > div{
+      > div {
         padding-left: 20px;
         padding-right: 20px;
       }

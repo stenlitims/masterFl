@@ -2,8 +2,9 @@
   <div id="app">
     <mainHeader></mainHeader>
     <div class="main">
-    
+     <transition name="center" mode="out-in">
       <router-view/>
+     </transition>
     
     </div>
   </div>
@@ -81,9 +82,9 @@ body {
 }
 
 .main-container {
-  max-width: 1440px;
-  padding-left: 15px;
-  padding-right: 15px;
+  //  max-width: 1440px;
+  padding-left: 25px;
+  padding-right: 25px;
 }
 
 .heading {
@@ -91,11 +92,81 @@ body {
   padding-bottom: 10px;
   margin-bottom: 40px;
   border-bottom: 2px solid #e6e6e6;
-  padding-left: 15px;
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .r {
+    > .btn {
+      margin-left: 30px;
+    }
+  }
+  // padding-left: 15px;
+}
+
+.control-wrap {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  justify-content: space-between;
+  border-radius: 5px;
+  border: 2px solid #cbd6e2;
+  .c-title {
+    font-weight: bold;
+  }
+}
+
+.btn {
+  border-radius: 5px;
+  border-width: 2px;
+}
+
+.btn-outline-primary {
+  border-color: #cbd6e2;
+  background: #eaf0f6;
+  color: #506e91;
+  &:hover {
+    background: #2e3f50;
+    border-color: #2e3f50;
+  }
+}
+
+.btn-success {
+  background: #5fbeaa;
+  border-color: #5fbeaa;
+  &:hover {
+    background: #58b09d;
+    border-color: #58b09d;
+  }
+}
+
+.btn-outline-success {
+  border-color: #5fbeaa;
+  color: #5fbeaa;
+  &:hover {
+    background: #5fbeaa;
+    border-color: #5fbeaa;
+  }
+}
+
+.btn-danger {
+  background: #f36b7a;
+  border-color: #f36b7a;
+  &:hover {
+    background: #E46473;
+    border-color: #E46473;
+  }
+}
+
+.search-wrap{
+  justify-content: flex-end;
+  margin-bottom: 20px;
 }
 
 .main-list {
-  .row {
+  line-height: 1.2;
+  > .row {
     margin-right: -20px;
     margin-left: -20px;
     > div {
@@ -109,8 +180,23 @@ body {
     background: #fff;
     padding: 40px 15px 30px;
     border: 2px solid #38c0ac;
-    border-radius: 3px;
+    border-radius: 5px;
     height: 100%;
+  }
+
+  .item-add {
+    border: 2px dashed #38c0ac;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .img {
+      margin-top: 10px;
+      margin-bottom: 30px;
+    }
+    .title {
+      font-size: 20px;
+      //margin-bottom: 0px;
+    }
   }
 
   .img {
@@ -505,14 +591,22 @@ select[disabled].form-control {
   pointer-events: none;
 }
 
-@media (min-width: 1400px) {
+.form-group {
+  margin-bottom: 30px;
+  input[type="text"],
+  input[type="email"],
+  input[type="file"],
+  select.form-control {
+    height: 44px;
+  }
+}
+
+@media (min-width: 1440px) {
   .main-list {
-    .row {
-      margin-right: -30px;
-      margin-left: -30px;
+    > .row {
       > div {
-        padding-left: 30px;
-        padding-right: 30px;
+        flex: 0 0 25%;
+        max-width: 25%;
       }
     }
   }

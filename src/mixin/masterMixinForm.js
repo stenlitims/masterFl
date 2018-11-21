@@ -72,6 +72,11 @@ export default {
       });
     },
 
+    addComplete(id){
+     // $('[data-id='+id+']').addClass('complete');
+     
+    },
+
     sendData() {
       $.post(
         this.$root.apiurl, {

@@ -182,6 +182,12 @@ export default {
 .edit-form {
   max-width: 93%;
 }
+.wrap-eform{
+  max-height: 320px;
+  > .row{
+    margin: 0;
+  }
+}
 .img {
   position: relative;
   min-height: 50px;

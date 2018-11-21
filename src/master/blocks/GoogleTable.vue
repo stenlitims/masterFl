@@ -21,10 +21,9 @@ src="https://accounts.google.com/CheckCookie?continue=https%3A%2F%2Fwww.google.c
 <script>
 export default {
   name: "GoogleTable",
-  props: ["spreadsheet_id", "steps", "step", "object_id"],
+  props: ["spreadsheet_id", "object_id"],
   data() {
     return {
-      // steps: []
     };
   },
   mounted() {

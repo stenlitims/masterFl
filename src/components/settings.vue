@@ -1,49 +1,162 @@
 <template>
-<div class="main-container container">
-  <div class="heading">Настройки</div>
-  <div class="row">
-    <div class="col-lg-3 col-md-4">
-      <div class="left-nav">
-        <ul>
-          <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Аккаунт</router-link></li>
-          <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Уведомления</router-link></li>
-          <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Объекты</router-link></li>
-          <li><a href="#">Инструменты</a>
-            <ul>
-              <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Интерактивный каталог для сайта</router-link></li>
-              <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Шахматка для отдела продаж</router-link></li>
-              <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Размещение на порталах недвижимости</router-link></li>
-              <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Подключение агентств недвижимости</router-link></li>
-            </ul>
-          </li>
-          <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Отчеты</router-link></li>
-          <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Пользователи</router-link></li>
-          <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Цели</router-link></li>
-          <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Тарифы</router-link></li>
-        </ul>
+<div>
+  <div class="heading">
+    <div class="main-container container">
+        Настройки
+    </div>
+  </div>
+  <div class="main-container container">
+
+    <div class="row">
+      <div class="col-lg-3 col-md-4">
+        <div class="left-nav">
+          <ul>
+            <li><router-link  :to="{ name: 'settings', params: { id: 'user' }}">Аккаунт</router-link></li>
+            <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Уведомления</router-link></li>
+            <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Объекты</router-link></li>
+            <li class="parent" :class="{'open': nav.inst}"><a href="#" @click.prevent="nav.inst = !nav.inst">Инструменты</a>
+            <slide-up-down :active="nav.inst" :duration="300">
+              <ul>
+                <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Интерактивный каталог для сайта</router-link></li>
+                <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Шахматка для отдела продаж</router-link></li>
+                <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Размещение на порталах недвижимости</router-link></li>
+                <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Подключение агентств недвижимости</router-link></li>
+              </ul>
+            </slide-up-down>
+            </li>
+            <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Отчеты</router-link></li>
+            <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Пользователи</router-link></li>
+            <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Цели</router-link></li>
+            <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Тарифы</router-link></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-9 col-md-8">
+
+            <!-- <div style="display:none">{{$route.name}} {{$route.params.id}}</div> -->
+            <transition name="center" mode="out-in">
+              <component :is="component"
+              ></component>
+            </transition>
+
       </div>
     </div>
-    <div class="col-lg-9 col-md-8"></div>
   </div>
 </div>
-  
+
 </template>
 
 <script>
+import user from "@/components/settings/user";
+
 export default {
-  name: "MainPage",
+  name: "settings",
   data() {
     return {
+      nav: {
+        inst: false
+      }
     };
   },
 
-  mounted() {
-    
+  components: {
+    user
   },
-  computed: {},
+
+  mounted() {},
+  computed: {
+    component() {
+      if (this.$route.params.id) {
+        return this.$route.params.id;
+      }
+    }
+  },
   methods: {}
 };
 </script>
 
 <style lang="scss">
+.left-nav {
+  padding-left: 10px;
+  a {
+    color: #33475b;
+  }
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    ul {
+      padding-left: 20px;
+    }
+    a {
+      display: inline-block;
+      transition: all 0.3s ease;
+      &.router-link-exact-active,
+      &:hover {
+        background: #c4ede5;
+      }
+      &.router-link-exact-active {
+        font-weight: bold;
+      }
+    }
+  }
+  > ul {
+    > li {
+      margin-bottom: 5px;
+      > a {
+        padding: 4px 8px;
+        font-size: 15px;
+      }
+      &.parent {
+        > a {
+          display: inline-flex;
+          align-items: center;
+          &:after {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-bottom: 1px solid #000;
+            border-right: 1px solid #000;
+            margin-left: 8px;
+            margin-right: 5px;
+            //  margin-top: 6px;
+            transform: rotate(45deg);
+            transition: all 0.3s ease;
+          }
+        }
+        &.open {
+          > a {
+            &:after {
+              margin-top: 6px;
+              transform: rotate(-135deg);
+            }
+          }
+        }
+      }
+      ul {
+        margin-top: 5px;
+        li {
+          margin-bottom: 4px;
+        }
+        a {
+          padding: 4px 8px;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}
+
+.settings-right{
+  max-width: 800px;
+  .row{
+    margin-right: -20px;
+    margin-left: -20px;
+    > div{
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+}
 </style>

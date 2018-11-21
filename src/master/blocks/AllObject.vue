@@ -10,6 +10,7 @@
 
       
        <div class="item">
+         <div style="display:none">{{completeForm}}</div>
           <div :class="{'active':active_id == object.id, 'complete': object.complete}" class="line"><div class="name">{{object.name}} <i></i> </div> 
           <button @click="edit(object, 'EditObject')" class="btn btn-md waves-effect">
             <span class="mob-none">Заполнить</span>

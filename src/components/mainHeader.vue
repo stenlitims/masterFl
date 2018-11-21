@@ -10,9 +10,9 @@
             <div class="main-nav">
                 <ul>
                     <li><router-link to="/">Рабочий стол</router-link></li>
-                    <li class="parent"><a href="#">Объекты</a>
+                    <li class="parent"><router-link to="/myobjects">Объекты</router-link>
                         <ul>
-                            <li><a href="#">Мои объекты</a></li>
+                            <li><router-link to="/myobjects">Мои объекты</router-link></li>
                             <li><a href="#">Доступные мне объекты</a></li>
                             <li class="line">
                             <router-link  :to="{ name: 'new_object', params: { id: 1 }}">

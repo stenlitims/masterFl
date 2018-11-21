@@ -134,7 +134,10 @@ export default {
         );
       }
 
-      if (!this.object_id || this.dataLoad) return;
+      if (!this.object_id || this.dataLoad) {
+        this.dataLoad = true;
+        return;
+      }
 
       // if (!this.object_id) return;
 
@@ -168,6 +171,8 @@ export default {
         return true;
       }
 
+      
+
       if (!this.formChange && this.object_id) {
         this.$emit("footerBtn", e);
         return true;
@@ -190,6 +195,8 @@ export default {
           form_data.append("img", $("#logo")[0].files[0]);
         }
       }
+
+      
 
       let action = "addGproject";
       if (this.object_id) {

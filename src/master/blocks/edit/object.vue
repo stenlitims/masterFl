@@ -112,6 +112,7 @@ export default {
             this.form.complete = true;
             this.loader = false;
             if (data.img) this.form.img = data.img;
+         //   this.addComplete('object'+this.form.id);
             setTimeout(() => {
               this.success = false;
             }, 2000);

@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Master from '@/master/master.vue'
 import MainPage from '@/components/mainPage.vue'
 import settings from '@/components/settings.vue'
+import myObjects from '@/components/myObjects.vue'
 
 
 
@@ -13,6 +14,11 @@ export default new Router({
       path: '/',
       name: 'MainPage',
       component: MainPage,
+    },
+    {
+      path: '/myobjects',
+      name: 'myObjects',
+      component: myObjects,
     },
     {
       path: '/settings/:id',
