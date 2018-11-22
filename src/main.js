@@ -4,6 +4,8 @@ import Vue from 'vue'
 import VueBus from 'vue-bus'
 import App from './App'
 //import cusCheckbox from "@/components/global/checkbox"
+import cusSwitch from "@/components/global/switch"
+
 import router from './router'
 import SlideUpDown from 'vue-slide-up-down'
 
@@ -18,7 +20,7 @@ Vue.use(VueBus)
 
 
 Vue.config.productionTip = false
-//Vue.component('cusCheckbox', cusCheckbox)
+Vue.component('cusSwitch', cusSwitch)
 
 Vue.component('slide-up-down', SlideUpDown)
 

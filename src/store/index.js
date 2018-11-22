@@ -8,7 +8,10 @@ export default new Vuex.Store({
     apiurl: 'https://test.flatris.com.ua/assets/api/api.php',
     mainurl: 'https://test.flatris.com.ua',
     user: {},
-    myObjects: null
+    myObjects: null,
+    changes:{
+      count: []
+    },
   },
   mutations: {
     loadUser(state){
@@ -42,6 +45,9 @@ export default new Vuex.Store({
         },
         "json"
       );
+    },
+    setChanges(state, payload){
+      state.changes = payload;
     }
   }
 })

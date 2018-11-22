@@ -10,7 +10,7 @@
           <button class="btn btn-lg btn-outline-success waves-effect">Доступные мне</button>
         </div>
 
-        <button class="btn btn-lg btn-danger waves-effect">Создать новый объект</button>
+        <router-link  :to="{ name: 'new_object', params: { id: 1 }}" class="btn btn-lg btn-danger waves-effect">Создать новый объект</router-link>
 
        </div>
     </div>
@@ -19,7 +19,7 @@
 
     <div class="search-wrap row">
       <div class="form-group col-md-5 col-xl-4">
-        <input type="text" class="form-control" placeholder="Поиск...">
+        <input type="text" v-model="search" class="form-control" placeholder="Поиск...">
       </div>
     </div>
 
@@ -122,7 +122,7 @@ export default {
         object_id: null
       },
       showGtable: false,
-
+      search: null,
       stid: false
     };
   },
@@ -132,9 +132,9 @@ export default {
   },
 
   created() {
-    if (!this.$store.state.myObjects) {
+    //if (!this.$store.state.myObjects) {
       this.$store.commit("loadMyObjects", "test");
-    }
+    //}
     window.routeName = this.$route.name;
   },
 
@@ -159,6 +159,18 @@ export default {
         );
         data[item] = this.$store.state.myObjects[item];
       }
+      if (this.search) {
+     //   this.search = this.search.toLowerCase().trim();
+        data = this.lodash.filter(data, o => {
+          return (
+            this.lodash.includes(o.name.toLowerCase(), this.search.toLowerCase()) ||
+            this.lodash.includes(o.address.toLowerCase(), this.search.toLowerCase())
+          );
+        });
+
+      //  console.log(data, this.search.toLowerCase());
+      }
+
       return data;
     }
   },
@@ -271,12 +283,12 @@ export default {
       }
     }
   }
-  .progress{
+  .progress {
     margin-bottom: 8px;
   }
   .b-btns {
-    .row{
-      >div{
+    .row {
+      > div {
         margin-top: 10px;
       }
     }

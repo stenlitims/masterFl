@@ -17,25 +17,25 @@
         <div class="col-lg-6">
           <div class="form-group">
             <label>Телефон</label>
-            <input type="text" class="form-control" v-model="form.phone">
+            <input type="text" class="form-control" @keydown="setChanges('phone')" v-model="form.phone">
           </div>
         </div>
         <div class="col-lg-6">
           <div class="form-group">
             <label>Компания</label>
-            <input type="text" class="form-control" v-model="form.fax">
+            <input type="text" class="form-control" @keydown="setChanges('Компания')" v-model="form.fax">
           </div>
         </div>
         <div class="col-lg-6">
           <div class="form-group">
             <label>Email</label>
-            <input type="text" class="form-control"  v-model="form.email">
+            <input type="text" class="form-control" @keydown="setChanges('email')"  v-model="form.email">
           </div>
         </div>
         <div class="col-lg-6">
           <div class="form-group">
             <label>Сайт</label>
-            <input type="text" class="form-control"  v-model="form.website">
+            <input type="text" class="form-control" @keydown="setChanges('website')"  v-model="form.website">
           </div>
         </div>
       </div>
@@ -52,28 +52,56 @@
 </template>
 
 <script>
+import settings from "@/mixin/settings";
+
 export default {
   name: "user",
+  mixins: [settings],
   data() {
     return {
-    //  form:{}
+      data: {}
     };
   },
 
-  created(){
-  //  this.$store.commit("loadUser");
-    
+  created() {
+    this.data = Object.assign({}, this.$store.state.user);
+    //  this.$store.commit("loadUser");
   },
 
-  mounted() {
-  
-  },
+  mounted() {},
   computed: {
-    form(){
-      return this.$store.state.user;
+    form() {
+      if (this.$store.state.changes.count.length == 0) {
+        this.data = Object.assign({}, this.$store.state.user);
+      }
+      return this.data;
     }
   },
-  methods: {}
+  methods: {
+    send(data) {
+      // console.log(this.data);
+      $.post(
+        this.$store.state.apiurl,
+        {
+          action: "saveUser",
+          data: {
+            phone: this.data.phone,
+            fax: this.data.fax,
+            email: this.data.email,
+            website: this.data.website
+          }
+        },
+        data => {
+          if (data) {
+           // console.log(data);
+            this.$store.state.user = this.data;
+            this.clearChenge();
+          }
+        },
+        "json"
+      );
+    }
+  }
 };
 </script>
 
@@ -117,7 +145,7 @@ export default {
     background: #fff;
   }
 }
-.pass-control{
+.pass-control {
   margin-top: 20px;
 }
 </style>

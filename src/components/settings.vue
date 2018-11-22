@@ -12,8 +12,8 @@
         <div class="left-nav">
           <ul>
             <li><router-link  :to="{ name: 'settings', params: { id: 'user' }}">Аккаунт</router-link></li>
-            <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Уведомления</router-link></li>
-            <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Объекты</router-link></li>
+            <li><router-link  :to="{ name: 'settings', params: { id: 'notification' }}">Уведомления</router-link></li>
+            <li><router-link  :to="{ name: 'settings', params: { id: 'objects' }}">Объекты</router-link></li>
             <li class="parent" :class="{'open': nav.inst}"><a href="#" @click.prevent="nav.inst = !nav.inst">Инструменты</a>
             <slide-up-down :active="nav.inst" :duration="300">
               <ul>
@@ -42,12 +42,17 @@
       </div>
     </div>
   </div>
+
+  <savePanel v-if="$store.state.changes.count.length"></savePanel>
 </div>
 
 </template>
 
 <script>
 import user from "@/components/settings/user";
+import notification from "@/components/settings/notification";
+import objects from "@/components/settings/objects";
+import savePanel from "@/components/savePanel";
 
 export default {
   name: "settings",
@@ -60,7 +65,10 @@ export default {
   },
 
   components: {
-    user
+    user,
+    notification,
+    objects,
+    savePanel
   },
 
   mounted() {},
@@ -150,6 +158,10 @@ export default {
 
 .settings-right{
   max-width: 800px;
+  h3{
+    margin-top: 0;
+    margin-bottom: 30px;
+  }
   .row{
     margin-right: -20px;
     margin-left: -20px;
@@ -157,6 +169,12 @@ export default {
       padding-left: 20px;
       padding-right: 20px;
     }
+  }
+}
+
+.list-settings{
+  .item{
+    margin-bottom: 30px;
   }
 }
 </style>
