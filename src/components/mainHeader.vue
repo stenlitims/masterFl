@@ -9,8 +9,8 @@
             </div>
             <div class="main-nav">
                 <ul>
-                    <li><router-link to="/">Рабочий стол</router-link></li>
-                    <li class="parent"><router-link to="/myobjects">Объекты</router-link>
+                    <li><router-link to="/" class="waves-effect">Рабочий стол</router-link></li>
+                    <li class="parent"><router-link to="/myobjects" class="waves-effect">Объекты</router-link>
                         <ul>
                             <li><router-link to="/myobjects">Мои объекты</router-link></li>
                             <li><a href="#">Доступные мне объекты</a></li>
@@ -22,7 +22,7 @@
                     </li>
                     <li class="parent"><a href="#">Инстументы</a>
                         <ul>
-                            <li><a href="#">Интерактивный каталог для сайта</a></li>
+                            <li><router-link to="/webchess">Интерактивный каталог для сайта</router-link></li>
                             <li><a href="#">Шахматка для отдела продаж</a></li>
                             <li><a href="#">Размещение на порталах недвижимости</a></li>
                             <li><a href="#">Подключение агентств недвижимости</a></li>

@@ -5,10 +5,10 @@
         Настройки
     </div>
   </div>
-  <div class="main-container container">
+  <div class="container">
 
     <div class="row">
-      <div class="col-lg-3 col-md-4">
+      <div class="col-md-3 col-lg-2">
         <div class="left-nav">
           <ul>
             <li><router-link  :to="{ name: 'settings', params: { id: 'user' }}">Аккаунт</router-link></li>
@@ -27,17 +27,17 @@
             <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Отчеты</router-link></li>
             <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Пользователи</router-link></li>
             <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Цели</router-link></li>
-            <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Тарифы</router-link></li>
+            <li><router-link  :to="{ name: 'settings', params: { id: 'tarif' }}">Тарифы</router-link></li>
           </ul>
         </div>
       </div>
-      <div class="col-lg-9 col-md-8">
+      <div class="col-md-9 col-lg-10">
 
             <!-- <div style="display:none">{{$route.name}} {{$route.params.id}}</div> -->
-            <transition name="center" mode="out-in">
+            <!-- <transition name="center" mode="out-in"></transition> -->
               <component :is="component"
               ></component>
-            </transition>
+            
 
       </div>
     </div>
@@ -52,6 +52,7 @@
 import user from "@/components/settings/user";
 import notification from "@/components/settings/notification";
 import objects from "@/components/settings/objects";
+import tarif from "@/components/settings/tarif";
 import savePanel from "@/components/savePanel";
 
 export default {
@@ -68,7 +69,12 @@ export default {
     user,
     notification,
     objects,
+    tarif,
     savePanel
+  },
+
+  created() {
+    window.routeName = this.$route.name;
   },
 
   mounted() {},
@@ -156,24 +162,26 @@ export default {
   }
 }
 
-.settings-right{
+.settings-right {
   max-width: 800px;
-  h3{
+  margin-left: auto;
+  margin-right: auto;
+  h3 {
     margin-top: 0;
     margin-bottom: 30px;
   }
-  .row{
+  .row {
     margin-right: -20px;
     margin-left: -20px;
-    > div{
+    > div {
       padding-left: 20px;
       padding-right: 20px;
     }
   }
 }
 
-.list-settings{
-  .item{
+.list-settings {
+  .item {
     margin-bottom: 30px;
   }
 }

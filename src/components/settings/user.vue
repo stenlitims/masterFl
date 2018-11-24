@@ -43,7 +43,7 @@
       <div class="control-wrap pass-control">
         <div class="c-title">Пароль</div>
         <div>
-          <button class="btn btn-outline-primary">Изменить</button>
+          <button class="btn btn-outline-primary waves-effect" @click="popPass">Изменить</button>
         </div>
       </div>
 
@@ -78,6 +78,36 @@ export default {
     }
   },
   methods: {
+    popPass() {
+      swal({
+        title: "Изменить пароль",
+        html: `
+        <div class="form-group">
+            <div class="a-dflex">
+              <label>Введите старый пароль</label>
+              <div><a href="#">Забыл пароль</a></div>
+            </div>
+            
+            <input type="text" class="form-control" name="password">
+          </div>
+          <div class="form-group">
+            <div class="a-dflex">
+              <label>Новый пароль</label>
+            </div>
+            
+            <input type="text" class="form-control" name="password">
+          </div>
+        `,
+     //   focusConfirm: false,
+        showCancelButton: true,
+        preConfirm: () => {
+          return [
+            // document.getElementById("swal-input1").value,
+            // document.getElementById("swal-input2").value
+          ];
+        }
+      }).catch(swal.noop);
+    },
     send(data) {
       // console.log(this.data);
       $.post(
@@ -93,9 +123,16 @@ export default {
         },
         data => {
           if (data) {
-           // console.log(data);
+            // console.log(data);
             this.$store.state.user = this.data;
             this.clearChenge();
+
+            swal({
+              showConfirmButton: false,
+              timer: 3000,
+              type: "success",
+              title: "Успешно сохранено!"
+            }).catch(swal.noop);
           }
         },
         "json"

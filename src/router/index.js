@@ -4,6 +4,7 @@ import Master from '@/master/master.vue'
 import MainPage from '@/components/mainPage.vue'
 import settings from '@/components/settings.vue'
 import myObjects from '@/components/myObjects.vue'
+import webchess from '@/components/webchess.vue'
 
 
 
@@ -19,6 +20,11 @@ export default new Router({
       path: '/myobjects',
       name: 'myObjects',
       component: myObjects,
+    },
+    {
+      path: '/webchess',
+      name: 'webchess',
+      component: webchess,
     },
     {
       path: '/settings/:id',

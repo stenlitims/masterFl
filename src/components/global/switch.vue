@@ -58,8 +58,9 @@ export default {
   }
   .t {
     text-transform: uppercase;
-    padding: 10px;
+    padding: 8px;
     font-weight: bold;
+    font-size: 12px;
   }
   &.active {
     background: #5fbeaa;
