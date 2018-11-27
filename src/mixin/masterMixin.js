@@ -25,6 +25,7 @@ export default {
   mounted() {
     $(document).on('change keypress keydown', ".form input, .form select", () => {
       this.formChange = true;
+      window.formChange = true;
     });
   },
   watch: {

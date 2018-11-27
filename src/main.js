@@ -5,6 +5,7 @@ import VueBus from 'vue-bus'
 import App from './App'
 //import cusCheckbox from "@/components/global/checkbox"
 import cusSwitch from "@/components/global/switch"
+import mixGlobal from "@/mixin/global"
 
 import router from './router'
 import SlideUpDown from 'vue-slide-up-down'
@@ -23,6 +24,8 @@ Vue.config.productionTip = false
 Vue.component('cusSwitch', cusSwitch)
 
 Vue.component('slide-up-down', SlideUpDown)
+
+Vue.mixin(mixGlobal);
 
 /* eslint-disable no-new */
 APP = new Vue({

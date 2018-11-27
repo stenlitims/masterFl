@@ -8,6 +8,12 @@ export default new Vuex.Store({
     apiurl: 'https://test.flatris.com.ua/assets/api/api.php',
     mainurl: 'https://test.flatris.com.ua',
     user: {},
+    api: {
+      login: null,
+      key: null,
+      json: null,
+      update: null,
+    },
     myObjects: null,
     permissions: {
       web: []
@@ -17,6 +23,20 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    getApi(state){
+      $.post(
+        state.apiurl,
+        {
+          action: "getApiKey"
+        },
+        data => {
+          if (data) {
+            state.api = data;
+          }
+        },
+        "json"
+      );
+    },
     loadUser(state) {
       $.post(
         state.apiurl, {
@@ -51,7 +71,7 @@ export default new Vuex.Store({
       $.get(
         state.mainurl + "/api?action=getUserPermissions&ut=" + payload,
         data => {
-        //  console.log(data);
+          //  console.log(data);
           state.permissions[payload] = data.data.permissions_tree;
         },
         "JSON"

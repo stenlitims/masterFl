@@ -1,67 +1,100 @@
 <template>
   <div class="main-header">
-      <div class="container">
-          <div class="left">
-            <div class="logo">
-                <router-link to="/">
-                    <img src="https://flatris.com.ua/assets/images/logo/logo_full_w.svg" alt="">
-                </router-link>
-            </div>
-            <div class="main-nav">
-                <ul>
-                    <li><router-link to="/" class="waves-effect">Рабочий стол</router-link></li>
-                    <li class="parent"><router-link to="/myobjects" class="waves-effect">Объекты</router-link>
-                        <ul>
-                            <li><router-link to="/myobjects">Мои объекты</router-link></li>
-                            <li><a href="#">Доступные мне объекты</a></li>
-                            <li class="line">
-                            <router-link  :to="{ name: 'new_object', params: { id: 1 }}">
-                                Добавить новый объект</router-link>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="parent"><a href="#">Инстументы</a>
-                        <ul>
-                            <li><router-link to="/webchess">Интерактивный каталог для сайта</router-link></li>
-                            <li><a href="#">Шахматка для отдела продаж</a></li>
-                            <li><a href="#">Размещение на порталах недвижимости</a></li>
-                            <li><a href="#">Подключение агентств недвижимости</a></li>
-                            <li class="line"><a href="#">Интеграция по API</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-          </div>
-
-          <div class="right">
-              <div class="icons">
-                <router-link :to="{ name: 'settings', params: { id: 'user' }}" title="Настройки">
-                    <svg><use xlink:href="#icon-gear"></use></svg>
-                </router-link>
-                <a href="#">
-                    <svg><use xlink:href="#icon-bell"></use></svg>
-                </a>
-              </div>
-              <div class="v-line"></div>
-              <div class="avatar">
-                  <img src="https://test.flatris.com.ua/assets/panel/img/user.svg" alt="">
-              </div>
-
-              <div class="main-nav">
-                  <ul>
-                      <li class="parent"><a href="#">Flatris</a>
-                        <ul>
-                            <li><a href="#">Flatris</a></li>
-                            <li><a href="#">Flatris</a></li>
-                            <li><a href="#">Выход</a></li>
-                        </ul>
-                      </li>
-                  </ul>
-              </div>
-          </div>
-          
+    <div class="container">
+      <div class="left">
+        <div class="logo">
+          <router-link to="/">
+            <img src="https://flatris.com.ua/assets/images/logo/logo_full_w.svg" alt>
+          </router-link>
+        </div>
+        <div class="main-nav">
+          <ul>
+            <li>
+              <router-link to="/" class="waves-effect">Рабочий стол</router-link>
+            </li>
+            <li class="parent">
+              <router-link to="/myobjects" class="waves-effect">Объекты</router-link>
+              <ul>
+                <li>
+                  <router-link to="/myobjects">Мои объекты</router-link>
+                </li>
+                <li>
+                  <a href="#">Доступные мне объекты</a>
+                </li>
+                <li class="line">
+                  <router-link :to="{ name: 'new_object', params: { id: 1 }}">Добавить новый объект</router-link>
+                </li>
+              </ul>
+            </li>
+            <li class="parent">
+              <a href="#">Инстументы</a>
+              <ul>
+                <li>
+                  <router-link to="/inst/webchess">Интерактивный каталог для сайта</router-link>
+                </li>
+                <li>
+                  <router-link to="/inst/crm">Шахматка для отдела продаж</router-link>
+                </li>
+                <li>
+                  <router-link to="/inst/portals">Размещение на порталах недвижимости</router-link>
+                </li>
+                <li>
+                  <router-link to="/inst/agent">Подключение агентств недвижимости</router-link>
+                </li>
+                <li class="line">
+                  <router-link to="/inst/api">Интеграция по API</router-link>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
       </div>
- 
+
+      <div class="right">
+        <div class="icons">
+          <router-link :to="{ name: 'settings', params: { id: 'user' }}" title="Настройки">
+            <svg>
+              <use xlink:href="#icon-gear"></use>
+            </svg>
+          </router-link>
+          <a href="#">
+            <svg>
+              <use xlink:href="#icon-bell"></use>
+            </svg>
+          </a>
+        </div>
+        <div class="v-line"></div>
+        <div class="avatar">
+          <img :src="$store.state.mainurl +'/assets/panel/img/user.svg'" alt>
+        </div>
+
+        <div class="btn-group">
+          <div class="main-nav">
+            <ul>
+              <li class="parent" :class="{'active': showMenu}">
+                <a href="#" @click.prevent="showMenu = !showMenu">Flatris</a>
+              </li>
+            </ul>
+          </div>
+          <div class="user-nav dropdown-menu dropdown-menu-right" :class="{'show': showMenu}">
+            <div class="dropdown-item user-header">
+              <div class="avatar">
+                <img :src="$store.state.mainurl +'/assets/panel/img/user.svg'" alt>
+              </div>
+              <div class="inf">
+                <div class="name">
+                  {{$store.state.user.fullname}}
+                </div>
+              </div>
+            </div>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Separated link</a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -70,22 +103,41 @@ export default {
   name: "mainHeader",
 
   data() {
-    return {};
+    return {
+      showMenu: false
+    };
   },
   created() {},
   updated() {},
-  mounted() {},
+  mounted() {
+    $(document).on('click', (e) => {
+      if(!$(e.target).closest('.btn-group').hasClass('btn-group')){
+        this.showMenu = false;
+      }
+    });
+  },
   computed: {},
   methods: {}
 };
 </script>
 
 <style lang="scss">
+.user-nav{
+  min-width: 250px;
+  .user-header{
+    .avatar{
+      img{
+        width: 35px;
+        height: 35px;
+      }
+    }
+  }
+}
 .main-header {
   border-top: 2px solid #8adbcc;
   background: #2e3f50;
   color: #2e3f50;
-  margin-bottom: 30px;
+ // margin-bottom: 30px;
   // padding-top: 10px;
   //  padding-bottom: 10px;
   .container {
@@ -244,6 +296,16 @@ export default {
       width: 36px;
       height: 36px;
     }
+  }
+}
+
+
+.dropdown-menu{
+  &.show{
+    display: block;
+  }
+  a{
+    color: #000;
   }
 }
 @media (min-width: 991px) {

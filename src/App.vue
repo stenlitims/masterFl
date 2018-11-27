@@ -2,10 +2,9 @@
   <div id="app">
     <mainHeader></mainHeader>
     <div class="main">
-     <transition name="center" mode="out-in">
-      <router-view/>
-     </transition>
-    
+      <transition name="center" mode="out-in">
+        <router-view/>
+      </transition>
     </div>
   </div>
 </template>
@@ -58,7 +57,7 @@ $(document).on("change", ".up-file input", function() {
 }
 
 body {
-  background: #f8f8f8;
+  background: rgb(245, 248, 250);
 }
 
 /* width */
@@ -88,10 +87,12 @@ body {
 }
 
 .heading {
+  padding-top: 40px;
   font-size: 28px;
-  padding-bottom: 10px;
-  margin-bottom: 40px;
+  padding-bottom: 30px;
+  margin-bottom: 50px;
   border-bottom: 2px solid #e6e6e6;
+  background: #fff;
   .container {
     display: flex;
     justify-content: space-between;
@@ -197,6 +198,7 @@ body {
     .img {
       margin-top: 10px;
       margin-bottom: 30px;
+     
     }
     .title {
       font-size: 20px;
@@ -207,9 +209,15 @@ body {
   .img {
     height: 160px;
     margin-bottom: 20px;
+     display: flex;
+      align-items: center;
+      justify-content: center;
+      
     img {
       max-height: 160px;
       max-width: 100%;
+      min-width: 70%;
+      object-fit: contain;
     }
   }
 
@@ -242,6 +250,31 @@ body {
       color: #000;
       &:hover {
         text-decoration: underline;
+      }
+    }
+  }
+}
+
+.inst-list{
+  .title{
+    font-size: 20px;
+  }
+  .info{
+    margin-top: 12px;
+  }
+  .img{
+    img{
+      max-width: 90%;
+    }
+  }
+  .btns{
+    .btn{
+      margin: 0 7px;
+      &:first-child{
+        margin-left: 0;
+      }
+      &:last-child{
+        margin-right: 0;
       }
     }
   }

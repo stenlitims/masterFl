@@ -1,54 +1,76 @@
 <template>
-<div class="user-block settings-right">
-  <div class="user-header">
-    <div class="avatar">
-      <img src="https://test.flatris.com.ua/assets/panel/img/user.svg" alt="">
+  <div class="user-block settings-right">
+    <div class="user-header">
+      <div class="avatar">
+        <img :src="$store.state.mainurl +'/assets/panel/img/user.svg'" alt>
+      </div>
+      <div class="inf">
+        <div class="name">
+          <div>{{form.fullname}}</div>
+          <a href="#" class="edit">
+            <svg>
+              <use xlink:href="#icon-edit"></use>
+            </svg>
+          </a>
+        </div>
+        <div class="type">Администратор</div>
+      </div>
     </div>
-    <div class="inf">
-      <div class="name">
-        
-      <div>{{form.fullname}}</div>   <a href="#" class="edit"><svg><use xlink:href="#icon-edit"></use></svg></a></div>
-      <div class="type">Администратор</div>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label>Телефон</label>
+          <input
+            type="text"
+            class="form-control"
+            @keydown="setChanges('phone')"
+            v-model="form.phone"
+          >
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label>Компания</label>
+          <input
+            type="text"
+            class="form-control"
+            @keydown="setChanges('Компания')"
+            v-model="form.fax"
+          >
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label>Email</label>
+          <input
+            type="text"
+            class="form-control"
+            @keydown="setChanges('email')"
+            v-model="form.email"
+          >
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label>Сайт</label>
+          <input
+            type="text"
+            class="form-control"
+            @keydown="setChanges('website')"
+            v-model="form.website"
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="control-wrap pass-control">
+      <div class="c-title">Пароль</div>
+      <div>
+        <button class="btn btn-outline-primary waves-effect" @click="popPass">Изменить</button>
+      </div>
     </div>
   </div>
-
-
-      <div class="row">
-        <div class="col-lg-6">
-          <div class="form-group">
-            <label>Телефон</label>
-            <input type="text" class="form-control" @keydown="setChanges('phone')" v-model="form.phone">
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="form-group">
-            <label>Компания</label>
-            <input type="text" class="form-control" @keydown="setChanges('Компания')" v-model="form.fax">
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="form-group">
-            <label>Email</label>
-            <input type="text" class="form-control" @keydown="setChanges('email')"  v-model="form.email">
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="form-group">
-            <label>Сайт</label>
-            <input type="text" class="form-control" @keydown="setChanges('website')"  v-model="form.website">
-          </div>
-        </div>
-      </div>
-
-      <div class="control-wrap pass-control">
-        <div class="c-title">Пароль</div>
-        <div>
-          <button class="btn btn-outline-primary waves-effect" @click="popPass">Изменить</button>
-        </div>
-      </div>
-
-</div>
-  
 </template>
 
 <script>

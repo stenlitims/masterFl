@@ -17,7 +17,7 @@
             <li class="parent" :class="{'open': nav.inst}"><a href="#" @click.prevent="nav.inst = !nav.inst">Инструменты</a>
             <slide-up-down :active="nav.inst" :duration="300">
               <ul>
-                <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Интерактивный каталог для сайта</router-link></li>
+                <li><router-link  :to="{ name: 'settings', params: { id: 'webchess' }}">Интерактивный каталог для сайта</router-link></li>
                 <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Шахматка для отдела продаж</router-link></li>
                 <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Размещение на порталах недвижимости</router-link></li>
                 <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Подключение агентств недвижимости</router-link></li>
@@ -28,6 +28,7 @@
             <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Пользователи</router-link></li>
             <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Цели</router-link></li>
             <li><router-link  :to="{ name: 'settings', params: { id: 'tarif' }}">Тарифы</router-link></li>
+            <li><router-link  :to="{ name: 'settings', params: { id: 'orders' }}">Заказы и оплаты</router-link></li>
           </ul>
         </div>
       </div>
@@ -53,6 +54,8 @@ import user from "@/components/settings/user";
 import notification from "@/components/settings/notification";
 import objects from "@/components/settings/objects";
 import tarif from "@/components/settings/tarif";
+import webchess from "@/components/settings/webchess";
+import orders from "@/components/settings/orders";
 import savePanel from "@/components/savePanel";
 
 export default {
@@ -70,6 +73,8 @@ export default {
     notification,
     objects,
     tarif,
+    webchess,
+    orders,
     savePanel
   },
 
@@ -163,7 +168,7 @@ export default {
 }
 
 .settings-right {
-  max-width: 800px;
+  max-width: 900px;
   margin-left: auto;
   margin-right: auto;
   h3 {

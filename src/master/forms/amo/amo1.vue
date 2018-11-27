@@ -6,11 +6,11 @@
         <div class="col-lg-6">
           <div class="form-group">
             <label>Логин FLATRIS</label>
-            <input type="email" class="form-control" placeholder="info@flatris.com.ua"  v-model="form.api_login">
+            <input type="email" readonly="readonly"  class="form-control" placeholder="info@flatris.com.ua"  v-model="$store.state.api.login">
           </div>
           <div class="form-group">
             <label>Ключ API FLATRIS</label>
-            <input type="text" class="form-control"  v-model="form.api_key">
+            <input type="text" readonly="readonly"  class="form-control"  v-model="$store.state.api.key">
           </div>
         </div>
         <div class="col-lg-6">
@@ -63,19 +63,9 @@ export default {
     };
   },
   created() {
-    $.post(
-      this.$root.apiurl,
-      {
-        action: "getApiKey"
-      },
-      data => {
-        if (data) {
-          this.form.api_login = data.api_login;
-          this.form.api_key = data.api_key;
-        }
-      },
-      "json"
-    );
+    if(!this.$store.state.api.login){
+      this.$store.commit("getApi");
+    }
   },
   updated() {},
   mounted() {

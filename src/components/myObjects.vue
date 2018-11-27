@@ -1,113 +1,124 @@
 <template>
-<div>
-  <div class="heading">
+  <div>
+    <div class="heading">
+      <div class="main-container container">
+        <div class="l">Объекты</div>
+
+        <div class="r">
+          <div class="btn-group btn-group-toggle">
+            <button class="btn btn-lg btn-success waves-effect">Мои объекты</button>
+            <button class="btn btn-lg btn-outline-success waves-effect">Доступные мне</button>
+          </div>
+
+          <router-link
+            :to="{ name: 'new_object', params: { id: 1 }}"
+            class="btn btn-lg btn-danger waves-effect"
+          >Создать новый объект</router-link>
+        </div>
+      </div>
+    </div>
     <div class="main-container container">
-       <div class="l">Объекты</div> 
-
-       <div class="r">
-        <div class="btn-group  btn-group-toggle">
-          <button class="btn btn-lg btn-success waves-effect">Мои объекты</button>
-          <button class="btn btn-lg btn-outline-success waves-effect">Доступные мне</button>
-        </div>
-
-        <router-link  :to="{ name: 'new_object', params: { id: 1 }}" class="btn btn-lg btn-danger waves-effect">Создать новый объект</router-link>
-
-       </div>
-    </div>
-  </div>
-  <div class="main-container container">
-
-    <div class="search-wrap row">
-      <div class="form-group col-md-5 col-xl-4">
-        <input type="text" v-model="search" class="form-control" placeholder="Поиск...">
-      </div>
-    </div>
-
-    <div class="objects-list main-list">
-      <div class="row">
-        <div class="col-md-6 col-lg-4">
-          <div class="item item-add">
-            <div class="title">Создать новый объект</div>
-            <div class="img">
-              <img :src="$root.mainurl +'/assets/panel/img/main/2.svg'" alt="">
-            </div>
-            <div class="btns">
-              <router-link  :to="{ name: 'new_object', params: { id: 1 }}" class="btn btn-default btn-md waves-effect">Создать объект</router-link>
-            </div>
-            <div class="info">
-              <a href="#">Посмотреть инструкцию</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4"
-          v-for="(item, i) in objects" :key="i">
-          <div class="item">
-            <div class="item-h">
-              <div class="l">
-                <div class="title-o">{{item.name}}</div>
-                <div class="loc">{{item.address}}</div>
-              </div>
-              <div class="r">
-                <div class="count">
-                  <span>{{item.total}}</span>
-                  квартир
-                </div>
-              </div>
-            </div>
-
-            <div class="img img-m">
-              <img :src="item.logo" v-if="item.logo" alt="">
-              <img :src="item.img" v-else-if="item.img" alt="">
-              <img :src="$store.state.mainurl+'/assets/panel/img/object.svg'" v-else alt="">
-            </div>
-            <div class="w-status">
-              <div class="sh">
-                <div class="t">Статус продаж</div>
-                <div class="st-btns">
-                  <div class="it active" data-type="pr">%</div>
-                  <div class="it" data-type="num">шт</div>
-                </div>
-              </div>
-              <div class="progress progress-lg" v-html="item.hstatus"></div>
-            </div>
-
-            <div class="b-btns">
-              <div class="row">
-                <div class="col-sm-6">
-                  <a :href="$store.state.mainurl+'/api/chess/?cid='+item.cid" target="_blank" class="btn waves-effect">Открыть шахматку</a>
-                </div>
-                <div class="col-sm-6">
-                  <a href="#" @click.prevent="openGtab(item)" class="btn waves-effect">Открыть таблицу</a>
-                </div>
-                <div class="col-sm-6">
-                  <router-link  :to="{ name: 'object', params: { id: 1, oid:item.id }}" class="btn waves-effect">Редактировать объект</router-link>
-                </div>
-                <div class="col-sm-6">
-                  <a href="#" class="btn waves-effect">Удалить объект</a>
-                </div>
-              </div>
-              
-            </div>
-
-          </div>
+      <div class="search-wrap row">
+        <div class="form-group col-md-5 col-xl-4">
+          <input type="text" v-model="search" class="form-control" placeholder="Поиск...">
         </div>
       </div>
 
-    </div>
-  </div>
+      <div class="objects-list main-list">
+        <div class="row">
+          <div class="col-md-6 col-lg-4">
+            <div class="item item-add">
+              <div class="title">Создать новый объект</div>
+              <div class="img">
+                <img :src="$root.mainurl +'/assets/panel/img/main/2.svg'" alt>
+              </div>
+              <div class="btns">
+                <router-link
+                  :to="{ name: 'new_object', params: { id: 1 }}"
+                  class="btn btn-default btn-md waves-effect"
+                >Создать объект</router-link>
+              </div>
+              <div class="info">
+                <a href="#">Посмотреть инструкцию</a>
+              </div>
+            </div>
+          </div>
 
-  <div v-if="showGtable">
+          <div class="col-md-6 col-lg-4" v-for="(item, i) in objects" :key="i">
+            <div class="item">
+              <div class="item-h">
+                <div class="l">
+                  <div class="title-o">{{item.name}}</div>
+                  <div class="loc">
+                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                    {{item.address}}
+                  </div>
+                </div>
+                <div class="r">
+                  <div class="count">
+                    <span>{{item.total}}</span>
+                    квартир
+                  </div>
+                </div>
+              </div>
+
+              <div class="img img-m">
+                <img :src="item.logo" v-if="item.logo" alt>
+                <img :src="item.img" v-else-if="item.img" alt>
+                <img :src="$store.state.mainurl+'/assets/panel/img/object.svg'" v-else alt>
+              </div>
+              <div class="w-status">
+                <div class="sh">
+                  <div class="t">Статус продаж</div>
+                  <div class="st-btns">
+                    <div class="it active" data-type="pr">%</div>
+                    <div class="it" data-type="num">шт</div>
+                  </div>
+                </div>
+                <div class="progress progress-lg" v-html="item.hstatus"></div>
+              </div>
+
+              <div class="b-btns">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <a
+                      :href="$store.state.mainurl+'/api/chess/?cid='+item.cid"
+                      target="_blank"
+                      class="btn waves-effect"
+                    >Открыть шахматку</a>
+                  </div>
+                  <div class="col-sm-6">
+                    <a
+                      href="#"
+                      @click.prevent="openGtab(item)"
+                      class="btn waves-effect"
+                    >Открыть таблицу</a>
+                  </div>
+                  <div class="col-sm-6">
+                    <router-link
+                      :to="{ name: 'object', params: { id: 1, oid:item.id }}"
+                      class="btn waves-effect"
+                    >Редактировать объект</router-link>
+                  </div>
+                  <div class="col-sm-6">
+                    <button @click="deleteObject(item.id)" class="btn waves-effect">Удалить объект</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="showGtable">
       <google-table
-      @closeTable="showGtable = false"
-      :object_id="gtab.object_id" 
-      :spreadsheet_id="gtab.spreadsheet_id" 
+        @closeTable="showGtable = false"
+        :object_id="gtab.object_id"
+        :spreadsheet_id="gtab.spreadsheet_id"
       ></google-table>
     </div>
-
-</div>
-
-  
+  </div>
 </template>
 
 <script>
@@ -135,7 +146,7 @@ export default {
     //if (!this.$store.state.myObjects) {
       this.$store.commit("loadMyObjects", "test");
     //}
-    window.routeName = this.$route.name;
+    window.routeParam = {name: this.$route.name};
   },
 
   mounted() {
@@ -219,12 +230,28 @@ export default {
     display: flex;
     justify-content: space-between;
     margin-bottom: 25px;
+    text-align: left;
     .title-o {
-      text-align: left;
+      
       margin-bottom: 10px;
       font-size: 20px;
     }
   }
+
+  .loc{
+      margin-right: 20px;
+      position: relative;
+      padding-left: 26px;
+      line-height: 1.4;
+      .fa{
+        font-size: 20px;
+        margin-right: 5px;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translate(0, -50%);
+      }
+    }
 
   .img-m {
     height: 140px;
@@ -298,6 +325,7 @@ export default {
       width: 100%;
       color: #33475b;
       font-size: 12px;
+      background: #fff;
     }
   }
 }

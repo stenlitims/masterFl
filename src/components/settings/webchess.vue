@@ -1,23 +1,23 @@
 <template>
 <div class="settings-right">
-  <h3>Объекты</h3>
+
    <div class="settings-btns">
+     <h3>Интерактивный каталог квартир</h3>
+
      <div class="form-group">
         <input type="text" v-model="search" class="form-control" placeholder="Поиск...">
       </div>
-      <div class="btn-group  btn-group-toggle">
-        <button class="btn btn-lg btn-success waves-effect">Мои объекты</button>
-        <button class="btn btn-lg btn-outline-success waves-effect">Доступные мне</button>
-      </div>
-      <router-link  :to="{ name: 'new_object', params: { id: 1 }}" class="btn btn-lg btn-danger waves-effect">Создать объект</router-link>
     </div>
 
     <div class="list-settings">
-      <div class="item control-wrap" v-for="(item, i) in objects" :key="i">
+      <div class="item control-wrap" v-for="(item, i) in list" :key="i">
           <div class="c-title">{{item.name}}</div>
-          <div class="c-btns">
-            <router-link  :to="{ name: 'object', params: { id: 1, oid:item.id }}" class="btn btn-outline-primary waves-effect">Редактировать</router-link>
-            <button  @click="deleteObject(item.id)" class="btn btn-outline-danger waves-effect">Удалить</button>
+          <div class="c-btns"  v-if="item.selected">
+            <router-link  :to="{ name: 'webchess', params: { id: 1, oid: item.id }}" class="btn btn-outline-primary btn-md waves-effect">Редактировать</router-link>
+            <button class="btn btn-outline-danger waves-effect">Отключить</button>
+          </div>
+          <div class="c-btns" v-else>
+            <router-link  :to="{ name: 'webchess', params: { id: 1, oid: item.id }}" class="btn btn-outline-primary btn-md waves-effect">Создать</router-link>
           </div>
       </div>
     </div>
@@ -29,7 +29,7 @@
 import settings from "@/mixin/settings";
 
 export default {
-  name: "objects",
+  name: "instWebchess",
   mixins: [settings],
   data() {
     return {
@@ -39,13 +39,19 @@ export default {
   },
 
   created() {
-    this.$store.commit("loadMyObjects");
+    if (!this.$store.state.myObjects) {
+      this.$store.commit("loadMyObjects");
+      
+    }
+    if (!this.$store.state.permissions.web.length) {
+      this.$store.commit("loadPermissions", "web");
+    }
   },
 
   mounted() {},
   computed: {
-    objects() {
-      let data = this.$store.state.myObjects;
+    list() {
+      let data = this.perObjects("web");
       if (this.search) {
         data = this.lodash.filter(data, o => {
           return this.lodash.includes(
@@ -54,7 +60,6 @@ export default {
           );
         });
       }
-
       return data;
     }
   },

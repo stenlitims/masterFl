@@ -140,6 +140,7 @@ export default {
     }, 3000);
     this.$bus.on("hideModal", this.hideModal);
     this.$bus.on("setStep", this.setStep);
+    window.formChange = false;
   },
   beforeDestroy() {
     this.$bus.off("hideModal", this.hideModal);
@@ -326,9 +327,16 @@ export default {
     hideModal() {
       this.open = false;
       setTimeout(() => {
-        let name = window.routeName ? window.routeName : "MainPage";
-     //   window.routeName = "MainPage";
-        this.$router.push({ name: name });
+        let param = window.routeParam ? window.routeParam : {name: "MainPage"};
+      //  console.log(param);
+        this.$router.push(param);
+        if(window.formChange){
+          if(param.name == 'instWebchess' || param.name == 'settings'){
+            this.$store.commit("loadMyObjects");
+            this.$store.commit("loadPermissions", "web");
+          }
+        }
+
       }, 300);
     }
   }

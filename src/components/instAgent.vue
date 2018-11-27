@@ -2,7 +2,7 @@
 <div>
   <div class="heading">
     <div class="main-container container">
-       <div class="l">Интерактивный каталог для сайта</div> 
+       <div class="l">Подключение агентств недвижимости</div> 
 
        <div class="r">
         <div class="form-group search">
@@ -17,21 +17,31 @@
 
     <div class="inst-list main-list">
       <div class="row">
-        <div class="col-md-6 col-lg-4" v-for="(item, i) in list" :key="i">
-          <div class="item">
-          <div class="title">{{item.name}}</div>
-          <div class="img img-m">
-            <img :src="item.logo" v-if="item.logo" alt="">
-            <img :src="item.img" v-else-if="item.img" alt="">
-            <img :src="$store.state.mainurl+'/assets/panel/img/object.svg'" v-else alt="">
+        <div class="col-md-6 col-lg-4">
+          <div class="item item-add">
+            <div class="title">Добавить нового агента</div>
+            <div class="img">
+              <img :src="$root.mainurl +'/assets/panel/img/team.png'" alt="">
+            </div>
+            <div class="btns">
+              <router-link  :to="{ name: 'new_agent', params: { id: 1 }}" class="btn btn-default btn-md waves-effect">ДОБАВИТЬ</router-link>
+            </div>
+            <div class="info">
+              <a href="#">Посмотреть инструкцию</a>
+            </div>
           </div>
-          <div class="btns" v-if="item.selected">
-              <router-link  :to="{ name: 'webchess', params: { id: 1, oid: item.id }}" class="btn btn-outline-primary waves-effect">Редактировать</router-link>
-              <button class="btn btn-outline-danger waves-effect">Отключить</button>
-          </div>
+        </div>
 
-          <div v-else>
-            <router-link  :to="{ name: 'webchess', params: { id: 1, oid: item.id }}" class="btn btn-default waves-effect">Создать</router-link>
+        <div class="col-md-6 col-lg-4">
+          <div class="item">
+          <div class="title">Интеграция с AmoCRM</div>
+          <div class="img img-m">
+            <img :src="$store.state.mainurl+'/assets/panel/img/object.svg'" alt="">
+          </div>
+  
+
+          <div>
+            <router-link  :to="{ name: 'new_amo', params: { id: 1 }}" class="btn btn-default waves-effect">ПОДКЛЮЧИТЬ</router-link>
             <div class="info">
               <a href="#">Посмотреть инструкцию</a>
             </div>
@@ -55,7 +65,7 @@
 
 <script>
 export default {
-  name: "webchess",
+  name: "instAgent",
   data() {
     return {
       //  list: []
@@ -65,8 +75,6 @@ export default {
   },
 
   created() {
-    this.$store.commit("loadMyObjects");
-    this.$store.commit("loadPermissions", "web");
     window.routeParam = {name: this.$route.name, params: this.$route.params};
   },
 

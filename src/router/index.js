@@ -5,6 +5,10 @@ import MainPage from '@/components/mainPage.vue'
 import settings from '@/components/settings.vue'
 import myObjects from '@/components/myObjects.vue'
 import webchess from '@/components/webchess.vue'
+import instCRM from '@/components/instCRM.vue'
+import portals from '@/components/portals.vue'
+import instAgent from '@/components/instAgent.vue'
+import instApi from '@/components/instApi.vue'
 
 
 
@@ -22,9 +26,29 @@ export default new Router({
       component: myObjects,
     },
     {
-      path: '/webchess',
-      name: 'webchess',
+      path: '/inst/webchess',
+      name: 'instWebchess',
       component: webchess,
+    },
+    {
+      path: '/inst/crm',
+      name: 'inst_crm',
+      component: instCRM,
+    },
+    {
+      path: '/inst/portals',
+      name: 'portals',
+      component: portals,
+    },
+    {
+      path: '/inst/agent',
+      name: 'instAgent',
+      component: instAgent,
+    },
+    {
+      path: '/inst/api',
+      name: 'instApi',
+      component: instApi,
     },
     {
       path: '/settings/:id',

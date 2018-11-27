@@ -111,7 +111,7 @@ export default {
     
   },
   created(){
-    window.routeName = this.$route.name;
+    window.routeParam = {name: this.$route.name, params: this.$route.params};
   },
   computed: {},
   methods: {}
