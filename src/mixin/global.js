@@ -24,7 +24,7 @@ export default {
         title: text,
       }).catch(swal.noop);
     },
-    confirm(data){
+    confirm(data) {
 
     },
 
@@ -47,7 +47,7 @@ export default {
           this.changes.count.splice(index, 1);
         }
       }
-     // console.log(this.changes.count);
+      // console.log(this.changes.count);
 
       this.$store.commit("setChanges", this.changes);
 
@@ -72,10 +72,66 @@ export default {
 
     },
 
+    OffPermissions(id, ut = 'web') {
+      // if (!id) return;
+
+      swal({
+          title: "Отключить?",
+          text: "Вы точно хотите отключить?",
+          type: "error",
+          showCancelButton: true,
+          confirmButtonClass: "btn-warning",
+          confirmButtonText: "Да, отключить",
+          cancelButtonText: "Отмена",
+          cancelButtonClass: "btn-md btn btn-secondary waves-effect",
+          confirmButtonClass: "btn-danger btn-md waves-effect waves-light",
+          showLoaderOnConfirm: true
+        })
+        .then(() => {
+
+
+
+          let permissions = this.$store.state.permissions[ut];
+          for (let item of permissions) {
+            if (!id) {
+              item.state.selected = false;
+            } else {
+              if (item.permissions.gproject_id == id) {
+                item.state.selected = false;
+              }
+            }
+          }
+
+          if (!id) {
+            this.setPermissions([], ut);
+            return;
+          }
+
+          let f = this.lodash.filter(
+            permissions,
+            item => {
+              return item.state.selected == true;
+            }
+          )
+
+
+          // console.log(f);
+
+          let data = [];
+          f.forEach(item => {
+            data.push(item.permissions);
+          });
+
+          //  console.log(data, ut);
+          this.setPermissions(data, ut);
+        })
+        .catch(swal.noop);
+    },
+
     setPermissions(permissions, ut = 'web', e = null) {
       $.ajax({
           url: this.$root.mainurl +
-            "/api?action=updateUserPermissions&ut="+ut,
+            "/api?action=updateUserPermissions&ut=" + ut,
           dataType: "json",
           data: {
             permissions_data: JSON.stringify(permissions)
@@ -86,9 +142,9 @@ export default {
           if (response.error) {
             swal("Ошибка!", response.error.message, "error");
           } else {
-            if(e){
+            if (e) {
               this.$emit("footerBtn", e);
-            } else{
+            } else {
               this.saveOk('Успешно обновлено!');
             }
           }

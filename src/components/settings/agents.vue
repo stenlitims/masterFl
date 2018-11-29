@@ -1,7 +1,7 @@
 <template>
   <div class="settings-right">
     <div class="settings-btns">
-      <h3>Интерактивный каталог квартир</h3>
+      <h3>Подключение агентств недвижимости</h3>
 
       <div class="form-group">
         <div class="search">
@@ -11,24 +11,26 @@
       </div>
     </div>
 
+
+
     <div class="list-settings">
-      <div class="item control-wrap" v-for="(item, i) in list" :key="i">
-        <div class="c-title">{{item.name}}</div>
-        <div class="c-btns" v-if="item.selected">
+      <div class="item control-wrap">
+        <div class="c-title">Мир квартир</div>
+        <div class="c-btns" v-if="mirkv">
           <router-link
-            :to="{ name: 'webchess', params: { id: 1, oid: item.id }}"
+            :to="{ name: 'new_mirkv', params: { id: 1 }}"
             class="btn btn-outline-primary waves-effect"
           >Редактировать</router-link>
           <button
-            @click="OffPermissions(item.id)"
+            @click="OffPermissions(null, 'mirkvartir')"
             class="btn btn-outline-danger waves-effect"
           >Отключить</button>
         </div>
         <div class="c-btns" v-else>
           <router-link
-            :to="{ name: 'webchess', params: { id: 1, oid: item.id }}"
-            class="btn btn-outline-primary waves-effect"
-          >Создать</router-link>
+            :to="{ name: 'new_mirkv', params: { id: 1 }}"
+            class="btn btn-or waves-effect"
+          >РАЗМЕСТИТЬ</router-link>
         </div>
       </div>
     </div>
@@ -39,7 +41,7 @@
 import settings from "@/mixin/settings";
 
 export default {
-  name: "instWebchess",
+  name: "agents",
   mixins: [settings],
   data() {
     return {
@@ -49,27 +51,21 @@ export default {
   },
 
   created() {
-    if (!this.$store.state.myObjects) {
-      this.$store.commit("loadMyObjects");
-    }
-    if (!this.$store.state.permissions.web.length) {
-      this.$store.commit("loadPermissions", "web");
+    if (!this.$store.state.permissions.mirkvartir.length) {
+      this.$store.commit("loadPermissions", "mirkvartir");
     }
   },
 
   mounted() {},
   computed: {
-    list() {
-      let data = this.perObjects("web");
-      if (this.search) {
-        data = this.lodash.filter(data, o => {
-          return this.lodash.includes(
-            o.name.toLowerCase(),
-            this.search.toLowerCase()
-          );
-        });
+    mirkv() {
+      let data = [];
+      for (let item of this.$store.state.permissions.mirkvartir) {
+        if (item.state.selected) {
+          data.push(item.permissions.object_id);
+        }
       }
-      return data;
+      return data.length;
     }
   },
   methods: {
@@ -81,5 +77,4 @@ export default {
 </script>
 
 <style lang="scss">
-
 </style>

@@ -1,27 +1,34 @@
 <template>
-<div class="settings-right">
+  <div class="settings-right">
+    <div class="settings-btns">
+      <h3>Шахматка для отдела продаж</h3>
 
-   <div class="settings-btns">
-     <h3>Шахматка для отдела продаж</h3>
+    
+    </div>
 
-     <div class="form-group">
-        <div class="search">
-          <input type="text" v-model="search" class="form-control" placeholder="Поиск...">
-          <i class="fa fa-search" aria-hidden="true"></i>
+    <div class="list-settings">
+      <div class="item control-wrap">
+        <div class="c-title">AmoCRM</div>
+        <div class="c-btns">
+          <router-link
+            :to="{ name: 'new_amo', params: { id: 1 }}"
+            class="btn btn-outline-primary waves-effect"
+          >Редактировать</router-link>
+          <button
+            @click="OffPermissions(null, 'amocrm')"
+            class="btn btn-outline-danger waves-effect"
+          >Отключить</button>
         </div>
       </div>
     </div>
-
- 
-</div>
-  
+  </div>
 </template>
 
 <script>
 import settings from "@/mixin/settings";
 
 export default {
-  name: "instWebchess",
+  name: "crmS",
   mixins: [settings],
   data() {
     return {
@@ -31,29 +38,11 @@ export default {
   },
 
   created() {
-    if (!this.$store.state.myObjects) {
-      this.$store.commit("loadMyObjects");
-      
-    }
-    if (!this.$store.state.permissions.web.length) {
-      this.$store.commit("loadPermissions", "web");
-    }
+
   },
 
   mounted() {},
   computed: {
-    list() {
-      let data = this.perObjects("web");
-      if (this.search) {
-        data = this.lodash.filter(data, o => {
-          return this.lodash.includes(
-            o.name.toLowerCase(),
-            this.search.toLowerCase()
-          );
-        });
-      }
-      return data;
-    }
   },
   methods: {
     send(data) {
@@ -64,5 +53,4 @@ export default {
 </script>
 
 <style lang="scss">
-
 </style>

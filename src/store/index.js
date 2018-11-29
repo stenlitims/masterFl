@@ -8,6 +8,7 @@ export default new Vuex.Store({
     apiurl: 'https://test.flatris.com.ua/assets/api/api.php',
     mainurl: 'https://test.flatris.com.ua',
     user: {},
+    users: null,
     tariff: {},
     account: {},
     api: {
@@ -18,17 +19,17 @@ export default new Vuex.Store({
     },
     myObjects: null,
     permissions: {
-      web: []
+      web: [],
+      mirkvartir: []
     },
     changes: {
       count: []
     },
   },
   mutations: {
-    getTarifPlan(state){
+    getTarifPlan(state) {
       $.post(
-        state.apiurl,
-        {
+        state.apiurl, {
           action: "getTarifPlan"
         },
         data => {
@@ -40,10 +41,9 @@ export default new Vuex.Store({
         "json"
       );
     },
-    getApi(state){
+    getApi(state) {
       $.post(
-        state.apiurl,
-        {
+        state.apiurl, {
           action: "getApiKey"
         },
         data => {
@@ -63,6 +63,19 @@ export default new Vuex.Store({
           if (data) {
             // console.log(state);
             state.user = data;
+          }
+        },
+        "json"
+      );
+    },
+    getUsers(state) {
+      $.post(
+        state.apiurl, {
+          action: 'getUsers'
+        },
+        data => {
+          if (data) {
+            state.users = data;
           }
         },
         "json"

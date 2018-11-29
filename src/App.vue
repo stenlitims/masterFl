@@ -276,6 +276,19 @@ a{
 }
 
 .inst-list{
+  .item{
+    position: relative;
+  }
+  .soon{
+    background: #F36B7A;
+    position: absolute;
+    top: 10px;
+    right: -20px;
+    text-transform: uppercase;
+    padding: 7px 15px;
+    border-radius: 3px;
+    color: #fff;
+  }
   .title{
     font-size: 20px;
   }
@@ -379,6 +392,9 @@ a.btn-line {
   background: #ff7a59;
   color: #fff;
   border-radius: 8px;
+  &:hover{
+    color: #fff;
+  }
 }
 
 .btn-o {

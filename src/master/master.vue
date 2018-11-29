@@ -1,52 +1,52 @@
 <template>
   <div class="page-master set-modal" :class="{'open': open}">
     <div class="master-inner">
-        <master-header v-if="step != 'finish'"
-        :steps="steps" 
-        :step="step" 
+      <master-header
+        v-if="step != 'finish'"
+        :steps="steps"
+        :step="step"
         :name="name"
         @setStep="setStep"
-        ></master-header>
-        
-        <div class="container center">
+      ></master-header>
+
+      <div class="container center">
         <div style="display:none">{{$route.name}} {{$route.params.oid}}</div>
-          <transition name="center" mode="out-in">
-            <component :is="component"
-             @btnActive="setBtnActive"
-             @footerBtn="footerBtn"
-             @objId="setObjId"
-             @showTable="showGtable = true"
-             @closeTable="showGtable = false"
-             @spreadsheetId="setSpreadsheetId"
-             @clearData="clearData"
-             :steps="steps" 
-             :step="step"
-             :object_id="object_id"
-             :finishTxt="finish"
-             :namep="namep" 
-             ></component>
-          </transition>
-        </div>
+        <transition name="center" mode="out-in">
+          <component
+            :is="component"
+            @btnActive="setBtnActive"
+            @footerBtn="footerBtn"
+            @objId="setObjId"
+            @showTable="showGtable = true"
+            @closeTable="showGtable = false"
+            @spreadsheetId="setSpreadsheetId"
+            @clearData="clearData"
+            :steps="steps"
+            :step="step"
+            :object_id="object_id"
+            :finishTxt="finish"
+            :namep="namep"
+          ></component>
+        </transition>
+      </div>
     </div>
-   
 
-
-    <master-footer v-if="step != 'finish'"
-     :steps="steps"
-     :step="step" 
-     :namep="namep"
-     :finishTxt="finish"
-     :object_id="object_id"></master-footer>
-
+    <master-footer
+      v-if="step != 'finish'"
+      :steps="steps"
+      :step="step"
+      :namep="namep"
+      :finishTxt="finish"
+      :object_id="object_id"
+    ></master-footer>
 
     <div v-if="showGtable">
       <google-table
-      @closeTable="showGtable = false"
-      :object_id="object_id" 
-      :spreadsheet_id="spreadsheet_id" 
+        @closeTable="showGtable = false"
+        :object_id="object_id"
+        :spreadsheet_id="spreadsheet_id"
       ></google-table>
     </div>
-    
   </div>
 </template>
 
@@ -326,17 +326,20 @@ export default {
     },
     hideModal() {
       this.open = false;
-      setTimeout(() => {
-        let param = window.routeParam ? window.routeParam : {name: "MainPage"};
-      //  console.log(param);
-        this.$router.push(param);
-        if(window.formChange){
-          if(param.name == 'instWebchess' || param.name == 'settings'){
-            this.$store.commit("loadMyObjects");
-            this.$store.commit("loadPermissions", "web");
-          }
+      let param = window.routeParam ? window.routeParam : { name: "MainPage" };
+      if (window.formChange) {
+        if (param.name == "instWebchess" || param.name == "settings") {
+          this.$store.commit("loadMyObjects");
+          this.$store.commit("loadPermissions", "web");
         }
-
+      }
+     // console.log(this.$route.name);
+      if (this.$route.name == "new_mirkv") {
+        this.$store.commit("loadPermissions", "mirkvartir");
+      }
+      setTimeout(() => {
+        //  console.log(param);
+        this.$router.push(param);
       }, 300);
     }
   }

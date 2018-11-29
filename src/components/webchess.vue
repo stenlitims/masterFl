@@ -85,46 +85,7 @@ export default {
     }
   },
   methods: {
-    OffPermissions(id) {
-      if (!id) return;
-
-      swal({
-        title: "Отключить?",
-        text: "Вы точно хотите отключить?",
-        type: "error",
-        showCancelButton: true,
-        confirmButtonClass: "btn-warning",
-        confirmButtonText: "Да, отключить",
-        cancelButtonText: "Отмена",
-        cancelButtonClass: "btn-md btn btn-secondary waves-effect",
-        confirmButtonClass: "btn-danger btn-md waves-effect waves-light",
-        showLoaderOnConfirm: true
-      })
-        .then(() => {
-          this.$store.state.permissions.web;
-          let data = [];
-          for (let item of this.$store.state.permissions.web) {
-            if (item.permissions.gproject_id == id) {
-              item.state.selected = false;
-            }
-          }
-
-          let f = this.lodash.filter(
-            this.$store.state.permissions.web,
-            item => {
-              return item.state.selected == true;
-            }
-          );
-
-          f.forEach(item => {
-            data.push(item.permissions);
-          });
-
-          console.log(data);
-          this.setPermissions(data, "web");
-        })
-        .catch(swal.noop);
-    }
+   
   }
 };
 </script>
