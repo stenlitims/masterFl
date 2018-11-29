@@ -15,6 +15,11 @@
             <!-- <button @click="clear" class="btn btn-md btn-clear waves-effect">Очистить</button>  -->
             
           </div>
+
+          <div class="save" v-if="$store.state.changes.count.length">
+            <button @click="$bus.emit('saveForm', 'save')" class="btn-line btn-md waves-effect">Сохранить</button>
+          </div>
+
           <div class="next-block">
             <div v-if="step < steps.length - 1">
             <button @click="nav('next')" :class="{'not-active': btnActive != true}" class="btn-line btn-next btn-md waves-effect"><span class="mob-none">Далее</span></button>

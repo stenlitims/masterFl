@@ -1,108 +1,149 @@
 <template>
-<div class="settings-right settings-tarif">
-  <h3>{{titles['step'+ step]}}</h3>
-  <div class="row">
-    <div class="col-lg-9">
-      <div class="wrap-tarif-table" v-if="step == 1">
-        <div class="ramka" :style="ramka"></div>
-        <table class="table tarif-table">
+  <div class="settings-right settings-tarif">
+    <h3>{{titles['step'+ step]}}</h3>
+    <div class="row">
+      <div class="col-lg-9">
+        <div class="wrap-tarif-table" v-if="step == 1">
+          <div class="ramka" :style="ramka"></div>
+          <table class="table tarif-table">
             <thead>
-                <tr>
-                    <td>
-                        <div class="currency-list">
-                            <div class="item" :class="{'active': currency == 'UAH'}" @click="currency ='UAH'">UAH</div>
-                            <div class="item" :class="{'active': currency == 'USD'}" @click="currency ='USD'">USD</div>
-                            <div class="item" :class="{'active': currency == 'RUB'}" @click="currency ='RUB'">RUB</div>
-                        </div>
-                    </td>
-                    <td @click="setTarif('start', $event)" :class="{'active': tarif == 'start'}">
-                        <div class="title">START</div>
-                        <div class="radio" :class="{'active': tarif == 'start'}"></div>
-                    </td>
-                    <td @click="setTarif('standart', $event)" :class="{'active': tarif == 'standart'}">
-                        <div class="title">STANDART</div>
-                        <div class="radio" :class="{'active': tarif == 'standart'}"></div>
-                    </td>
-                    <td @click="setTarif('unlim', $event)" :class="{'active': tarif == 'unlim'}">
-                        <div class="title">UNLIM</div>
-                        <div class="radio" :class="{'active': tarif == 'unlim'}"></div>
-                    </td>
-                </tr>
+              <tr>
+                <td>
+                  <div class="currency-list">
+                    <div
+                      class="item"
+                      :class="{'active': currency == 'UAH'}"
+                      @click="currency ='UAH'"
+                    >UAH</div>
+                    <div
+                      class="item"
+                      :class="{'active': currency == 'USD'}"
+                      @click="currency ='USD'"
+                    >USD</div>
+                    <div
+                      class="item"
+                      :class="{'active': currency == 'RUB'}"
+                      @click="currency ='RUB'"
+                    >RUB</div>
+                  </div>
+                </td>
+                <td @click="setTarif('start', $event)" :class="{'active': tarif == 'start'}">
+                  <div class="title">START</div>
+                  <div class="radio" :class="{'active': tarif == 'start'}"></div>
+                </td>
+                <td @click="setTarif('standart', $event)" :class="{'active': tarif == 'standart'}">
+                  <div class="title">STANDART</div>
+                  <div class="radio" :class="{'active': tarif == 'standart'}"></div>
+                </td>
+                <td @click="setTarif('unlim', $event)" :class="{'active': tarif == 'unlim'}">
+                  <div class="title">UNLIM</div>
+                  <div class="radio" :class="{'active': tarif == 'unlim'}"></div>
+                </td>
+              </tr>
             </thead>
             <tbody>
               <tr v-for="(item, i) in data" :key="i">
-                <td>{{item.title}} <span :title="item.text" class="inf"></span> </td>
+                <td>
+                  {{item.title}}
+                  <span :title="item.text" class="inf"></span>
+                </td>
 
-                <td v-if="item.start == 1"  @click="setTarif('start', $event)"><div class="gl"></div></td>
-                <td v-else  @click="setTarif('start', $event)">{{item.start}}</td>
+                <td v-if="item.start == 1" @click="setTarif('start', $event)">
+                  <div class="gl"></div>
+                </td>
+                <td v-else @click="setTarif('start', $event)">{{item.start}}</td>
 
-                <td v-if="item.standart == 1"  @click="setTarif('standart', $event)"><div class="gl"></div></td>
-                <td v-else  @click="setTarif('standart', $event)">{{item.standart}}</td>
+                <td v-if="item.standart == 1" @click="setTarif('standart', $event)">
+                  <div class="gl"></div>
+                </td>
+                <td v-else @click="setTarif('standart', $event)">{{item.standart}}</td>
 
-                <td v-if="item.unlim == 1"  @click="setTarif('unlim', $event)"><div class="gl"></div></td>
-                <td v-else  @click="setTarif('unlim', $event)">{{item.unlim}}</td>
-
+                <td v-if="item.unlim == 1" @click="setTarif('unlim', $event)">
+                  <div class="gl"></div>
+                </td>
+                <td v-else @click="setTarif('unlim', $event)">{{item.unlim}}</td>
               </tr>
               <tr class="price-tr">
-                  <td>Стоимость <span class="inf" title="Стоимость указана за месяц при оплате на год"></span></td>
-                  <td @click="setTarif('start', $event)"><b>от {{start}} {{currency}}</b></td>
-                  <td @click="setTarif('standart', $event)"><b>от {{standart}} {{currency}}</b></td>
-                  <td @click="setTarif('unlim', $event)"><b>от {{unlim}} {{currency}}</b></td>
+                <td>Стоимость
+                  <span class="inf" title="Стоимость указана за месяц при оплате на год"></span>
+                </td>
+                <td @click="setTarif('start', $event)">
+                  <b>от {{start}} {{currency}}</b>
+                </td>
+                <td @click="setTarif('standart', $event)">
+                  <b>от {{standart}} {{currency}}</b>
+                </td>
+                <td @click="setTarif('unlim', $event)">
+                  <b>от {{unlim}} {{currency}}</b>
+                </td>
               </tr>
             </tbody>
-        </table>
-      </div>
-      
-      <div class="period" v-if="step == 2">
-       <div class="period-list">
-         <div class="item" :class="{'active': i == period}"
-          v-for="(item, i) in periodList" :key="i" @click="period = i">
-           <div class="title t">{{item.num}} мес.</div>
-           <div class="cr"></div>
-           <div class="sale t" v-if="item.sale">скидка<br>{{item.sale}}%</div>
-         </div>
-         <div class="width">
-          <div :style="width"></div>
+          </table>
         </div>
-       </div>
-      </div>
 
-    </div>
-    <div class="col-lg-3">
-      <div class="tarif-nav">
-        <div>
-          <div class="item" :class="{'active': step == 1}">
-            <div class="t" @click="step = 1">1. Тариф</div>
-            <div class="v"> 
-              <b class="tarif-name">{{tarif}}</b>  
-              <div v-if="step == 2"><a href="#" @click.prevent="step = 1" >изменить</a></div>
+        <div class="period" v-if="step == 2">
+          <div class="period-list">
+            <div
+              class="item"
+              :class="{'active': i == period}"
+              v-for="(item, i) in periodList"
+              :key="i"
+              @click="period = i"
+            >
+              <div class="title t">{{item.num}} мес.</div>
+              <div class="cr"></div>
+              <div class="sale t" v-if="item.sale">скидка
+                <br>
+                {{item.sale}}%
+              </div>
+            </div>
+            <div class="width">
+              <div :style="width"></div>
             </div>
           </div>
-          <div class="item" :class="{'active': step == 2}">
-            <div class="t" @click="step = 2">2. Период</div>
-            <div class="v"> <b>{{periodList[period].num}}  {{declension(periodList[period].num, ['МЕСЯЦ', 'МЕСЯЦА', 'МЕСЯЦЕВ'] )}}</b> </div>
-          </div>
-          <div class="item">
-            <div class="t">3. Стоимость</div>
-            <div class="v">
-              <div v-if="total.price" class="all-price"><b>{{number_format(total.price)}} {{currency}}</b>  </div> 
-            <b class="total-price">{{number_format(total.total)}} {{currency}}</b>
-             </div>
-          </div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="tarif-nav">
+          <div>
+            <div class="item" :class="{'active': step == 1}">
+              <div class="t" @click="step = 1">1. Тариф</div>
+              <div class="v">
+                <b class="tarif-name">{{tarif}}</b>
+                <div v-if="step == 2">
+                  <a href="#" @click.prevent="step = 1">изменить</a>
+                </div>
+              </div>
+            </div>
+            <div class="item" :class="{'active': step == 2}">
+              <div class="t" @click="step = 2">2. Период</div>
+              <div class="v">
+                <b>{{periodList[period].num}} {{declension(periodList[period].num, ['МЕСЯЦ', 'МЕСЯЦА', 'МЕСЯЦЕВ'] )}}</b>
+              </div>
+            </div>
+            <div class="item">
+              <div class="t">3. Стоимость</div>
+              <div class="v">
+                <div v-if="total.price" class="all-price">
+                  <b>{{number_format(total.price)}} {{currency}}</b>
+                </div>
+                <b class="total-price">{{number_format(total.total)}} {{currency}}</b>
+              </div>
+            </div>
 
-          <div class="btns text-center">
-            <button v-if="step == 1"  @click="step = 2" class="btn btn-line btn-md waves-effect">ВЫБРАТЬ ПЕРИОД</button>
-            <button v-if="step == 2" class="btn btn-line btn-md waves-effect">ОПЛАТИТЬ</button>
+            <div class="btns text-center">
+              <button
+                v-if="step == 1"
+                @click="step = 2"
+                class="btn btn-line btn-md waves-effect"
+              >ВЫБРАТЬ ПЕРИОД</button>
+              <button v-if="step == 2" class="btn btn-line btn-md waves-effect">ОПЛАТИТЬ</button>
+            </div>
           </div>
-
-          
         </div>
       </div>
     </div>
   </div>
-
-</div>
-  
 </template>
 
 <script>
@@ -299,23 +340,6 @@ export default {
     }
   },
   methods: {
-    declension(num, expressions) {
-      var result;
-      var count = num % 100;
-      if (count >= 5 && count <= 20) {
-        result = expressions["2"];
-      } else {
-        count = count % 10;
-        if (count == 1) {
-          result = expressions["0"];
-        } else if (count >= 2 && count <= 4) {
-          result = expressions["1"];
-        } else {
-          result = expressions["2"];
-        }
-      }
-      return result;
-    },
     setTarif(t, e) {
       let el = e.target;
       if (el.nodeName != "TD") {
@@ -522,12 +546,16 @@ export default {
   font-size: 13px;
   line-height: 1.4;
   background: #00bfae;
-  &:before {
-    border-top-color: #00bfae !important;
-  }
+  transform: translate(9px,0);
 }
 
 .tooltip {
+  .arrow {
+    transform: translate(9px,0);
+    &:before {
+      border-top-color: #00bfae !important;
+    }
+  }
   //  transition: all 0.3s ease;
 }
 

@@ -2,8 +2,9 @@
 <div class="settings-right">
   <h3>Объекты</h3>
    <div class="settings-btns">
-     <div class="form-group">
+     <div class="form-group search">
         <input type="text" v-model="search" class="form-control" placeholder="Поиск...">
+        <i class="fa fa-search" aria-hidden="true"></i>
       </div>
       <div class="btn-group  btn-group-toggle">
         <button class="btn btn-lg btn-success waves-effect">Мои объекты</button>

@@ -11,12 +11,14 @@ export default {
     }
   },
   created() {
-    // console.log('MixinMaster');
+    this.clearChenge();
     this.$bus.on(this.steps[this.step].comp, this.send);
+    this.$bus.on('saveForm', this.save);
   },
 
   beforeDestroy() {
     this.$bus.off(this.steps[this.step].comp, this.send);
+    this.$bus.off('saveForm', this.save);
   },
 
   updated() {

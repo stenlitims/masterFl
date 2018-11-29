@@ -20,7 +20,11 @@
     <div class="main-container container">
       <div class="search-wrap row">
         <div class="form-group col-md-5 col-xl-4">
-          <input type="text" v-model="search" class="form-control" placeholder="Поиск...">
+          <div class="search">
+            <input type="text" v-model="search" class="form-control" placeholder="Поиск...">
+            <i class="fa fa-search" aria-hidden="true"></i>
+          </div>
+          
         </div>
       </div>
 
@@ -229,7 +233,7 @@ export default {
   .item-h {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 25px;
+    margin-bottom: 2px;
     text-align: left;
     .title-o {
       
@@ -243,13 +247,14 @@ export default {
       position: relative;
       padding-left: 26px;
       line-height: 1.4;
+      min-height: 42px;
       .fa{
-        font-size: 20px;
+        font-size: 21px;
         margin-right: 5px;
         position: absolute;
         left: 0;
-        top: 50%;
-        transform: translate(0, -50%);
+        top: 0;
+        color: #1abc9c;
       }
     }
 

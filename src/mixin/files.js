@@ -5,7 +5,7 @@ export default {
   },
 
   methods: {
-    delFile(field) {
+    delFile(field, callback) {
       if (!field) return;
 
       swal({
@@ -30,13 +30,14 @@ export default {
           data => {
             if (data) {
               this.form[field] = null;
+              callback();
               swal.close();
               $("#" + field).val("");
             }
           },
           "json"
         );
-      });
+      }).catch(swal.noop);
     }
   }
 }

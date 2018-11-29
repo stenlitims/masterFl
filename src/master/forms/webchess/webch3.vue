@@ -76,26 +76,29 @@ export default {
         return false;
       }
 
-      $.ajax({
-        url:
-          this.$root.mainurl +
-          "/api?action=updateUserPermissions&ut=web",
-        dataType: "json",
-        data: { permissions_data: JSON.stringify(data_to_send) },
-        method: "POST"
-      })
-        .done(response => {
-          if (response.error) {
-            swal("Ошибка!", response.error.message, "error");
-          } else {
-            this.$emit("footerBtn", e);
-            //   swal("Успешно обновлено!", response.data.message, "success");
-          }
-        })
-        .fail(function(jqXHR, textStatus) {
-          console.log(jqXHR);
-          swal("Ошибка!", jqXHR.responseText, "error");
-        });
+
+      this.setPermissions(data_to_send, 'web', e);
+
+      // $.ajax({
+      //   url:
+      //     this.$root.mainurl +
+      //     "/api?action=updateUserPermissions&ut=web",
+      //   dataType: "json",
+      //   data: { permissions_data: JSON.stringify(data_to_send) },
+      //   method: "POST"
+      // })
+      //   .done(response => {
+      //     if (response.error) {
+      //       swal("Ошибка!", response.error.message, "error");
+      //     } else {
+      //       this.$emit("footerBtn", e);
+      //       //   swal("Успешно обновлено!", response.data.message, "success");
+      //     }
+      //   })
+      //   .fail(function(jqXHR, textStatus) {
+      //     console.log(jqXHR);
+      //     swal("Ошибка!", jqXHR.responseText, "error");
+      //   });
 
       return;
     }

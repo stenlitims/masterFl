@@ -1,79 +1,95 @@
 <template>
   <div class="form">
     <h3 class="text-center">Заполните данные по объекту</h3>
-    <form action="" :class="{'loader2': !dataLoad}">
+    <form action :class="{'loader2': !dataLoad}">
       <div class="row">
         <div class="col-lg-6">
           <div class="form-group">
             <label>Название объекта</label>
-            <input type="text" class="form-control" placeholder="Введите название" v-model="form.name">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Введите название"
+              v-model="form.name"
+              @keyup="setChanges('name')"
+            >
           </div>
         </div>
         <div class="col-lg-6">
           <div class="form-group">
             <label>Сайт</label>
-            <input type="text" class="form-control" placeholder="Введите адрес" v-model="form.sales_department_site">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Введите адрес"
+              @keyup="setChanges('sales_department_site')"
+              v-model="form.sales_department_site"
+            >
           </div>
         </div>
         <div class="col-lg-6">
           <div class="form-group">
             <label>Валюта продаж</label>
-            <select v-model="form.currency" class="form-control">
-              <option v-for="(item, i) in currency" :value="i" :key="i">{{i}} - {{item}} </option>
+            <select v-model="form.currency" class="form-control" @change="setChanges('currency')">
+              <option v-for="(item, i) in currency" :value="i" :key="i">{{i}} - {{item}}</option>
             </select>
           </div>
         </div>
-        
+
         <div class="col-lg-6">
-            <div class="form-group" >
-              <label>Логотип</label><br>
+          <div class="form-group">
+            <label>Логотип</label>
+            <br>
 
-              <label v-if="!form.logo" class="btn btn-md w-100 waves-effect up-file">
-                <span class="name">Загрузить</span>
-                <input type="file" name="img" accept="image/*" id="logo" class="form-control" placeholder="Файл">
-              </label>
+            <label v-if="!form.logo" @click="setChanges('logo')" class="btn btn-md w-100 waves-effect up-file">
+              <span class="name">Загрузить</span>
+              <input
+                type="file"
+                name="img"
+                accept="image/*"
+                id="logo"
+                class="form-control"
+                placeholder="Файл"
+                
+              >
+            </label>
 
-              <div v-if="form.logo" class="obj-logo">
-                <img :src="form.logo" /><br>
-                <div class="del-btn abs" @click="delFile('logo')"><span>+</span></div>
+            <div v-if="form.logo" class="obj-logo">
+              <img :src="form.logo">
+              <br>
+              <div class="del-btn abs" @click="delFile('logo', ()=> setChanges('logo'))">
+                <span>+</span>
               </div>
-
             </div>
-            
+          </div>
         </div>
 
         <div class="col-lg-12">
           <div class="form-group">
             <label>Адрес объекта</label>
-            <input type="text" class="form-control" placeholder="Введите адрес (город, улица, дом)" v-model="form.address">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Введите адрес (город, улица, дом)"
+              v-model="form.address"
+              @keyup="setChanges('address')"
+            >
           </div>
         </div>
-        
-        
-
-
       </div>
-
 
       <div v-if="errors.length">
         <div class="alert alert-danger text-center" role="alert">
-          <p v-for="(item, i) in errors" :key="i">
-            {{item}}
-          </p>
+          <p v-for="(item, i) in errors" :key="i">{{item}}</p>
         </div>
       </div>
 
       <div v-if="errorsSer.length">
         <div class="alert alert-danger text-center" role="alert">
-          <p v-for="(item, i) in errorsSer" :key="i">
-            {{item}}
-          </p>
+          <p v-for="(item, i) in errorsSer" :key="i">{{item}}</p>
         </div>
       </div>
-
-      
     </form>
-
   </div>
 </template>
 
@@ -94,6 +110,7 @@ export default {
         logo: "",
         currency: "USD"
       },
+      original: {},
       required: {
         name: "",
         address: "",
@@ -151,12 +168,15 @@ export default {
         data => {
           if (data) {
             //   console.log(data);
+            
             this.form.name = data.name;
             this.form.logo = data.logo;
             this.form.currency = data.currency;
             this.form.address = data.address;
             this.form.id = data.id;
             this.form.sales_department_site = data.sales_department_site;
+
+            this.original = Object.assign({}, this.form);
             this.currency = data.currency_list;
             this.dataLoad = true;
             this.$emit("objId", data);
@@ -170,8 +190,6 @@ export default {
         this.$emit("footerBtn", e);
         return true;
       }
-
-      
 
       if (!this.formChange && this.object_id) {
         this.$emit("footerBtn", e);
@@ -188,15 +206,16 @@ export default {
       }
 
       if (this.errors.length) return false;
+      this.save(e);
+    },
 
+    save(e) {
       let form_data = new FormData();
       if ($("#logo").length > 0) {
         if ($("#logo")[0].files.length) {
           form_data.append("img", $("#logo")[0].files[0]);
         }
       }
-
-      
 
       let action = "addGproject";
       if (this.object_id) {
@@ -223,7 +242,12 @@ export default {
           if (!data.errors) {
             if (!this.object_id) this.$emit("objId", data);
             this.formChange = false;
-            this.$emit("footerBtn", e);
+            if (e == "save") {
+              this.original = Object.assign({}, this.form);
+              this.saveOk();
+            } else {
+              this.$emit("footerBtn", e);
+            }
           } else {
             this.errorsSer = data.errors;
           }

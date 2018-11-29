@@ -8,6 +8,8 @@ export default new Vuex.Store({
     apiurl: 'https://test.flatris.com.ua/assets/api/api.php',
     mainurl: 'https://test.flatris.com.ua',
     user: {},
+    tariff: {},
+    account: {},
     api: {
       login: null,
       key: null,
@@ -23,6 +25,21 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    getTarifPlan(state){
+      $.post(
+        state.apiurl,
+        {
+          action: "getTarifPlan"
+        },
+        data => {
+          if (data.tariff) {
+            state.tariff = data.tariff;
+            state.account = data.account;
+          }
+        },
+        "json"
+      );
+    },
     getApi(state){
       $.post(
         state.apiurl,

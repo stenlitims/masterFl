@@ -77,20 +77,39 @@
             </ul>
           </div>
           <div class="user-nav dropdown-menu dropdown-menu-right" :class="{'show': showMenu}">
-            <div class="dropdown-item user-header">
+            <div class="dropdown-item-text user-header">
               <div class="avatar">
                 <img :src="$store.state.mainurl +'/assets/panel/img/user.svg'" alt>
               </div>
               <div class="inf">
-                <div class="name">
-                  {{$store.state.user.fullname}}
+                <div class="name">{{$store.state.user.fullname}}</div>
+                <div class="email">{{$store.state.user.email}}</div>
+                <div class="edit">
+                  <router-link
+                    class="link"
+                    :to="{ name: 'settings', params: { id: 'user' }}"
+                    title="Настройки"
+                  >Редактировать профиль</router-link>
                 </div>
               </div>
             </div>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
+            <div class="dropdown-item-text info">
+              <div>
+                <b>Компания:</b> {{$store.state.user.fax}}
+              </div>
+              <div>
+                <b>ID компании:</b> {{$store.state.user.id}}
+              </div>
+            </div>
+            <div class="dropdown-divider"></div>
+             <router-link 
+                     class="dropdown-item"
+                    :to="{ name: 'settings', params: { id: 'orders' }}"
+                    title="Настройки">Заказы и оплаты</router-link>
+            <a class="dropdown-item" href="#">База знаний</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item link" href="#">Выход с аккаунта</a>
           </div>
         </div>
       </div>
@@ -123,13 +142,43 @@ export default {
 
 <style lang="scss">
 .user-nav{
-  min-width: 250px;
-  .user-header{
-    .avatar{
-      img{
-        width: 35px;
-        height: 35px;
+  min-width: 300px;
+  font-size: 13px;
+  .info{
+    > div{
+      margin-bottom: 5px;
+      &:last-child{
+        margin-bottom: 0;
       }
+    }
+  }
+  .user-header{
+    
+    margin-bottom: 0;
+    .avatar{
+      margin-left: -5px;
+      img{
+        width: 48px;
+        height: 48px;
+      }
+    }
+    .name{
+      font-size: 15px;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+    .email{
+      margin-bottom: 4px;
+      font-size: 12px;
+      color: #CDD8E1;
+    }
+    
+  }
+  a.link{
+    color: #40C0A9;
+    text-decoration: underline;
+    &:hover{
+      text-decoration: none;
     }
   }
 }

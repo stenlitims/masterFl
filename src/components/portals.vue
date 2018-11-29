@@ -7,6 +7,7 @@
        <div class="r">
         <div class="form-group search">
           <input type="text" v-model="search" class="form-control" placeholder="Поиск...">
+          <i class="fa fa-search" aria-hidden="true"></i>
         </div>
        </div>
     </div>

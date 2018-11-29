@@ -51,7 +51,7 @@ export default {
   methods: {
     ch(item, k) {
       item.val = !item.val;
-      this.setChanges(k);
+      this.setChanges(k, item.val, this.data[k].val);
     },
     send(data) {
       // console.log(this.data);

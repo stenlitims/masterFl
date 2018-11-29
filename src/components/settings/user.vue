@@ -6,7 +6,7 @@
       </div>
       <div class="inf">
         <div class="name">
-          <div>{{form.fullname}}</div>
+          <div>{{out.fullname}}</div>
           <a href="#" class="edit">
             <svg>
               <use xlink:href="#icon-edit"></use>
@@ -24,8 +24,8 @@
           <input
             type="text"
             class="form-control"
-            @keydown="setChanges('phone')"
-            v-model="form.phone"
+            @keyup="setChanges('phone')"
+            v-model="out.phone"
           >
         </div>
       </div>
@@ -35,8 +35,8 @@
           <input
             type="text"
             class="form-control"
-            @keydown="setChanges('Компания')"
-            v-model="form.fax"
+            @keyup="setChanges('fax')"
+            v-model="out.fax"
           >
         </div>
       </div>
@@ -46,8 +46,8 @@
           <input
             type="text"
             class="form-control"
-            @keydown="setChanges('email')"
-            v-model="form.email"
+            @keyup="setChanges('email')"
+            v-model="out.email"
           >
         </div>
       </div>
@@ -57,8 +57,8 @@
           <input
             type="text"
             class="form-control"
-            @keydown="setChanges('website')"
-            v-model="form.website"
+            @keyup="setChanges('website')"
+            v-model="out.website"
           >
         </div>
       </div>
@@ -81,22 +81,24 @@ export default {
   mixins: [settings],
   data() {
     return {
-      data: {}
+      form: {},
+      original: {}
     };
   },
 
   created() {
-    this.data = Object.assign({}, this.$store.state.user);
+    
     //  this.$store.commit("loadUser");
   },
 
   mounted() {},
   computed: {
-    form() {
+    out() {
       if (this.$store.state.changes.count.length == 0) {
-        this.data = Object.assign({}, this.$store.state.user);
+        this.form = Object.assign({}, this.$store.state.user);
+        this.original = Object.assign({}, this.$store.state.user);
       }
-      return this.data;
+      return this.form;
     }
   },
   methods: {
@@ -137,24 +139,17 @@ export default {
         {
           action: "saveUser",
           data: {
-            phone: this.data.phone,
-            fax: this.data.fax,
-            email: this.data.email,
-            website: this.data.website
+            phone: this.form.phone,
+            fax: this.form.fax,
+            email: this.form.email,
+            website: this.form.website
           }
         },
         data => {
           if (data) {
             // console.log(data);
-            this.$store.state.user = this.data;
-            this.clearChenge();
-
-            swal({
-              showConfirmButton: false,
-              timer: 3000,
-              type: "success",
-              title: "Успешно сохранено!"
-            }).catch(swal.noop);
+            this.$store.state.user = this.form;
+            this.saveOk();
           }
         },
         "json"

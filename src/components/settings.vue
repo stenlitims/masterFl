@@ -18,7 +18,7 @@
             <slide-up-down :active="nav.inst" :duration="300">
               <ul>
                 <li><router-link  :to="{ name: 'settings', params: { id: 'webchess' }}">Интерактивный каталог для сайта</router-link></li>
-                <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Шахматка для отдела продаж</router-link></li>
+                <li><router-link  :to="{ name: 'settings', params: { id: 'crm' }}">Шахматка для отдела продаж</router-link></li>
                 <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Размещение на порталах недвижимости</router-link></li>
                 <li><router-link  :to="{ name: 'settings', params: { id: 1 }}">Подключение агентств недвижимости</router-link></li>
               </ul>
@@ -56,6 +56,7 @@ import objects from "@/components/settings/objects";
 import tarif from "@/components/settings/tarif";
 import webchess from "@/components/settings/webchess";
 import orders from "@/components/settings/orders";
+import crm from "@/components/settings/crm";
 import savePanel from "@/components/savePanel";
 
 export default {
@@ -75,6 +76,7 @@ export default {
     tarif,
     webchess,
     orders,
+    crm,
     savePanel
   },
 

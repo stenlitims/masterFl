@@ -80,10 +80,30 @@ body {
   background: rgb(95, 190, 170);
 }
 
+a{
+  color: #40C0A9;
+}
+
+.container{
+  max-width: 100%;
+}
+
 .main-container {
   //  max-width: 1440px;
   padding-left: 25px;
   padding-right: 25px;
+}
+
+.search{
+  position: relative;
+  .fa{
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translate(0,-50%);
+    font-size: 19px;
+    color: #CAD5E0;
+  }
 }
 
 .heading {
