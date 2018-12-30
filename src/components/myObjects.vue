@@ -24,7 +24,6 @@
             <input type="text" v-model="search" class="form-control" placeholder="Поиск...">
             <i class="fa fa-search" aria-hidden="true"></i>
           </div>
-          
         </div>
       </div>
 
@@ -148,9 +147,9 @@ export default {
 
   created() {
     //if (!this.$store.state.myObjects) {
-      this.$store.commit("loadMyObjects", "test");
+    this.$store.commit("loadMyObjects", "test");
     //}
-    window.routeParam = {name: this.$route.name};
+    window.routeParam = { name: this.$route.name };
   },
 
   mounted() {
@@ -175,15 +174,21 @@ export default {
         data[item] = this.$store.state.myObjects[item];
       }
       if (this.search) {
-     //   this.search = this.search.toLowerCase().trim();
+        //   this.search = this.search.toLowerCase().trim();
         data = this.lodash.filter(data, o => {
           return (
-            this.lodash.includes(o.name.toLowerCase(), this.search.toLowerCase()) ||
-            this.lodash.includes(o.address.toLowerCase(), this.search.toLowerCase())
+            this.lodash.includes(
+              o.name.toLowerCase(),
+              this.search.toLowerCase()
+            ) ||
+            this.lodash.includes(
+              o.address.toLowerCase(),
+              this.search.toLowerCase()
+            )
           );
         });
 
-      //  console.log(data, this.search.toLowerCase());
+        //  console.log(data, this.search.toLowerCase());
       }
 
       return data;
@@ -202,10 +207,11 @@ export default {
     },
     status(item) {
       // item.st = st;
-      let free = (item.free / item.total) * 100;
-      let reserved = (item.reserved / item.total) * 100;
-      let sold = (item.sold / item.total) * 100;
-      let interest = (item.interest / item.total) * 100;
+      let free = Math.ceil((item.free / item.total) * 100);
+      let reserved = Math.ceil((item.reserved / item.total) * 100);
+      let sold = Math.ceil((item.sold / item.total) * 100);
+      let interest = Math.ceil((item.interest / item.total) * 100);
+      let notforsale = Math.ceil((item.notforsale / item.total) * 100);
       return `
       <div class="progress-bar chess-status-free" data-num="${
         item.free
@@ -219,6 +225,9 @@ export default {
       <div class="progress-bar chess-status-sold" data-num="${
         item.sold
       }" data-pr="${sold}%"  style="width: ${sold}%">${sold}%</div>
+      <div class="progress-bar chess-status-notforsale" data-num="${
+        item.notforsale
+      }" data-pr="${notforsale}%"  style="width: ${notforsale}%">${notforsale}%</div>
       `;
     }
   }
@@ -236,27 +245,26 @@ export default {
     margin-bottom: 2px;
     text-align: left;
     .title-o {
-      
       margin-bottom: 10px;
       font-size: 20px;
     }
   }
 
-  .loc{
-      margin-right: 20px;
-      position: relative;
-      padding-left: 26px;
-      line-height: 1.4;
-      min-height: 42px;
-      .fa{
-        font-size: 21px;
-        margin-right: 5px;
-        position: absolute;
-        left: 0;
-        top: 0;
-        color: #1abc9c;
-      }
+  .loc {
+    margin-right: 20px;
+    position: relative;
+    padding-left: 26px;
+    line-height: 1.4;
+    min-height: 42px;
+    .fa {
+      font-size: 21px;
+      margin-right: 5px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #1abc9c;
     }
+  }
 
   .img-m {
     height: 140px;

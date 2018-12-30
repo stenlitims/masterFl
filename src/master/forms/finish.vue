@@ -1,19 +1,19 @@
 <template>
-<div class="finish-wrap">
-<div class="form">
-
-    <div class="text-center img">
-      <img src="https://test.flatris.com.ua/assets/panel/img/wedding.png" alt="">
+  <div class="finish-wrap">
+    <div class="form">
+      <div class="text-center img">
+        <img src="https://test.flatris.com.ua/assets/panel/img/wedding.png" alt>
+      </div>
+      <div class="text-inner text-center" v-html="finishTxt"></div>
+      <div class="text-center">
+        <a
+          href="#"
+          @click.prevent="finish"
+          class="btn-line btn-md waves-effect"
+        >Перейти на главную страницу</a>
+      </div>
     </div>
-    <div class="text-inner text-center" v-html="finishTxt">
-    </div>
-    <div class="text-center">
-      <a href="#" @click.prevent="finish" class="btn-line btn-md waves-effect">Перейти на главную страницу</a>
-    </div>
-
   </div>
-</div>
-  
 </template>
 
 <script>
@@ -29,11 +29,11 @@ export default {
     finish() {
       let data = {};
       data["master"] = this.namep;
-  //    data["steps"] = this.steps;
-   //   data["step"] = this.step;
+      //    data["steps"] = this.steps;
+      //   data["step"] = this.step;
 
       $.post(
-        this.$root.apiurl,
+        this.$store.state.apiurl,
         {
           action: "setState",
           finish: 1,
@@ -50,6 +50,22 @@ export default {
         },
         "json"
       );
+
+      if (this.object_id) {
+        $.post(
+          this.$store.state.apiurl,
+          {
+            action: "setObjectActive",
+            id: this.object_id,
+          },
+          data => {
+            if (data.type == "success") {
+
+            }
+          },
+          "json"
+        );
+      }
     }
   }
 };

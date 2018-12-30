@@ -8,6 +8,8 @@
           <i class="fa fa-search" aria-hidden="true"></i>
         </div>
       </div>
+
+      <button class="btn btn-lg btn-danger waves-effect">Добавить пользователя</button>
     </div>
 
     <div class="table-responsive">
@@ -21,18 +23,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, i) in users" :key="i">
+          <tr v-for="(item, i) in users" :key="i" :class="{'active': item.checked}">
             <td>
-              <label class="cus-check" >
-                <input type="checkbox" @change="selectUs(item)"  v-model="item.checked">
+              <label class="cus-check">
+                <input type="checkbox" @change="selectUs(item)" v-model="item.checked">
                 <span class="ch"></span>
               </label>
-
             </td>
             <td v-if="item.fullname">{{item.fullname}}</td>
             <td v-else>{{item.email}}</td>
             <td></td>
-            <td></td>
+            <td>{{names(item.per)}}</td>
           </tr>
         </tbody>
       </table>
@@ -50,29 +51,84 @@ export default {
     return {
       data: {},
       search: null,
-      userIds:[]
+      userIds: []
     };
+  },
+
+  beforeDestroy() {
+    this.$emit("userIds", []);
   },
 
   created() {
     if (!this.$store.state.users) {
       this.$store.commit("getUsers");
     }
+    if (!this.$store.state.permissions.cms.length) {
+      this.$store.commit("loadUserPermissions", "cms");
+    }
+    if (!this.$store.state.myObjects) {
+      this.$store.commit("loadMyObjects");
+    }
+
+    this.lodash.forEach(this.users, user => {
+      user.checked = false;
+    })
   },
 
   mounted() {},
   computed: {
-    users(){
-      let data = this.$store.state.users;
-      return data;
+    users() {
+      let users = { ...this.$store.state.users };
+      let permissions = { ...this.$store.state.permissions.cms };
+      this.lodash.forEach(users, (user, key) => {
+        user.per = [];
+        user.per = this.lodash.filter(permissions, {
+          agent_id: user.internalKey,
+          object: "gproject"
+        });
+        if (this.$store.state.myObjects) {
+          this.lodash.forEach(user.per, p => {
+            p.name = this.$store.state.myObjects[p.gproject_id].name;
+          });
+        }
+
+        // if (p) {
+        //   user.per.push(p);
+        // }
+      });
+
+      if (this.search) {
+        users = this.lodash.filter(users, o => {
+          return this.lodash.includes(
+            o.fullname.toLowerCase(),
+            this.search.toLowerCase()
+          );
+        });
+      }
+
+      // console.log(users);
+
+      return users;
     }
   },
   methods: {
-    selectUs(item){
-    //  console.log(item);
-      if(!this.userIds.includes(item.id)){
+    names(item) {
+      let names = [];
+      this.lodash.forEach(item, p => {
+        names.push(p.name);
+      });
+      return names.join(", ");
+    },
+    selectUs(item) {
+      if (!this.userIds.includes(item.id)) {
         this.userIds.push(item.id);
+      } else {
+        let index = this.userIds.indexOf(item.id);
+        if (index > -1) {
+          this.userIds.splice(index, 1);
+        }
       }
+      this.$emit("userIds", this.userIds);
     },
     send(data) {
       // console.log(this.data);
@@ -81,10 +137,16 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.users-table{
-  .cus-check{
+<style lang="scss" scoped>
+.users-table {
+  .cus-check {
     margin-bottom: 0;
+  }
+  tr {
+    transition: all 0.3s ease;
+    &.active {
+      background: rgb(227, 247, 243);
+    }
   }
 }
 </style>

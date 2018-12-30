@@ -65,12 +65,17 @@
         <div class="col-md-9 col-lg-10">
           <!-- <div style="display:none">{{$route.name}} {{$route.params.id}}</div> -->
           <!-- <transition name="center" mode="out-in"></transition> -->
-          <component :is="component"></component>
+          <component :is="component" @userIds="userIds = $event"></component>
         </div>
       </div>
     </div>
 
     <savePanel v-if="$store.state.changes.count.length"></savePanel>
+    <savePanel
+      v-if="userIds.length"
+      prop="users"
+      :title="'Вы выбрали '+userIds.length+' пользователя.'"
+    ></savePanel>
   </div>
 </template>
 
@@ -95,7 +100,8 @@ export default {
     return {
       nav: {
         inst: false
-      }
+      },
+      userIds: []
     };
   },
 
@@ -238,6 +244,9 @@ export default {
   display: flex;
   justify-content: space-between;
   .form-group {
+    margin-bottom: 0;
+  }
+  h3 {
     margin-bottom: 0;
   }
 }

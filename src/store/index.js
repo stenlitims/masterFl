@@ -20,11 +20,13 @@ export default new Vuex.Store({
     myObjects: null,
     permissions: {
       web: [],
-      mirkvartir: []
+      mirkvartir: [],
+      cms: [],
     },
     changes: {
       count: []
     },
+    
   },
   mutations: {
     getTarifPlan(state) {
@@ -106,6 +108,23 @@ export default new Vuex.Store({
         },
         "JSON"
       );
+    },
+    loadUserPermissions(state, payload = 'cms') {
+      if (!payload) return;
+      $.post(
+        state.apiurl, {
+          action: 'getPermissions',
+          type: payload
+        },
+        data => {
+          if (data) {
+            // console.log(state);
+            state.permissions[payload] = data;
+          }
+        },
+        "json"
+      );
+
     },
     setChanges(state, payload) {
       state.changes = payload;
