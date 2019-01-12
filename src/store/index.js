@@ -26,9 +26,16 @@ export default new Vuex.Store({
     changes: {
       count: []
     },
+
+    rmodal:{
+      type: null
+    }
     
   },
   mutations: {
+    loadRmodal(state, payload){
+      state.rmodal = payload;
+    },
     getTarifPlan(state) {
       $.post(
         state.apiurl, {

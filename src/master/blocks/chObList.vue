@@ -15,7 +15,7 @@
       </label>
       <slide-up-down :active="b.state.opened" :duration="500">
       <div class="item" v-for="(s, si) in child(b.id)" :key="si">
-        <label class="cus-check">
+        <label class="cus-check big">
           <input type="checkbox" @change="add(s)" v-model="s.state.selected">
           <span class="ch"></span>
           <span class="title">{{s.text}}</span>
@@ -46,6 +46,7 @@ export default {
       return this.lodash.filter(this.data, { parent: parent });
     },
     add(item) {
+      this.$emit("setPr", item);
       this.lodash.forEach(this.data, (value, key) => {
         if (item.id == value.parent) {
           value.state.selected = item.state.selected;

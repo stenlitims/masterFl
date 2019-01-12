@@ -52,13 +52,7 @@ export default {
         }
       }
     },
-    isAddress(email) {
-      let pattern = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,})$/;
-      if (pattern.test(email)) {
-        return true;
-      }
-      return false;
-    },
+   
     isPhone(phone) {
    //   let pattern = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
       let pattern = /^\+?(?=.*\d)[\d ]+$/;

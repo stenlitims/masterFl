@@ -9,7 +9,7 @@
         </div>
       </div>
 
-      <button class="btn btn-lg btn-danger waves-effect">Добавить пользователя</button>
+      <button class="btn btn-lg btn-danger waves-effect" @click="addUser">Добавить пользователя</button>
     </div>
 
     <div class="table-responsive">
@@ -72,7 +72,7 @@ export default {
 
     this.lodash.forEach(this.users, user => {
       user.checked = false;
-    })
+    });
   },
 
   mounted() {},
@@ -112,6 +112,12 @@ export default {
     }
   },
   methods: {
+    addUser() {
+      this.$store.commit("loadRmodal", {
+        type: "addUser",
+        title: "Добавление нового пользователя"
+      });
+    },
     names(item) {
       let names = [];
       this.lodash.forEach(item, p => {
@@ -120,10 +126,10 @@ export default {
       return names.join(", ");
     },
     selectUs(item) {
-      if (!this.userIds.includes(item.id)) {
-        this.userIds.push(item.id);
+      if (!this.userIds.includes(item.internalKey)) {
+        this.userIds.push(item.internalKey);
       } else {
-        let index = this.userIds.indexOf(item.id);
+        let index = this.userIds.indexOf(item.internalKey);
         if (index > -1) {
           this.userIds.splice(index, 1);
         }

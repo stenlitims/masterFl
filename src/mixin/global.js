@@ -24,8 +24,25 @@ export default {
         title: text,
       }).catch(swal.noop);
     },
+
+
+    mesError(text = "Ошибка!") {
+
+      swal({
+        showConfirmButton: false,
+        timer: 2000,
+        type: "error",
+        title: text,
+      }).catch(swal.noop);
+    },
     confirm(data) {
 
+    },
+
+    closeRmodal() {
+      this.$store.commit("loadRmodal", {
+        type: null,
+      });
     },
 
     setChanges(item, mod = null, original = null) {
@@ -51,6 +68,12 @@ export default {
 
       this.$store.commit("setChanges", this.changes);
 
+    },
+
+    setChanges2(item) {
+      this.changes = this.$store.state.changes;
+      this.changes.count.push('test')
+      this.$store.commit("setChanges", this.changes);
     },
 
 
@@ -187,6 +210,22 @@ export default {
         );
       }).catch(swal.noop);
 
+    },
+
+    isGmailAddress(email) {
+      let pattern = /^\w+([\.-]?\w+)*@gmail.com+$/;
+      if (pattern.test(email)) {
+        return true;
+      }
+      return false;
+    },
+
+    isAddress(email) {
+      let pattern = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,})$/;
+      if (pattern.test(email)) {
+        return true;
+      }
+      return false;
     },
 
     declension(num, expressions) {

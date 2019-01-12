@@ -73,9 +73,14 @@
     <savePanel v-if="$store.state.changes.count.length"></savePanel>
     <savePanel
       v-if="userIds.length"
+      @userIds="userIds = []"
       prop="users"
+      :ids="userIds"
       :title="'Вы выбрали '+userIds.length+' пользователя.'"
     ></savePanel>
+    <transition name="sright">
+      <modalRight v-if="$store.state.rmodal.type"></modalRight>
+    </transition>
   </div>
 </template>
 
@@ -93,6 +98,7 @@ import reports from "@/components/settings/reports";
 import users from "@/components/settings/users";
 import goals from "@/components/settings/goals";
 import savePanel from "@/components/savePanel";
+import modalRight from "@/components/settings/modalRight";
 
 export default {
   name: "settings",
@@ -118,7 +124,8 @@ export default {
     agents,
     reports,
     goals,
-    savePanel
+    savePanel,
+    modalRight
   },
 
   created() {

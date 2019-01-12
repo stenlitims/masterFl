@@ -65,13 +65,7 @@ export default {
     }
   },
   methods: {
-    isGmailAddress(email) {
-      let pattern = /^\w+([\.-]?\w+)*@gmail.com+$/;
-      if (pattern.test(email)) {
-        return true;
-      }
-      return false;
-    },
+    
     del(i) {
       this.emails.splice(i, 1);
     },

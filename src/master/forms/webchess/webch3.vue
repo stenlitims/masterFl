@@ -3,10 +3,14 @@
     <h4 class="text-center">Выберите дома и секции, которые хотите отображать на сайте</h4>
     <div class="row" v-if="data.permissions_tree">
       <div class="col-lg-6">
-        <chObList class="text-border" :data="data.permissions_tree" :dataId="object_id"></chObList>
+        <chObList
+          class="text-border"
+          :data="data.permissions_tree"
+          :dataId="object_id"
+          @setPr="setChanges2('pr')"
+        ></chObList>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -68,16 +72,14 @@ export default {
         return true;
       }
 
-      let data_to_send = this.getPerm();
-    //   console.log(data_to_send);
+      //   console.log(data_to_send);
 
       if (!this.formChange) {
         this.$emit("footerBtn", e);
         return false;
       }
 
-
-      this.setPermissions(data_to_send, 'web', e);
+      this.save(e);
 
       // $.ajax({
       //   url:
@@ -101,6 +103,13 @@ export default {
       //   });
 
       return;
+    },
+    save(e) {
+      let data_to_send = this.getPerm();
+      if (e == "save") {
+        e = null;
+      }
+      this.setPermissions(data_to_send, "web", e);
     }
   }
 };

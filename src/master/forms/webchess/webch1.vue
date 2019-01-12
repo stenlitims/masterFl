@@ -5,25 +5,25 @@
     <div class="list-langs" v-if="object">
       <div class="row">
         <div class="col-sm-4 col-md-3"></div>
-        <div class="col-sm-8 col-md-9"><div class="list-title">Укажите название объекта  на выбранном языке</div> </div>
-        
+        <div class="col-sm-8 col-md-9">
+          <div class="list-title">Укажите название объекта на выбранном языке</div>
+        </div>
       </div>
       <div class="row" v-for="(item, i) in langs" :key="i">
         <div class="col-sm-4 col-md-3">
           <label class="cus-check big">
-            <input type="checkbox" v-model="item.selected">
+            <input type="checkbox" v-model="item.selected" @change="setChanges2('langs')">
             <span class="ch"></span>
             <span class="title">{{item.lang}}</span>
           </label>
         </div>
         <div class="col-sm-8 col-md-9">
           <div class="form-group" :data-upd="upd">
-            <input type="text" class="form-control" v-model="item.name">
+            <input type="text" class="form-control" @keyup="setChanges2('langs')" v-model="item.name">
           </div>
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -46,6 +46,7 @@ export default {
       },
       object: {},
       form: {},
+      original: {},
       upd: false,
       required: {}
     };
@@ -103,7 +104,7 @@ export default {
               this.langs[i].name = data[i].name;
             }
           }
-          this.upd = 'upd';
+          this.upd = "upd";
         },
         "json"
       );
@@ -115,9 +116,12 @@ export default {
         return true;
       }
 
+      if (!this.formChange) this.$emit("footerBtn", e);
 
-      if(!this.formChange) this.$emit("footerBtn", e);
+      this.save(e);
+    },
 
+    save(e) {
       let lang = {};
       let i1 = 0;
       for (let i in this.langs) {
@@ -127,11 +131,9 @@ export default {
         }
       }
 
-      if(!i1) {
+      if (!i1) {
         return;
       }
-
-
 
       $.post(
         this.$root.apiurl,
@@ -142,12 +144,16 @@ export default {
         },
         data => {
           if (data) {
-             this.$emit("footerBtn", e);
+            if (e == "save") {
+              this.original = Object.assign({}, this.form);
+              this.saveOk();
+            } else {
+              this.$emit("footerBtn", e);
+            }
           }
         },
         "json"
       );
-
     }
   }
 };

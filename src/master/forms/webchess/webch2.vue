@@ -1,20 +1,23 @@
 <template>
   <div class="form">
     <h4 class="text-center">Выберите поля, которые хотите отображать на сайте</h4>
-      <div class="list-fields-wrap">
-        <div class="list-fields">
-          <div class="item" v-for="(item, i) in fields" :key="i">
-            <label class="cus-check" :class="{'fields_hidden': item.hide}">
-                <input type="checkbox" @change="setInput(i)" v-model="item.checked" :disabled="item.disabled">
-                <span class="ch"></span>
-                <span class="title">{{item.name}}</span>
-              </label>
-          </div>
+    <div class="list-fields-wrap">
+      <div class="list-fields">
+        <div class="item" v-for="(item, i) in fields" :key="i">
+          <label class="cus-check" :class="{'fields_hidden': item.hide}">
+            <input
+              type="checkbox"
+              @change="setInput(i)"
+              v-model="item.checked"
+              :disabled="item.disabled"
+              
+            >
+            <span class="ch"></span>
+            <span class="title">{{item.name}}</span>
+          </label>
         </div>
       </div>
-    
-
-
+    </div>
   </div>
 </template>
 
@@ -66,6 +69,8 @@ export default {
         this.fields.discount_price.checked = !this.fields.discount_price
           .checked;
       }
+
+      this.setChanges2('fields');
     },
 
     send(e) {
@@ -75,7 +80,9 @@ export default {
       }
 
       if (!this.formChange) this.$emit("footerBtn", e);
-
+      this.save(e);
+    },
+    save(e) {
       let fields = {};
 
       for (let i in this.fields) {
@@ -97,7 +104,12 @@ export default {
         },
         data => {
           if (data) {
-            this.$emit("footerBtn", e);
+            if (e == "save") {
+              this.original = Object.assign({}, this.form);
+              this.saveOk();
+            } else {
+              this.$emit("footerBtn", e);
+            }
           }
         },
         "json"

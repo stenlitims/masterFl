@@ -6,6 +6,9 @@
         <router-view/>
       </transition>
     </div>
+    <transition name="fade">
+      <div v-if="$store.state.rmodal.type" class="shadow-modal" @click="closeRmodal"></div>
+    </transition>
   </div>
 </template>
 
@@ -56,6 +59,34 @@ $(document).on("change", ".up-file input", function() {
   color: #33475b;
 }
 
+.shadow-modal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 400;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.sright-enter-active,
+.sright-leave-active {
+ transition: all .3s ease;
+}
+.sright-enter,
+.sright-leave-to {
+  transform: translate(100%, 0);
+}
+
 body {
   background: rgb(245, 248, 250);
 }
@@ -80,11 +111,11 @@ body {
   background: rgb(95, 190, 170);
 }
 
-a{
-  color: #40C0A9;
+a {
+  color: #40c0a9;
 }
 
-.container{
+.container {
   max-width: 100%;
 }
 
@@ -94,15 +125,15 @@ a{
   padding-right: 25px;
 }
 
-.search{
+.search {
   position: relative;
-  .fa{
+  .fa {
     position: absolute;
     right: 18px;
     top: 50%;
-    transform: translate(0,-50%);
+    transform: translate(0, -50%);
     font-size: 19px;
-    color: #CAD5E0;
+    color: #cad5e0;
   }
 }
 
@@ -124,7 +155,7 @@ a{
     }
   }
 
-  .search{
+  .search {
     margin-bottom: 0;
     min-width: 300px;
   }
@@ -218,7 +249,6 @@ a{
     .img {
       margin-top: 10px;
       margin-bottom: 30px;
-     
     }
     .title {
       font-size: 20px;
@@ -229,10 +259,10 @@ a{
   .img {
     height: 160px;
     margin-bottom: 20px;
-     display: flex;
-      align-items: center;
-      justify-content: center;
-      
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     img {
       max-height: 160px;
       max-width: 100%;
@@ -275,12 +305,12 @@ a{
   }
 }
 
-.inst-list{
-  .item{
+.inst-list {
+  .item {
     position: relative;
   }
-  .soon{
-    background: #F36B7A;
+  .soon {
+    background: #f36b7a;
     position: absolute;
     top: 10px;
     right: -20px;
@@ -289,24 +319,24 @@ a{
     border-radius: 3px;
     color: #fff;
   }
-  .title{
+  .title {
     font-size: 20px;
   }
-  .info{
+  .info {
     margin-top: 12px;
   }
-  .img{
-    img{
+  .img {
+    img {
       max-width: 90%;
     }
   }
-  .btns{
-    .btn{
+  .btns {
+    .btn {
       margin: 0 7px;
-      &:first-child{
+      &:first-child {
         margin-left: 0;
       }
-      &:last-child{
+      &:last-child {
         margin-right: 0;
       }
     }
@@ -392,7 +422,7 @@ a.btn-line {
   background: #ff7a59;
   color: #fff;
   border-radius: 8px;
-  &:hover{
+  &:hover {
     color: #fff;
   }
 }
@@ -603,6 +633,7 @@ select[disabled].form-control {
     .ch {
       width: 26px;
       height: 26px;
+      min-width: 26px;
       margin-right: 12px;
     }
     input:checked + .ch {
@@ -689,11 +720,11 @@ select[disabled].form-control {
 }
 .swal2-modal {
   &.swal2-show {
-  //  display: flex !important;
-  //  flex-direction: column;
+    //  display: flex !important;
+    //  flex-direction: column;
   }
   .swal2-title {
-  //  order: -1;
+    //  order: -1;
   }
   .swal2-content {
     padding-left: 20px;

@@ -9,7 +9,7 @@
 
         <div v-if="prop == 'users'">
           <button class="btn btn-or btn-md waves-effect" @click="edit">Редактировать</button>
-          <button class="btn btn-line btn-md waves-effect" @click="del">Удалить</button>
+          <button class="btn btn-line btn-md waves-effect" @click="removeUser(ids)">Удалить</button>
         </div>
 
         <div class="title">{{mtitle}}</div>
@@ -21,7 +21,7 @@
 <script>
 export default {
   name: "savePanel",
-  props: ["prop", "title", "cont"],
+  props: ["prop", "title", "cont", "ids"],
   data() {
     return {};
   },
@@ -40,6 +40,41 @@ export default {
     }
   },
   methods: {
+    removeUser(ids) {
+      if (!ids) return;
+
+      swal({
+        title: "Удалить?",
+        text: "Вы точно хотите удалить?",
+        type: "error",
+        showCancelButton: true,
+        confirmButtonClass: "btn-warning",
+        confirmButtonText: "Да, удалить",
+        cancelButtonText: "Отмена",
+        cancelButtonClass: "btn-md btn btn-secondary waves-effect",
+        confirmButtonClass: "btn-danger btn-md waves-effect waves-light",
+        showLoaderOnConfirm: true
+      })
+        .then(() => {
+          $.post(
+            this.$store.state.apiurl,
+            {
+              action: "removeUser",
+              ids: ids
+            },
+            data => {
+              if (data.type == "success") {
+                this.$store.commit("getUsers");
+                this.$emit("userIds", []);
+                swal.close();
+              }
+            },
+            "json"
+          );
+        })
+        .catch(swal.noop);
+    },
+
     cancel() {
       this.$store.commit("setChanges", {
         count: []

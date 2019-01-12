@@ -9,16 +9,18 @@
           <div class="form-control">{{item.name}}</div>
         </div>
         <div class="col-6">
-          <select class="form-control" v-model="item.status">
-            <option v-for="(it, i) in status" :key="i" 
-            
-             :value="it.id" :selected="it.id == it.status">{{it.name}}</option>
+          <select class="form-control"  @change="setChanges2('status')" v-model="item.status">
+            <option
+              v-for="(it, i) in status"
+              :key="i"
+              :value="it.id"
+              :selected="it.id == it.status"
+              
+            >{{it.name}}</option>
           </select>
         </div>
       </div>
     </div>
-
-
   </div>
 </template>
 
@@ -70,7 +72,9 @@ export default {
       }
 
       if (!this.formChange) this.$emit("footerBtn", e);
-
+      this.save(e);
+    },
+    save(e) {
       let status = {};
       this.lodash.forEach(this.status, (value, key) => {
         status[value.id] = value.status;
@@ -85,7 +89,11 @@ export default {
         },
         data => {
           if (data) {
-            this.$emit("footerBtn", e);
+            if (e == "save") {
+              this.saveOk();
+            } else {
+              this.$emit("footerBtn", e);
+            }
           }
         },
         "json"
