@@ -15,6 +15,9 @@
 <script>
 import mainHeader from "@/components/mainHeader";
 import store from "@/store";
+import swal from "sweetalert2";
+
+window.swal = swal;
 
 export default {
   name: "App",
@@ -80,7 +83,7 @@ $(document).on("change", ".up-file input", function() {
 
 .sright-enter-active,
 .sright-leave-active {
- transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 .sright-enter,
 .sright-leave-to {
@@ -366,7 +369,12 @@ a {
   }
 }
 
-.btn-line {
+body .swal2-popup .btn-line.swal2-cancel {
+  font-size: 0.9rem;
+}
+
+.btn-line,
+body .swal2-popup .btn-line.swal2-cancel {
   background: #fff;
   border: 2px solid #ff7a59;
   color: #ff7a59;
@@ -418,13 +426,23 @@ a.btn-line {
   color: #ff7a59;
 }
 
-.btn-or {
+.btn-or,
+.swal2-popup .swal2-styled.swal2-confirm.btn-or {
   background: #ff7a59;
   color: #fff;
   border-radius: 8px;
   &:hover {
     color: #fff;
   }
+}
+
+.swal2-popup .swal2-styled.swal2-confirm.btn-or {
+  font-size: 0.9rem;
+}
+
+.swal2-popup .swal2-styled:focus {
+  outline: 0;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(255, 122, 89, 0.36);
 }
 
 .btn-o {

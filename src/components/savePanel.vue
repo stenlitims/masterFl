@@ -42,20 +42,20 @@ export default {
   methods: {
     removeUser(ids) {
       if (!ids) return;
+      (async ()=> {
+        const { value: removeUser } = await swal({
+          title: "Удалить?",
+          text: "Вы точно хотите удалить?",
+          type: "error",
+          showCancelButton: true,
+          confirmButtonClass: "btn-warning",
+          confirmButtonText: "Да, удалить",
+          cancelButtonText: "Отмена",
+          cancelButtonClass: "btn btn-line btn-md waves-effect",
+          confirmButtonClass: "btn btn-or btn-md waves-effect"
+        });
 
-      swal({
-        title: "Удалить?",
-        text: "Вы точно хотите удалить?",
-        type: "error",
-        showCancelButton: true,
-        confirmButtonClass: "btn-warning",
-        confirmButtonText: "Да, удалить",
-        cancelButtonText: "Отмена",
-        cancelButtonClass: "btn-md btn btn-secondary waves-effect",
-        confirmButtonClass: "btn-danger btn-md waves-effect waves-light",
-        showLoaderOnConfirm: true
-      })
-        .then(() => {
+        if (removeUser) {
           $.post(
             this.$store.state.apiurl,
             {
@@ -71,8 +71,8 @@ export default {
             },
             "json"
           );
-        })
-        .catch(swal.noop);
+        }
+      })();
     },
 
     cancel() {

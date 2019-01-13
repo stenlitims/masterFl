@@ -25,6 +25,9 @@ export default {
   },
   created() {},
   updated() {},
+  mounted() {
+    console.log(this.$route);
+  },
   methods: {
     finish() {
       let data = {};
@@ -44,7 +47,11 @@ export default {
             $(".page-master").removeClass("active");
             this.$emit("clearData", true);
             setTimeout(() => {
-              this.$router.push({ name: "MainPage" });
+              let nameRoute = "MainPage";
+              if (this.$route.name == "new_object") {
+                nameRoute = "myObjects";
+              }
+              this.$router.push({ name: nameRoute });
             }, 300);
           }
         },
@@ -56,11 +63,10 @@ export default {
           this.$store.state.apiurl,
           {
             action: "setObjectActive",
-            id: this.object_id,
+            id: this.object_id
           },
           data => {
             if (data.type == "success") {
-
             }
           },
           "json"

@@ -51,6 +51,7 @@ export default {
 
       if (mod == null && original == null) {
         if (!this.original || !this.form) return;
+        if (!this.original[item]) return;
         original = this.original[item].trim();
         mod = this.form[item].trim();
       }
@@ -98,7 +99,10 @@ export default {
     OffPermissions(id, ut = 'web') {
       // if (!id) return;
 
-      swal({
+      (async () => {
+        const {
+          value: sw
+        } = await swal({
           title: "Отключить?",
           text: "Вы точно хотите отключить?",
           type: "error",
@@ -106,14 +110,11 @@ export default {
           confirmButtonClass: "btn-warning",
           confirmButtonText: "Да, отключить",
           cancelButtonText: "Отмена",
-          cancelButtonClass: "btn-md btn btn-secondary waves-effect",
-          confirmButtonClass: "btn-danger btn-md waves-effect waves-light",
-          showLoaderOnConfirm: true
-        })
-        .then(() => {
+          cancelButtonClass: "btn btn-line btn-md waves-effect",
+          confirmButtonClass: "btn btn-or btn-md waves-effect"
+        });
 
-
-
+        if (sw) {
           let permissions = this.$store.state.permissions[ut];
           for (let item of permissions) {
             if (!id) {
@@ -147,8 +148,10 @@ export default {
 
           //  console.log(data, ut);
           this.setPermissions(data, ut);
-        })
-        .catch(swal.noop);
+        }
+      })();
+
+
     },
 
     setPermissions(permissions, ut = 'web', e = null) {
@@ -182,33 +185,37 @@ export default {
 
       if (!id) return;
 
+      (async () => {
+        const {
+          value: removeObj
+        } = await swal({
+          title: "Удалить?",
+          text: "Вы точно хотите удалить?",
+          type: "error",
+          showCancelButton: true,
+          confirmButtonClass: "btn-warning",
+          confirmButtonText: "Да, удалить",
+          cancelButtonText: "Отмена",
+          cancelButtonClass: "btn btn-line btn-md waves-effect",
+          confirmButtonClass: "btn btn-or btn-md waves-effect"
+        });
 
-      swal({
-        title: "Удалить?",
-        text: "Вы точно хотите удалить?",
-        type: "error",
-        showCancelButton: true,
-        confirmButtonClass: "btn-warning",
-        confirmButtonText: "Да, удалить",
-        cancelButtonText: "Отмена",
-        cancelButtonClass: "btn-md btn btn-secondary waves-effect",
-        confirmButtonClass: "btn-danger btn-md waves-effect waves-light",
-        showLoaderOnConfirm: true
-      }).then(() => {
-        $.post(
-          this.$store.state.apiurl, {
-            action: 'deleteObject',
-            id: id
-          },
-          data => {
-            if (data.type == 'success') {
-              swal.close();
-              this.$store.commit("loadMyObjects");
-            }
-          },
-          "json"
-        );
-      }).catch(swal.noop);
+        if (removeObj) {
+          $.post(
+            this.$store.state.apiurl, {
+              action: 'deleteObject',
+              id: id
+            },
+            data => {
+              if (data.type == 'success') {
+                swal.close();
+                this.$store.commit("loadMyObjects");
+              }
+            },
+            "json"
+          );
+        }
+      })();
 
     },
 

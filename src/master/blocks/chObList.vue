@@ -15,7 +15,7 @@
       </label>
       <slide-up-down :active="b.state.opened" :duration="500">
       <div class="item" v-for="(s, si) in child(b.id)" :key="si">
-        <label class="cus-check big">
+        <label class="cus-check">
           <input type="checkbox" @change="add(s)" v-model="s.state.selected">
           <span class="ch"></span>
           <span class="title">{{s.text}}</span>
@@ -38,6 +38,7 @@ export default {
   mounted() {},
   computed: {
     main() {
+      console.log(this.data);
       return this.lodash.find(this.data, { id: "gproject_" + this.dataId });
     }
   },

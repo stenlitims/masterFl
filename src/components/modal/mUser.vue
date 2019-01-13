@@ -15,26 +15,30 @@
       </select>
     </div>
 
-    <div class="form-group list-obj">
+    <div class="form-group list-obj-m">
       <label>Права доступа к объектам</label>
 
-      <div class="row item" v-for="(item, i) in $store.state.myObjects" :key="i">
-        <div class="col-sm-6">
-          <label class="cus-check big">
-            <input type="checkbox" v-model="data.dataPer[i]">
-            <span class="ch"></span>
-            <div>
-              <span class="title">{{item.name}}</span>
-              <a href="#" class="t2">подробнее</a>
-            </div>
-          </label>
+      <div class="item" v-for="(item, i) in $store.state.myObjects" :key="i">
+        <div class="row">
+          <div class="col-sm-6">
+            <label class="cus-check big">
+              <input type="checkbox" v-model="data.dataPer[i]">
+              <span class="ch"></span>
+              <div>
+                <span class="title">{{item.name}}</span>
+                <a href="#" class="t2">подробнее</a>
+              </div>
+            </label>
+          </div>
+          <div class="col-sm-6">
+            <select class="form-control">
+              <option>редактирование</option>
+              <option>просмотр</option>
+            </select>
+          </div>
         </div>
-        <div class="col-sm-6">
-          <select class="form-control">
-            <option>редактирование</option>
-            <option>просмотр</option>
-          </select>
-        </div>
+
+        <!-- <chObList class="text-border" :data="$store.state.permissions.cms" :dataId="i"></chObList> -->
       </div>
     </div>
 
@@ -46,9 +50,14 @@
 </template>
 
 <script>
+import chObList from "@/master/blocks/chObList";
+
 export default {
   name: "mUser",
   props: ["data"],
+  components: {
+    chObList
+  },
   data() {
     return {
       search: null
@@ -57,11 +66,14 @@ export default {
 
   created() {},
 
-  mounted() {},
+  mounted() {
+   // console.log(this.$store.state.permissions.cms);
+  },
   computed: {},
   methods: {
+    
     send(data) {
-      // console.log(this.data);
+      // console.log(this.$store.state.permissions.cms);
     }
   }
 };
@@ -86,7 +98,7 @@ export default {
   }
 }
 
-.list-obj {
+.list-obj-m {
   .item {
     margin-top: 10px;
     margin-bottom: 25px;

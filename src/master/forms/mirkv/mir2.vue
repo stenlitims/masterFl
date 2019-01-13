@@ -18,7 +18,7 @@ import masterMixin from "@/mixin/masterMixin";
 import chObList from "@/master/blocks/chObList";
 
 export default {
-  name: "mir1",
+  name: "mir2",
   mixins: [masterMixin],
   components: {
     chObList

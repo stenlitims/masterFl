@@ -1,20 +1,27 @@
 <template>
-  <div class="google-table">    
-      <img style="display:none;" onload="" onerror="alert('Вы не авторизированы в ' + network + '. Для авторизации перейдите https://accounts.google.com/')"
-src="https://accounts.google.com/CheckCookie?continue=https%3A%2F%2Fwww.google.com%2Fintl%2Fen%2Fimages%2Flogos%2Faccounts_logo.png&followup=https%3A%2F%2Fwww.google.com%2Fintl%2Fen%2Fimages%2Flogos%2Faccounts_logo.png&chtml=LoginDoneHtml&checkedDomains=youtube&checkConnection=youtube%3A291%3A1"/>
-<div class="nav_line">
-  <div>
-    <i class="icon-c-logo"> <img src="https://flatris.com.ua/assets/images/logo/logo_w.svg" height="30"> </i>
-  </div>
-  <div class="btns">
-    <a class="btn_transparent" @click.prevent="close" href="#"><span>Закрыть</span></a>
-	  <a class="btn_save" @click.prevent="setTable" href="#">Сохранить в <strong>FLATRIS</strong></a>
-  </div>
-	
-	
-	
-</div>
-<iframe class="googlespreadsheets_frame" :src="url"></iframe>
+  <div class="google-table">
+    <img
+      style="display:none;"
+      onload
+      onerror="alert('Вы не авторизированы в ' + network + '. Для авторизации перейдите https://accounts.google.com/')"
+      src="https://accounts.google.com/CheckCookie?continue=https%3A%2F%2Fwww.google.com%2Fintl%2Fen%2Fimages%2Flogos%2Faccounts_logo.png&followup=https%3A%2F%2Fwww.google.com%2Fintl%2Fen%2Fimages%2Flogos%2Faccounts_logo.png&chtml=LoginDoneHtml&checkedDomains=youtube&checkConnection=youtube%3A291%3A1"
+    >
+    <div class="nav_line">
+      <div>
+        <i class="icon-c-logo">
+          <img src="https://flatris.com.ua/assets/images/logo/logo_w.svg" height="30">
+        </i>
+      </div>
+      <div class="btns">
+        <a class="btn_transparent" @click.prevent="close" href="#">
+          <span>Закрыть</span>
+        </a>
+        <a class="btn_save" @click.prevent="setTable" href="#">Сохранить в
+          <strong>FLATRIS</strong>
+        </a>
+      </div>
+    </div>
+    <iframe class="googlespreadsheets_frame" :src="url"></iframe>
   </div>
 </template>
 
@@ -23,8 +30,7 @@ export default {
   name: "GoogleTable",
   props: ["spreadsheet_id", "object_id"],
   data() {
-    return {
-    };
+    return {};
   },
   mounted() {
     swal({
@@ -85,8 +91,9 @@ export default {
 
             this.generateFloors();
             setTimeout(() => {
-            //  this.$emit("closeTable", true);
-              this.$bus.emit('saveTable', true);
+              //  this.$emit("closeTable", true);
+              this.$bus.emit("activeBtn", true);
+              this.$bus.emit("saveTable", true);
               swal.closeModal();
             }, 1000);
           }
@@ -96,11 +103,11 @@ export default {
           swal("Ошибка!", jqXHR.responseText, "error");
         });
     },
-    generateFloors(){
+    generateFloors() {
       $.post(
         this.$root.apiurl,
         {
-          action: 'generateFloors',
+          action: "generateFloors",
           object_id: this.object_id
         },
         data => {

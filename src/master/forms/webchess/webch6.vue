@@ -2,20 +2,22 @@
   <div class="form">
     <h3 class="text-center">Веб-шахматка для сайта готова!</h3>
     <div class="text-center">
-      <a :href="$root.mainurl+'/api/chess/?cid='+cid" target="_blank" class="btn btn-md btn-cancel waves-effect">Предварительный просмотр</a>
+      <a
+        :href="$root.mainurl+'/api/chess/?cid='+cid"
+        target="_blank"
+        class="btn btn-md btn-cancel waves-effect"
+      >Предварительный просмотр</a>
     </div>
 
     <div class="wrap-code">
       <p>Чтобы разместить веш-шахматку на вашем сайте - скопируйте и вставьте код на вашем сайте перед закрывающим тегом body</p>
-<textarea id="code" name="code" v-model="code"></textarea>
+      <textarea id="code" name="code" v-model="code"></textarea>
     </div>
 
     <div class="btns text-center">
-<button class="btn btn-md waves-effect" @click="copy" >Скопировать код</button>
-<button class="btn btn-md waves-effect" @click="sendToEmail">Отправить на email</button>
+      <button class="btn btn-md waves-effect" @click="copy">Скопировать код</button>
+      <button class="btn btn-md waves-effect" @click="sendToEmail">Отправить на email</button>
     </div>
-
-
   </div>
 </template>
 
@@ -53,8 +55,8 @@ export default {
     (function (d,s,u,e,p) {
         p=d.getElementsByTagName(s)[0],e=d.createElement(s),e.async=1,e.src=u,p.parentNode.insertBefore(e, p);
     })(document, 'script', '${this.$root.mainurl}/public/web.js?cid=${
-      this.cid
-    }');
+        this.cid
+      }');
 &lt;/script>
       `;
 
@@ -113,31 +115,33 @@ export default {
     },
 
     sendToEmail() {
-      swal({
-        title: "Отправить?",
-        //  text: "Вы точно хотите отправить?",
-        //   type: "error",
-        showCancelButton: true,
-        confirmButtonText: "Да, отправить",
-        cancelButtonText: "Отмена",
-        cancelButtonClass: "btn-md btn btn-secondary waves-effect",
-        confirmButtonClass: "btn-md waves-effect waves-light",
-        showLoaderOnConfirm: true
-      }).then(() => {
-        $.post(
-          this.$root.apiurl,
-          {
-            action: "sendWebchessCode",
-            code: this.code
-          },
-          data => {
-            if ((data.type = "success")) {
-              swal("Отправлено!", "", "success");
-            }
-          },
-          "json"
-        );
-      });
+      (async () => {
+        const { value: sw } = await swal({
+          title: "Отправить?",
+
+          showCancelButton: true,
+          confirmButtonText: "Да, отправить",
+          cancelButtonText: "Отмена",
+          cancelButtonClass: "btn btn-line btn-md waves-effect",
+          confirmButtonClass: "btn btn-or btn-md waves-effect"
+        });
+
+        if (sw) {
+          $.post(
+            this.$root.apiurl,
+            {
+              action: "sendWebchessCode",
+              code: this.code
+            },
+            data => {
+              if ((data.type = "success")) {
+                swal("Отправлено!", "", "success");
+              }
+            },
+            "json"
+          );
+        }
+      })();
     },
 
     addCode() {

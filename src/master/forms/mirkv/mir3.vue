@@ -12,24 +12,29 @@
         <div class="col-sm-9 col-lg-8">
           <div class="form-group">
             <div class="input-group">
-              <input type="text" class="form-control" :id="'input'+item.id" v-model="item.link" readonly>
+              <input
+                type="text"
+                class="form-control"
+                :id="'input'+item.id"
+                v-model="item.link"
+                readonly
+              >
               <div class="input-group-append">
-                <button class="btn btn-md waves-effect" @click="copy(item.id)" type="button">Копировать</button>
+                <button
+                  class="btn btn-md waves-effect"
+                  @click="copy(item.id)"
+                  type="button"
+                >Копировать</button>
               </div>
             </div>
-            
           </div>
         </div>
       </div>
-    <br>
+      <br>
       <div class="text-center">
         <button class="btn btn-md waves-effect" @click="sendToEmail">Отправить себе на почту</button>
       </div>
     </div>
-    
-    
-
-
   </div>
 </template>
 
@@ -120,32 +125,32 @@ export default {
       }
     },
     sendToEmail() {
-      swal({
-        title: "Отправить?",
-        //  text: "Вы точно хотите отправить?",
-     //   type: "error",
-        showCancelButton: true,
-        confirmButtonText: "Да, отправить",
-        cancelButtonText: "Отмена",
-        cancelButtonClass: "btn-md btn btn-secondary waves-effect",
-        confirmButtonClass: "btn-md waves-effect waves-light",
-        showLoaderOnConfirm: true
-      }).then(() => {
-        $.post(
-          this.$root.apiurl,
-          {
-            action: "mirSendToEmail",
-            data: this.data
-          },
-          data => {
-            if(data.type = "success"){
-              swal("Отправлено!", '', "success");
-            }
-           
-          },
-          "json"
-        );
-      });
+      (async () => {
+        const { value: sw } = await swal({
+          title: "Отправить?",
+          showCancelButton: true,
+          confirmButtonText: "Да, отправить",
+          cancelButtonText: "Отмена",
+          cancelButtonClass: "btn btn-line btn-md waves-effect",
+          confirmButtonClass: "btn btn-or btn-md waves-effect"
+        });
+
+        if (sw) {
+          $.post(
+            this.$root.apiurl,
+            {
+              action: "mirSendToEmail",
+              data: this.data
+            },
+            data => {
+              if ((data.type = "success")) {
+                swal("Отправлено!", "", "success");
+              }
+            },
+            "json"
+          );
+        }
+      })();
     },
     send(e) {
       if (e == "prev") {
