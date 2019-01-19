@@ -8,7 +8,7 @@
         </div>
 
         <div v-if="prop == 'users'">
-          <button class="btn btn-or btn-md waves-effect" @click="edit">Редактировать</button>
+          <button class="btn btn-or btn-md waves-effect" @click="editUsers">Редактировать</button>
           <button class="btn btn-line btn-md waves-effect" @click="removeUser(ids)">Удалить</button>
         </div>
 
@@ -86,8 +86,11 @@ export default {
     del() {
       this.$bus.emit(this.$route.params.id, this.prop);
     },
-    edit() {
-      this.$bus.emit(this.$route.params.id, this.prop);
+    editUsers() {
+        this.$store.commit("loadRmodal", {
+        type: "editUser",
+        title: "Редактирование"
+      });
     }
   }
 };

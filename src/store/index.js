@@ -18,22 +18,31 @@ export default new Vuex.Store({
       update: null,
     },
     myObjects: null,
+    myObjectsCMS: null,
     permissions: {
       web: [],
       mirkvartir: [],
       cms: [],
     },
+    userSettings: null,
+    permissionsCMS: {},
     changes: {
       count: []
     },
 
-    rmodal:{
+    rmodal: {
       type: null
+    },
+    typeUsers: {
+      "1": "Администратор",
+      "2": "Руководитель",
+      "3": "Менеджер",
+      "4": "Партнер",
     }
-    
+
   },
   mutations: {
-    loadRmodal(state, payload){
+    loadRmodal(state, payload) {
       state.rmodal = payload;
     },
     getTarifPlan(state) {
@@ -72,6 +81,7 @@ export default new Vuex.Store({
           if (data) {
             // console.log(state);
             state.user = data;
+            state.user.main = 1;
           }
         },
         "json"
@@ -100,7 +110,12 @@ export default new Vuex.Store({
         data => {
           if (data) {
             // console.log(state);
-            state.myObjects = data;
+            if (payload == 'cms') {
+              state.myObjectsCMS = data;
+            } else {
+              state.myObjects = data;
+            }
+
           }
         },
         "json"
@@ -115,6 +130,20 @@ export default new Vuex.Store({
         },
         "JSON"
       );
+    },
+    loadPermissionsCMS(state, payload) {
+      for (let item of payload) {
+        //  console.log(item);
+        $.get(
+          state.mainurl + "/api?action=getUserPermissions&ut=cms&agent_id=" + item,
+          data => {
+            //  console.log(data);
+            state.permissionsCMS[item] = data.data.permissions_tree;
+          },
+          "JSON"
+        );
+      }
+
     },
     loadUserPermissions(state, payload = 'cms') {
       if (!payload) return;
@@ -133,6 +162,25 @@ export default new Vuex.Store({
       );
 
     },
+
+    loadUserSettings(state, payload) {
+      if (!payload) return;
+      $.post(
+        state.apiurl, {
+          action: 'getUserSettings',
+          // type: payload
+        },
+        data => {
+          if (data) {
+            // console.log(state);
+            state.userSettings = data;
+          }
+        },
+        "json"
+      );
+    },
+
+
     setChanges(state, payload) {
       state.changes = payload;
     }

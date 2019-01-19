@@ -6,19 +6,27 @@
 
         <div class="r">
           <div class="btn-group btn-group-toggle">
-            <button class="btn btn-lg btn-success waves-effect">Мои объекты</button>
-            <button class="btn btn-lg btn-outline-success waves-effect">Доступные мне</button>
+            <button
+              @click="chObj('my')"
+              :class="{'btn-outline-success':objtype == 'other', 'btn-success':objtype != 'other'}"
+              class="btn btn-lg waves-effect"
+            >Мои объекты</button>
+            <button
+              @click="chObj('other')"
+              :class="{'btn-outline-success':objtype == 'my', 'btn-success':objtype != 'my'}"
+              class="btn btn-lg waves-effect"
+            >Доступные мне</button>
           </div>
 
           <router-link
             :to="{ name: 'new_object', params: { id: 1 }}"
-            class="btn btn-lg btn-danger waves-effect"
+            class="btn btn-lg btn-or waves-effect"
           >Создать новый объект</router-link>
         </div>
       </div>
     </div>
     <div class="main-container container">
-      <div class="search-wrap row">
+      <div class="search-wrap row" v-if="countObjects">
         <div class="form-group col-md-5 col-xl-4">
           <div class="search">
             <input type="text" v-model="search" class="form-control" placeholder="Поиск...">
@@ -29,7 +37,7 @@
 
       <div class="objects-list main-list">
         <div class="row">
-          <div class="col-md-6 col-lg-4">
+          <div class="col-md-6 col-lg-4" v-if="objtype == 'my'">
             <div class="item item-add">
               <div class="title">Создать новый объект</div>
               <div class="img">
@@ -70,7 +78,7 @@
                 <img :src="item.img" v-else-if="item.img" alt>
                 <img :src="$store.state.mainurl+'/assets/panel/img/object.svg'" v-else alt>
               </div>
-              <div class="w-status">
+              <div class="w-status" v-if="objtype == 'my'">
                 <div class="sh">
                   <div class="t">Статус продаж</div>
                   <div class="st-btns">
@@ -81,7 +89,7 @@
                 <div class="progress progress-lg" v-html="item.hstatus"></div>
               </div>
 
-              <div class="b-btns">
+              <div class="b-btns" v-if="objtype == 'my'">
                 <div class="row">
                   <div class="col-sm-6">
                     <a
@@ -137,7 +145,8 @@ export default {
       },
       showGtable: false,
       search: null,
-      stid: false
+      stid: false,
+      objtype: "my"
     };
   },
 
@@ -166,7 +175,11 @@ export default {
   computed: {
     objects() {
       let data = {};
-      for (let item in this.$store.state.myObjects) {
+      let objects = this.$store.state.myObjects;
+      if (this.objtype != "my") {
+        let objects = this.$store.state.myObjectsCMS;
+      }
+      for (let item in objects) {
         this.$store.state.myObjects[item]["hstatus"] = this.status(
           this.$store.state.myObjects[item],
           false
@@ -195,6 +208,12 @@ export default {
     }
   },
   methods: {
+    chObj(type) {
+      if (!this.$store.state.myObjectsCMS) {
+        this.$store.commit("loadMyObjects", "cms");
+      }
+      this.objtype = type;
+    },
     openGtab(item) {
       this.gtab.spreadsheet_id = item.spreadsheet_id;
       this.gtab.object_id = item.id;

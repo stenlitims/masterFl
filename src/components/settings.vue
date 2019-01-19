@@ -8,13 +8,13 @@
         <div class="col-md-3 col-lg-2">
           <div class="left-nav">
             <ul>
-              <li>
+              <li @click="nav.inst = false">
                 <router-link :to="{ name: 'settings', params: { id: 'user' }}">Аккаунт</router-link>
               </li>
-              <li>
+              <li @click="nav.inst = false">
                 <router-link :to="{ name: 'settings', params: { id: 'notification' }}">Уведомления</router-link>
               </li>
-              <li>
+              <li @click="nav.inst = false">
                 <router-link :to="{ name: 'settings', params: { id: 'objects' }}">Объекты</router-link>
               </li>
               <li class="parent" :class="{'open': nav.inst}">
@@ -44,19 +44,19 @@
                   </ul>
                 </slide-up-down>
               </li>
-              <li>
+              <li @click="nav.inst = false">
                 <router-link :to="{ name: 'settings', params: { id: 'reports' }}">Отчеты</router-link>
               </li>
-              <li>
+              <li @click="nav.inst = false">
                 <router-link :to="{ name: 'settings', params: { id: 'users' }}">Пользователи</router-link>
               </li>
-              <li>
+              <li @click="nav.inst = false">
                 <router-link :to="{ name: 'settings', params: { id: 'goals' }}">Цели</router-link>
               </li>
-              <li>
+              <li @click="nav.inst = false">
                 <router-link :to="{ name: 'settings', params: { id: 'tarif' }}">Тарифы</router-link>
               </li>
-              <li>
+              <li @click="nav.inst = false">
                 <router-link :to="{ name: 'settings', params: { id: 'orders' }}">Заказы и оплаты</router-link>
               </li>
             </ul>
@@ -79,7 +79,7 @@
       :title="'Вы выбрали '+userIds.length+' пользователя.'"
     ></savePanel>
     <transition name="sright">
-      <modalRight v-if="$store.state.rmodal.type"></modalRight>
+      <modalRight v-if="$store.state.rmodal.type" :userIds="userIds"></modalRight>
     </transition>
   </div>
 </template>
@@ -130,7 +130,12 @@ export default {
 
   created() {
     window.routeName = this.$route.name;
+    if (!this.$store.state.userSettings) {
+      this.$store.commit("loadUserSettings", "test");
+    }
   },
+
+  beforeDestroy() {},
 
   mounted() {},
   computed: {

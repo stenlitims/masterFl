@@ -1,44 +1,56 @@
 <template>
-<div class="list-obj">
-  <div class="main">
-    <label class="cus-check big">
-      <input type="checkbox" @change="add(main)" v-model="main.state.selected">
-      <span class="ch"></span>
-      <span class="title">{{main.text}}</span>
-    </label>
-    <div class="item" v-for="(b, bi) in child(main.id)" :key="bi">
-      <div class="arr" :class="{'close': !b.state.opened}" @click="b.state.opened = !b.state.opened"></div>
-      <label class="cus-check">
-        <input type="checkbox" @change="add(b)" v-model="b.state.selected">
+  <div class="list-obj">
+    <div class="main">
+      <label class="cus-check big">
+        <input type="checkbox" @change="add(main)" v-model="main.state.selected">
         <span class="ch"></span>
-        <span class="title">{{b.text}}</span>
+        <span class="title">{{main.text}}</span>
       </label>
-      <slide-up-down :active="b.state.opened" :duration="500">
-      <div class="item" v-for="(s, si) in child(b.id)" :key="si">
+      <div class="item" v-for="(b, bi) in child(main.id)" :key="bi">
+        <div
+          class="arr"
+          :class="{'close': !b.state.opened}"
+          @click="b.state.opened = !b.state.opened"
+        ></div>
         <label class="cus-check">
-          <input type="checkbox" @change="add(s)" v-model="s.state.selected">
+          <input type="checkbox" @change="add(b)" v-model="b.state.selected">
           <span class="ch"></span>
-          <span class="title">{{s.text}}</span>
+          <span class="title">{{b.text}}</span>
         </label>
+        <slide-up-down :active="b.state.opened" :duration="500">
+          <div class="item" v-for="(s, si) in child(b.id)" :key="si">
+            <label class="cus-check">
+              <input type="checkbox" @change="add(s)" v-model="s.state.selected">
+              <span class="ch"></span>
+              <span class="title">{{s.text}}</span>
+            </label>
+          </div>
+        </slide-up-down>
       </div>
-    </slide-up-down>
+    </div>
   </div>
-</div>
-</div>
 </template>
 
 <script>
 export default {
   name: "chObList",
-  props: ["data", "dataId"],
+  props: ["data", "dataId", "clear"],
   data() {
     return {};
+  },
+
+  created() {
+    if (this.clear) {
+      for (let item of this.data) {
+        item.state.selected = false;
+        item.state.opened = false;
+      }
+    }
   },
 
   mounted() {},
   computed: {
     main() {
-      console.log(this.data);
       return this.lodash.find(this.data, { id: "gproject_" + this.dataId });
     }
   },

@@ -7,6 +7,22 @@ export default {
     }
   },
 
+
+  computed:{
+    countObjects() {
+      //   return false;
+      if (!this.$store.state.myObjects) {
+        this.$store.commit("loadMyObjects", "test");
+        return false;
+      }
+      if (typeof this.$store.state.myObjects == "object") {
+        return Object.keys(this.$store.state.myObjects).length;
+      } else {
+        return false;
+      }
+    },
+  },
+
   methods: {
     clearChenge() {
       this.$store.commit("setChanges", {
@@ -51,7 +67,7 @@ export default {
 
       if (mod == null && original == null) {
         if (!this.original || !this.form) return;
-        if (!this.original[item]) return;
+      //  if (!this.original[item]) return;
         original = this.original[item].trim();
         mod = this.form[item].trim();
       }

@@ -4,17 +4,12 @@
       <div class="main-container container">
         <div class="l">Шахматка для отдела продаж</div>
 
-        <div class="r">
-          <div class="form-group search">
-            <input type="text" v-model="search" class="form-control" placeholder="Поиск...">
-            <i class="fa fa-search" aria-hidden="true"></i>
-          </div>
-        </div>
+       
       </div>
     </div>
 
     <div class="main-container container">
-      <div class="inst-list main-list">
+      <div class="inst-list main-list" v-if="countObjects">
         <div class="row">
           <div class="col-md-6 col-lg-4">
             <div class="item">
@@ -53,6 +48,8 @@
           </div>
         </div>
       </div>
+
+      <noObjedcts v-else></noObjedcts>
     </div>
   </div>
 </template>

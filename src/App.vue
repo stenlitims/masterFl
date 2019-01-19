@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :class="'page'+$route.name">
     <mainHeader></mainHeader>
     <div class="main">
       <transition name="center" mode="out-in">
@@ -60,6 +60,7 @@ $(document).on("change", ".up-file input", function() {
 <style lang="scss">
 #app {
   color: #33475b;
+  height: calc(var(--vh, 1vh) * 100);
 }
 
 .shadow-modal {
@@ -178,7 +179,7 @@ a {
 }
 
 .btn {
-  border-radius: 5px;
+  border-radius: 7px;
   border-width: 2px;
 }
 
@@ -452,6 +453,7 @@ a.btn-line {
 input[type="text"].form-control,
 input[type="email"].form-control,
 input[type="file"].form-control,
+input[type="password"].form-control,
 select.form-control,
 div.form-control {
   background: #f5f8fa;
@@ -723,6 +725,7 @@ select[disabled].form-control {
 .form-group {
   margin-bottom: 30px;
   input[type="text"],
+  input[type="password"],
   input[type="email"],
   input[type="file"],
   select.form-control {
@@ -801,6 +804,18 @@ select[disabled].form-control {
 .finish-btns {
   display: flex;
   align-items: center;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  color: #2e3f50;
+  text-decoration: none;
+  background-color: #e6f0f6;
+}
+
+
+.pagesettings{
+  background: #fff;
 }
 
 @media (min-width: 1440px) {

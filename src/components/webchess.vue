@@ -14,7 +14,7 @@
     </div>
 
     <div class="main-container container">
-      <div class="inst-list main-list">
+      <div class="inst-list main-list" v-if="countObjects">
         <div class="row">
           <div class="col-md-6 col-lg-4" v-for="(item, i) in list" :key="i">
             <div class="item">
@@ -48,6 +48,8 @@
           </div>
         </div>
       </div>
+
+      <noObjedcts v-else></noObjedcts>
     </div>
   </div>
 </template>

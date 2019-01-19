@@ -9,7 +9,7 @@
         </div>
       </div>
 
-      <button class="btn btn-lg btn-danger waves-effect" @click="addUser">Добавить пользователя</button>
+      <button class="btn btn-lg btn-or waves-effect" @click="addUser">Добавить пользователя</button>
     </div>
 
     <div class="table-responsive">
@@ -32,8 +32,8 @@
             </td>
             <td v-if="item.fullname">{{item.fullname}}</td>
             <td v-else>{{item.email}}</td>
-            <td></td>
-            <td>{{names(item.per)}}</td>
+            <td>{{getTypeUser(item)}}</td>
+            <td>{{names(item.per, item.internalKey)}}</td>
           </tr>
         </tbody>
       </table>
@@ -57,6 +57,7 @@ export default {
 
   beforeDestroy() {
     this.$emit("userIds", []);
+    this.$bus.off("clearUsers", this.clearUsers);
   },
 
   created() {
@@ -70,6 +71,8 @@ export default {
       this.$store.commit("loadMyObjects");
     }
 
+    this.$bus.on("clearUsers", this.clearUsers);
+
     this.lodash.forEach(this.users, user => {
       user.checked = false;
     });
@@ -79,6 +82,7 @@ export default {
   computed: {
     users() {
       let users = { ...this.$store.state.users };
+      users[this.$store.state.user.internalKey] = this.$store.state.user;
       let permissions = { ...this.$store.state.permissions.cms };
       this.lodash.forEach(users, (user, key) => {
         user.per = [];
@@ -86,6 +90,7 @@ export default {
           agent_id: user.internalKey,
           object: "gproject"
         });
+
         if (this.$store.state.myObjects) {
           this.lodash.forEach(user.per, p => {
             p.name = this.$store.state.myObjects[p.gproject_id].name;
@@ -106,19 +111,35 @@ export default {
         });
       }
 
+      users = this.lodash.sortBy(users, [
+        function(o) {
+          return !o.main;
+        }
+      ]);
+
       // console.log(users);
 
       return users;
     }
   },
   methods: {
+    getTypeUser(item) {
+      if (this.$store.state.user.internalKey == item.internalKey) {
+        return "Администратор";
+      }
+     // return item.extended.type;
+      return this.$store.state.typeUsers[item.extended.type];
+    },
     addUser() {
       this.$store.commit("loadRmodal", {
         type: "addUser",
         title: "Добавление нового пользователя"
       });
     },
-    names(item) {
+    names(item, id) {
+      if (this.$store.state.user.internalKey == id) {
+        return "Главный аккаунт";
+      }
       let names = [];
       this.lodash.forEach(item, p => {
         names.push(p.name);
@@ -135,6 +156,14 @@ export default {
         }
       }
       this.$emit("userIds", this.userIds);
+    },
+    clearUsers() {
+      // console.log(234);
+      this.userIds = [];
+      this.$emit("userIds", []);
+      for (let user in this.users) {
+        this.users[user].checked = false;
+      }
     },
     send(data) {
       // console.log(this.data);

@@ -29,7 +29,7 @@ export default {
   computed: {},
   methods: {
     event() {
-      this.value = !this.value;
+    //  this.value = !this.value;
       this.$emit("event", this.value);
     }
   }

@@ -5,13 +5,21 @@
       <div class="modal-close" @click="closeRmodal"></div>
     </div>
     <div class="content">
-      <mUser :data="user"></mUser>
+      <mUser :data="user" v-if="$store.state.rmodal.type == 'addUser'"></mUser>
+      <div v-if="$store.state.rmodal.type == 'editUser'" class="edit-user-list">
+        <mUser :data="$store.state.users[user]" v-for="(user, i) in userIds" :key="i"></mUser>
+      </div>
       <div class="text-center">
         <button
-          class="btn-line btn-md waves-effect"
+          class="btn btn-or btn-md waves-effect"
           v-if="$store.state.rmodal.type == 'addUser'"
           @click="addUser"
         >Добавить пользователя</button>
+        <button
+          class="btn btn-or btn-md waves-effect"
+          v-if="$store.state.rmodal.type == 'editUser'"
+          @click="saveUsers"
+        >Сохранить</button>
       </div>
     </div>
   </div>
@@ -22,14 +30,18 @@ import mUser from "@/components/modal/mUser";
 
 export default {
   name: "modalRight",
+  props: ["userIds"],
   data() {
     return {
       data: {},
       search: null,
       user: {
-        name: null,
+        fullname: null,
         email: null,
-        gmail: null,
+        extended: {
+          email: null,
+          type: 1
+        },
         dataPer: {}
       }
     };
@@ -44,25 +56,28 @@ export default {
   mounted() {},
   computed: {},
   methods: {
-    addUser() {
-
-      if (!this.user.name) {
+    validForm(user = null) {
+      if (!user) {
+        user = this.user;
+      }
+      if (!user.fullname) {
         this.mesError("Заполните имя!");
-        return;
+        return false;
       }
 
-      if (!this.isAddress(this.user.email)) {
+      if (!this.isAddress(user.email)) {
         this.mesError("Некорректный Email адресс!");
-        return;
+        return false;
       }
 
-      if (!this.isGmailAddress(this.user.gmail)) {
+      if (!this.isGmailAddress(user.extended.email)) {
         this.mesError("Некорректный gmail адресс!");
-        return;
+        return false;
       }
-
-     
-
+      return true;
+    },
+    addUser() {
+      if (!this.validForm()) return;
       $.post(
         this.$store.state.apiurl,
         {
@@ -77,6 +92,37 @@ export default {
             this.$store.commit("loadRmodal", {
               type: null
             });
+          }
+        },
+        "json"
+      );
+    },
+    saveUsers() {
+      let users = {};
+    //  console.log(this.userIds, this.$store.state.users);
+      for (let user of this.userIds) {
+        users[user] = this.$store.state.users[user];
+      //  console.log(users[user], user);
+        if (!this.validForm(users[user])) return;
+      }
+      console.log(users);
+     // return;
+      $.post(
+        this.$store.state.apiurl,
+        {
+          action: "saveUsers",
+          data: users,
+          //  id:
+        },
+        data => {
+          if (data.type == "success") {
+            this.saveOk();
+          //  this.$store.commit("getUsers");
+          //  this.$store.commit("loadUserPermissions");
+            this.$store.commit("loadRmodal", {
+              type: null
+            });
+            this.$bus.emit("clearUsers", []);
           }
         },
         "json"
@@ -99,6 +145,30 @@ export default {
   bottom: 0;
   z-index: 500;
   overflow-y: auto;
+  .edit-user-list {
+    .item-user {
+      margin-bottom: 30px;
+      padding-bottom: 10px;
+      position: relative;
+      &:before {
+        content: "";
+        position: absolute;
+        height: 1px;
+        background: #cbd6e2;
+        left: -25px;
+        right: -25px;
+        bottom: 0;
+        opacity: 0.5;
+      }
+      &:last-child {
+        padding-bottom: 0;
+        margin-bottom: 0;
+        &:before {
+          content: none;
+        }
+      }
+    }
+  }
 }
 
 .modal-heading {
@@ -127,6 +197,38 @@ export default {
     height: 20px;
     font-size: 26px;
     display: block;
+  }
+}
+
+.js-per-list {
+  display: none;
+}
+.cus-check {
+  line-height: 1;
+  .title {
+    line-height: 1;
+    font-size: 15px;
+    display: block;
+  }
+  .t2 {
+    font-size: 13px;
+    line-height: 1;
+    text-decoration: underline;
+    color: #33475b;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+.list-obj-m {
+  .item-obj {
+    margin-top: 10px;
+    margin-bottom: 25px;
+  }
+
+  .text-border {
+    margin-top: 7px;
   }
 }
 </style>

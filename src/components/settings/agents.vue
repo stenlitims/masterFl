@@ -11,9 +11,7 @@
       </div>
     </div>
 
-
-
-    <div class="list-settings">
+    <div class="list-settings" v-if="countObjects">
       <div class="item control-wrap">
         <div class="c-title">Мир квартир</div>
         <div class="c-btns" v-if="mirkv">
@@ -34,6 +32,8 @@
         </div>
       </div>
     </div>
+
+    <noObjedcts v-else></noObjedcts>
   </div>
 </template>
 

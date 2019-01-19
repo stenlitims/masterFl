@@ -28,7 +28,7 @@
             </li>
             <li class="parent">
               <a href="#">Инстументы</a>
-              <ul>
+              <ul class="w2">
                 <li>
                   <router-link to="/inst/webchess">Интерактивный каталог для сайта</router-link>
                 </li>
@@ -52,27 +52,35 @@
 
       <div class="right">
         <div class="icons">
-          <router-link :to="{ name: 'settings', params: { id: 'user' }}" title="Настройки">
+          <a href="#" @click.prevent="mesPop">
             <svg>
-              <use xlink:href="#icon-gear"></use>
+              <use xlink:href="#icon-bubble"></use>
             </svg>
-          </router-link>
+          </a>
           <a href="#">
             <svg>
               <use xlink:href="#icon-bell"></use>
             </svg>
           </a>
+
+          <router-link :to="{ name: 'settings', params: { id: 'user' }}" title="Настройки">
+            <svg>
+              <use xlink:href="#icon-gear"></use>
+            </svg>
+          </router-link>
         </div>
         <div class="v-line"></div>
-        <div class="avatar">
-          <img :src="$store.state.mainurl +'/assets/panel/img/user.svg'" alt>
-        </div>
 
         <div class="btn-group">
           <div class="main-nav">
             <ul>
               <li class="parent" :class="{'active': showMenu}">
-                <a href="#" @click.prevent="showMenu = !showMenu">Flatris</a>
+                <a href="#" @click.prevent="showMenu = !showMenu">
+                  <div class="avatar">
+                    <img :src="$store.state.mainurl +'/assets/panel/img/user.svg'" alt>
+                  </div>
+                  {{name}}
+                </a>
               </li>
             </ul>
           </div>
@@ -96,18 +104,23 @@
             <div class="dropdown-divider"></div>
             <div class="dropdown-item-text info">
               <div>
-                <b>Компания:</b> {{$store.state.user.fax}}
+                <b>Компания:</b>
+                {{$store.state.user.fax}}
               </div>
               <div>
-                <b>ID компании:</b> {{$store.state.user.id}}
+                <b>ID компании:</b>
+                {{$store.state.user.internalKey}}
               </div>
             </div>
             <div class="dropdown-divider"></div>
-             <router-link 
-                     class="dropdown-item"
-                    :to="{ name: 'settings', params: { id: 'orders' }}"
-                    title="Настройки">Заказы и оплаты</router-link>
+            <router-link
+              class="dropdown-item"
+              :to="{ name: 'settings', params: { id: 'orders' }}"
+              title="Настройки"
+            >Заказы и оплаты</router-link>
+
             <a class="dropdown-item" href="#">База знаний</a>
+            <a class="dropdown-item" @click.prevent="mesPop" href="#">Служба поддержки</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item link" href="#">Выход с аккаунта</a>
           </div>
@@ -126,58 +139,94 @@ export default {
       showMenu: false
     };
   },
+  computed: {
+    name() {
+      if (this.$store.state.user.fax) {
+        return this.$store.state.user.fax;
+      } else {
+        return this.$store.state.user.fullname;
+      }
+    }
+  },
   created() {},
   updated() {},
   mounted() {
-    $(document).on('click', (e) => {
-      if(!$(e.target).closest('.btn-group').hasClass('btn-group')){
+    $(document).on("click", e => {
+      if (
+        !$(e.target)
+          .closest(".btn-group")
+          .hasClass("btn-group")
+      ) {
         this.showMenu = false;
       }
     });
   },
-  computed: {},
-  methods: {}
+  methods: {
+    mesPop() {
+      swal({
+        title: "Выберете удобный для вас канал связи",
+        html: `
+        <div class="">
+<div class="mes-list">
+<a href="https://tele.click/Flatris_bot" target="_blank" class="item">
+<div class="ico"><img src="https://flatris.com.ua/assets/site/images/mes/Telegram.png" alt=""></div>
+<div class="title">Telegram</div>
+</a>
+<a href="viber://pa?chatURI=flatris" class="item">
+<div class="ico"><img src="https://flatris.com.ua/assets/site/images/mes/viber.png" class="viber" alt=""></div>
+<div class="title">Viber</div>
+</a>
+<a href="http://m.me/2149283131965851" class="item" target="_blank">
+<div class="ico"><img src="https://flatris.com.ua/assets/site/images/mes/Facebook_Messenger.png" alt=""></div>
+<div class="title">Facebook</div>
+</a>
+</div>
+</div>
+        `,
+        //   focusConfirm: false,
+        showConfirmButton: false
+      });
+    }
+  }
 };
 </script>
 
 <style lang="scss">
-.user-nav{
+.user-nav {
   min-width: 300px;
   font-size: 13px;
-  .info{
-    > div{
+  .info {
+    > div {
       margin-bottom: 5px;
-      &:last-child{
+      &:last-child {
         margin-bottom: 0;
       }
     }
   }
-  .user-header{
-    
+  .user-header {
     margin-bottom: 0;
-    .avatar{
+    .avatar {
       margin-left: -5px;
-      img{
+      img {
         width: 48px;
         height: 48px;
       }
     }
-    .name{
+    .name {
       font-size: 15px;
       font-weight: bold;
       margin-bottom: 4px;
     }
-    .email{
+    .email {
       margin-bottom: 4px;
       font-size: 12px;
-      color: #CDD8E1;
+      color: #cdd8e1;
     }
-    
   }
-  a.link{
-    color: #40C0A9;
+  a.link {
+    color: #40c0a9;
     text-decoration: underline;
-    &:hover{
+    &:hover {
       text-decoration: none;
     }
   }
@@ -186,7 +235,7 @@ export default {
   border-top: 2px solid #8adbcc;
   background: #2e3f50;
   color: #2e3f50;
- // margin-bottom: 30px;
+  // margin-bottom: 30px;
   // padding-top: 10px;
   //  padding-bottom: 10px;
   .container {
@@ -280,7 +329,7 @@ export default {
           transform: translate(0, 20px);
           position: absolute;
           top: 100%;
-          background: rgba(29, 55, 81, 0.9);
+          background: rgba(29, 55, 81, 1);
           left: 0px;
           padding: 10px 20px 15px 20px;
           min-width: 210px;
@@ -298,6 +347,9 @@ export default {
             border-top: 1px solid rgba(255, 255, 255, 0.5);
             padding-top: 8px;
             margin-top: 10px;
+          }
+          &.w2{
+            min-width: 280px;
           }
         }
       }
@@ -340,7 +392,7 @@ export default {
   }
 
   .avatar {
-    margin-right: 10px;
+    margin-right: 20px;
     img {
       width: 36px;
       height: 36px;
@@ -348,13 +400,42 @@ export default {
   }
 }
 
-
-.dropdown-menu{
-  &.show{
+.dropdown-menu {
+  &.show {
     display: block;
   }
-  a{
+  a {
     color: #000;
+  }
+}
+
+.mes-list {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+
+  .item {
+    display: block;
+    outline: none;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  .ico {
+    margin-bottom: 15px;
+
+    img {
+      width: 100px;
+    }
+
+    .viber {
+      transform: scale(1.15);
+    }
   }
 }
 @media (min-width: 991px) {

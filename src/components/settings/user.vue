@@ -88,6 +88,14 @@
 <script>
 import settings from "@/mixin/settings";
 
+function passeye(){
+  if ($("#new_pass").attr("type") == "password") {
+        $("#new_pass").attr("type", "text");
+      } else {
+        $("#new_pass").attr("type", "password");
+      }
+}
+
 export default {
   name: "user",
   mixins: [settings],
@@ -102,8 +110,51 @@ export default {
   created() {
     //  this.$store.commit("loadUser");
   },
+  beforeDestroy(){
+    $(document).off("click", ".eye", passeye);
+  },
 
-  mounted() {},
+  mounted() {
+    $(document).on("click", ".eye", passeye);
+
+    $(document).on("click", ".forget-pass", e => {
+      e.preventDefault();
+      swal({
+        title: "Восстановление пароля",
+        html:
+          "Ваш пароль будет отправлен на электронный адрес <b>" +
+          this.$store.state.user.email +
+          '</b>. Нажмите "Восстановить" если хотите продолжить.',
+        type: "warning",
+        showCancelButton: true,
+        cancelButtonClass: "btn btn-line btn-md waves-effect",
+        confirmButtonClass: "btn btn-or btn-md waves-effect",
+        confirmButtonText: "Восстановить",
+        cancelButtonText: "Отмена"
+      }).then(result => {
+        if (result.value) {
+          $.post(
+            this.$store.state.apiurl,
+            {
+              action: "sendPass"
+            },
+            data => {
+              if (data.type == "success") {
+                swal(
+                  "Отправлено!",
+                  "Пароль отправлен на вашу почту.",
+                  "success"
+                );
+              } else {
+                swal("Ошибка!", "error");
+              }
+            },
+            "json"
+          );
+        }
+      });
+    });
+  },
   computed: {
     out() {
       if (this.$store.state.changes.count.length == 0) {
@@ -115,82 +166,71 @@ export default {
   },
   methods: {
     popPass() {
-      (async () => {
-        const { value: sw } = await swal({
-          title: "Изменить пароль",
-          html: `
+      let old_pass = null;
+      let new_pass = null;
+      swal({
+        title: "Изменить пароль",
+        html: `
         <div class="form-group">
             <div class="a-dflex">
               <label>Введите старый пароль</label>
-              <div><a href="#">Забыл пароль</a></div>
+              <div><a href="#" class="forget-pass">Забыл пароль</a></div>
             </div>
-            <input type="text" class="form-control" id="old_pass" name="password">
+            <input type="password" class="form-control" id="old_pass" name="password">
           </div>
           <div class="form-group" style="margin-bottom: 10px">
             <div class="a-dflex">
               <label>Новый пароль</label>
+              <div class="eye">
+                <img src="https://flatris.com.ua/assets/site/images/ico-eye.svg" alt="">
+              </div>
             </div>
-            
-            <input type="text" class="form-control" id="new_pass" name="password">
+            <input type="password" class="form-control" id="new_pass" name="password">
           </div>
         `,
-          //   focusConfirm: false,
-          showCancelButton: true,
-          cancelButtonClass: "btn btn-line btn-md waves-effect",
-          confirmButtonClass: "btn btn-or btn-md waves-effect",
-          confirmButtonText: "Сохранить",
-          cancelButtonText: "Отмена",
-          preConfirm: form => {
-            let old_pass = document.getElementById("old_pass").value;
-            let new_pass = document.getElementById("new_pass").value;
-            if (new_pass.length < 8) {
-              swal.showValidationMessage(
-                `Новый пароль должен иметь минимум 8 символов`
-              );
-            } else {
-              console.log(4523);
-              //  swal('Успешно сохранено!');
-            }
-          }
-        });
-
-        if (sw) {
-          swal("Успешно сохранено!");
-        }
-      })();
-    },
-    editName() {
-      Swal({
-        title: "Submit your Github username",
-        input: "text",
-        inputAttributes: {
-          autocapitalize: "off"
-        },
+        //   focusConfirm: false,
         showCancelButton: true,
-        confirmButtonText: "Look up",
-        showLoaderOnConfirm: true,
-        preConfirm: login => {
-          return fetch(`//api.github.com/users/${login}`)
-            .then(response => {
-              if (!response.ok) {
-                throw new Error(response.statusText);
+        cancelButtonClass: "btn btn-line btn-md waves-effect",
+        confirmButtonClass: "btn btn-or btn-md waves-effect",
+        confirmButtonText: "Сохранить",
+        cancelButtonText: "Отмена",
+        preConfirm: form => {
+          old_pass = document.getElementById("old_pass").value;
+          new_pass = document.getElementById("new_pass").value;
+          let err = null;
+          if (old_pass.trim() == "" || new_pass.trim() == "") {
+            console.log(234);
+            return swal.showValidationMessage(`Все поля должны быть заполнены`);
+          } else if (new_pass.length < 8) {
+            return swal.showValidationMessage(
+              `Новый пароль должен иметь минимум 8 символов`
+            );
+          }
+
+          return $.post(
+            this.$store.state.apiurl,
+            {
+              action: "changePassword",
+              old_pass: old_pass,
+              new_pass: new_pass
+            },
+            data => {
+              if (data.type == "success") {
+                return true;
+              } else {
+                swal.showValidationMessage(`Неверный пароль`);
               }
-              return response.json();
-            })
-            .catch(error => {
-              Swal.showValidationMessage(`Request failed: ${error}`);
-            });
-        },
-        allowOutsideClick: () => !Swal.isLoading()
+            },
+            "json"
+          );
+        }
       }).then(result => {
         if (result.value) {
-          Swal({
-            title: `${result.value.login}'s avatar`,
-            imageUrl: result.value.avatar_url
-          });
+          swal("Успешно сохранено!");
         }
       });
     },
+    editName() {},
     send(data) {
       // console.log(this.data);
       $.post(
@@ -203,7 +243,7 @@ export default {
             email: this.form.email,
             website: this.form.website,
             fullname: this.form.fullname,
-            address: this.form.address,
+            address: this.form.address
           }
         },
         data => {
@@ -263,5 +303,11 @@ export default {
 }
 .pass-control {
   margin-top: 20px;
+}
+
+.eye {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
 }
 </style>

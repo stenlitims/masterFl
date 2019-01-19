@@ -2,7 +2,7 @@
   <div>
     <div class="heading">
       <div class="main-container container">
-        <div class="l">Подключение агентств недвижимости</div>
+        <div class="l">Интеграция по API</div>
       </div>
     </div>
 

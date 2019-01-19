@@ -3,7 +3,7 @@
     <div class="settings-btns">
       <h3>Интерактивный каталог квартир</h3>
 
-      <div class="form-group">
+      <div class="form-group" v-if="countObjects">
         <div class="search">
           <input type="text" v-model="search" class="form-control" placeholder="Поиск...">
           <i class="fa fa-search" aria-hidden="true"></i>
@@ -11,7 +11,7 @@
       </div>
     </div>
 
-    <div class="list-settings">
+    <div class="list-settings" v-if="countObjects">
       <div class="item control-wrap" v-for="(item, i) in list" :key="i">
         <div class="c-title">{{item.name}}</div>
         <div class="c-btns" v-if="item.selected">
@@ -32,6 +32,8 @@
         </div>
       </div>
     </div>
+
+    <noObjedcts v-else></noObjedcts>
   </div>
 </template>
 
