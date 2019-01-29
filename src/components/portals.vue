@@ -24,7 +24,7 @@
                   class="btn btn-outline-primary waves-effect"
                 >Редактировать</router-link>
                 <button
-                  class="btn btn-outline-danger waves-effect"
+                  class="btn btn-outline-primary2 waves-effect"
                   @click="OffPermissions(null, 'mirkvartir')"
                 >Отключить</button>
               </div>

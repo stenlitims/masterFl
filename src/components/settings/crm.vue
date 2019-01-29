@@ -16,7 +16,7 @@
           >Редактировать</router-link>
           <button
             @click="OffPermissions(null, 'amocrm')"
-            class="btn btn-outline-danger waves-effect"
+            class="btn btn-outline-primary2 waves-effect"
           >Отключить</button>
         </div>
       </div>

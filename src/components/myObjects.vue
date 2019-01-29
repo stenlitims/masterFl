@@ -91,29 +91,35 @@
 
               <div class="b-btns" v-if="objtype == 'my'">
                 <div class="row">
-                  <div class="col-sm-6">
-                    <a
-                      :href="$store.state.mainurl+'/api/chess/?cid='+item.cid"
-                      target="_blank"
-                      class="btn waves-effect"
-                    >Открыть шахматку</a>
-                  </div>
-                  <div class="col-sm-6">
-                    <a
-                      href="#"
-                      @click.prevent="openGtab(item)"
-                      class="btn waves-effect"
-                    >Открыть таблицу</a>
-                  </div>
-                  <div class="col-sm-6">
-                    <router-link
-                      :to="{ name: 'object', params: { id: 1, oid:item.id }}"
-                      class="btn waves-effect"
-                    >Редактировать объект</router-link>
-                  </div>
-                  <div class="col-sm-6">
-                    <button @click="deleteObject(item.id)" class="btn waves-effect">Удалить объект</button>
-                  </div>
+                  <a
+                    :href="$store.state.mainurl+'/api/chess/?cid='+item.cid"
+                    target="_blank"
+                    class="col"
+                  >
+                    <svg>
+                      <use xlink:href="#looking-apartment"></use>
+                    </svg>
+                    
+                    <span>Открыть шахматку</span>
+                  </a>
+                  <a href="#" @click.prevent="openGtab(item)" class="col">
+                    <svg>
+                      <use xlink:href="#ico-sheets"></use>
+                    </svg>
+                    <span>Открыть таблицу</span>
+                  </a>
+                  <router-link :to="{ name: 'object', params: { id: 1, oid:item.id }}" class="col">
+                    <svg>
+                      <use xlink:href="#build"></use>
+                    </svg>
+                    <span>Редактировать объект</span>
+                  </router-link>
+                  <a href="#" @click.prevent="deleteObject(item.id)" class="col">
+                    <svg>
+                      <use xlink:href="#recycle-bin"></use>
+                    </svg>
+                    <span>Удалить объект</span>
+                  </a>
                 </div>
               </div>
             </div>
@@ -159,6 +165,15 @@ export default {
     this.$store.commit("loadMyObjects", "test");
     //}
     window.routeParam = { name: this.$route.name };
+    if (this.$route.params.id == "other") {
+      this.chObj("other");
+    }
+  },
+
+  watch: {
+    $route(to, from) {
+      this.chObj(this.$route.params.id);
+    }
   },
 
   mounted() {
@@ -346,9 +361,42 @@ export default {
     margin-bottom: 8px;
   }
   .b-btns {
+    margin-top: 20px;
     .row {
-      > div {
-        margin-top: 10px;
+      margin-left: -20px;
+      margin-right: -20px;
+      margin-bottom: -20px;
+
+      flex-wrap: nowrap;
+      .col {
+        border: none;
+        border-top: 1px solid #e5e5e5;
+        background: none;
+        border-right: 1px solid #e5e5e5;
+        padding: 10px 5px;
+        color: #36485a;
+        font-size: 12px;
+        transition: all 0.3s ease;
+        &:last-child {
+          border-right: none;
+        }
+        svg {
+          width: 36px;
+          height: 36px;
+          fill: #36485a;
+          margin-bottom: 7px;
+          transition: all 0.3s ease;
+        }
+        span {
+          display: block;
+        }
+        &:hover {
+          color: #fff;
+          background: #38c0ac;
+          svg {
+            fill: #fff;
+          }
+        }
       }
     }
     .btn {

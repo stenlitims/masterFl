@@ -18,14 +18,14 @@
           >Редактировать</router-link>
           <button
             @click="OffPermissions(null, 'mirkvartir')"
-            class="btn btn-outline-danger waves-effect"
+            class="btn btn-outline-primary2 waves-effect"
           >Отключить</button>
         </div>
         <div class="c-btns" v-else>
           <router-link
             :to="{ name: 'new_mirkv', params: { id: 1 }}"
-            class="btn btn-or waves-effect"
-          >РАЗМЕСТИТЬ</router-link>
+            class="btn btn-line waves-effect"
+          >Разместить</router-link>
         </div>
       </div>
     </div>

@@ -32,7 +32,7 @@
             :to="{ name: 'object', params: { id: 1, oid:item.id }}"
             class="btn btn-outline-primary waves-effect"
           >Редактировать</router-link>
-          <button @click="deleteObject(item.id)" class="btn btn-outline-danger waves-effect">Удалить</button>
+          <button @click="deleteObject(item.id)" class="btn btn-outline-primary2 waves-effect">Удалить</button>
         </div>
       </div>
     </div>

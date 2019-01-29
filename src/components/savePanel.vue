@@ -26,7 +26,12 @@ export default {
     return {};
   },
   created() {},
-  mounted() {},
+  mounted() {
+    $("#app").addClass("bottom-panel");
+  },
+  beforeDestroy() {
+    $("#app").removeClass("bottom-panel");
+  },
   computed: {
     count() {
       return this.$store.state.changes.count.length;
@@ -42,7 +47,7 @@ export default {
   methods: {
     removeUser(ids) {
       if (!ids) return;
-      (async ()=> {
+      (async () => {
         const { value: removeUser } = await swal({
           title: "Удалить?",
           text: "Вы точно хотите удалить?",
@@ -87,7 +92,7 @@ export default {
       this.$bus.emit(this.$route.params.id, this.prop);
     },
     editUsers() {
-        this.$store.commit("loadRmodal", {
+      this.$store.commit("loadRmodal", {
         type: "editUser",
         title: "Редактирование"
       });

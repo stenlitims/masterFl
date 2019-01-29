@@ -13,13 +13,13 @@
               <router-link to="/" class="waves-effect">Рабочий стол</router-link>
             </li>
             <li class="parent">
-              <router-link to="/myobjects" class="waves-effect">Объекты</router-link>
+              <router-link to="/objects/my" class="waves-effect">Объекты</router-link>
               <ul>
                 <li>
-                  <router-link to="/myobjects">Мои объекты</router-link>
+                  <router-link to="/objects/my">Мои объекты</router-link>
                 </li>
                 <li>
-                  <a href="#">Доступные мне объекты</a>
+                  <router-link to="/objects/other">Доступные мне объекты</router-link>
                 </li>
                 <li class="line">
                   <router-link :to="{ name: 'new_object', params: { id: 1 }}">Добавить новый объект</router-link>
@@ -348,7 +348,7 @@ export default {
             padding-top: 8px;
             margin-top: 10px;
           }
-          &.w2{
+          &.w2 {
             min-width: 280px;
           }
         }

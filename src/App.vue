@@ -60,7 +60,7 @@ $(document).on("change", ".up-file input", function() {
 <style lang="scss">
 #app {
   color: #33475b;
-  height: calc(var(--vh, 1vh) * 100);
+  min-height: calc(var(--vh, 1vh) * 100);
 }
 
 .shadow-modal {
@@ -89,6 +89,10 @@ $(document).on("change", ".up-file input", function() {
 .sright-enter,
 .sright-leave-to {
   transform: translate(100%, 0);
+}
+
+.bottom-panel{
+  padding-bottom: 90px;
 }
 
 body {
@@ -190,6 +194,17 @@ a {
   &:hover {
     background: #2e3f50;
     border-color: #2e3f50;
+  }
+}
+
+.btn-outline-primary2 {
+  border-color: #cbd6e2;
+  background: #fff;
+  color: #506e91;
+  &:hover {
+    background: #2e3f50;
+    border-color: #2e3f50;
+    color: #fff;
   }
 }
 

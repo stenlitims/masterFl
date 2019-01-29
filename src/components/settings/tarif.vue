@@ -516,7 +516,7 @@ export default {
     }
 
     a {
-      color: #000;
+      color: #00b2af;
       text-decoration: underline;
       &:hover {
         text-decoration: none;

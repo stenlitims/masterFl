@@ -19,29 +19,36 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6 col-lg-4" v-if="!countObjects">
+          <div class="col-md-6 col-lg-4">
             <div class="item">
               <div class="img">
                 <img :src="$root.mainurl +'/assets/panel/img/main/2.svg'" alt>
               </div>
               <div class="title">2. Создать объект</div>
-              <div class="btns">
-                <router-link
-                  :to="{ name: 'new_object', params: { id: 1 }}"
-                  class="btn btn-outline-success btn-md waves-effect"
-                >Создать объект</router-link>
+              <div v-if="!countObjects">
+                <div class="btns">
+                  <router-link
+                    :to="{ name: 'new_object', params: { id: 1 }}"
+                    class="btn btn-outline-success btn-md waves-effect"
+                  >Создать объект</router-link>
+                </div>
+                <div class="info">
+                  <a href="#">Посмотреть инструкцию</a>
+                </div>
               </div>
-              <div class="info">
-                <a href="#">Посмотреть инструкцию</a>
+              <div v-else class="check">
+                <svg>
+                  <use xlink:href="#icon-check"></use>
+                </svg>
               </div>
             </div>
           </div>
           <div class="col-md-6 col-lg-4" v-if="countObjects && !userSettings.sh_mp_amo">
             <div class="item">
-              <button
+              <!-- <button
                 @click="disableBlock('sh_mp_amo')"
                 class="btn btn-outline-primary btn-md waves-effect"
-              >Пропустить</button>
+              >Пропустить</button> -->
               <div class="img">
                 <img :src="$root.mainurl +'/assets/panel/img/main/3.png'" alt>
               </div>
@@ -59,10 +66,10 @@
           </div>
           <div class="col-md-6 col-lg-4" v-if="countObjects && !userSettings.sh_mp_webch">
             <div class="item">
-              <button
+              <!-- <button
                 @click="disableBlock('sh_mp_webch')"
                 class="btn btn-outline-primary btn-md waves-effect"
-              >Пропустить</button>
+              >Пропустить</button> -->
               <div class="img">
                 <img :src="$root.mainurl +'/assets/panel/img/main/4.png'" alt>
               </div>
@@ -80,10 +87,10 @@
           </div>
           <div class="col-md-6 col-lg-4" v-if="countObjects && !userSettings.sh_mp_portal">
             <div class="item">
-              <button
+              <!-- <button
                 @click="disableBlock('sh_mp_portal')"
                 class="btn btn-outline-primary btn-md waves-effect"
-              >Пропустить</button>
+              >Пропустить</button> -->
               <div class="img">
                 <img :src="$root.mainurl +'/assets/panel/img/main/5.png'" alt>
               </div>
@@ -101,10 +108,10 @@
           </div>
           <div class="col-md-6 col-lg-4" v-if="countObjects && !userSettings.sh_mp_partner">
             <div class="item">
-              <button
+              <!-- <button
                 @click="disableBlock('sh_mp_partner')"
                 class="btn btn-outline-primary btn-md waves-effect"
-              >Пропустить</button>
+              >Пропустить</button> -->
               <div class="img">
                 <img :src="$root.mainurl +'/assets/panel/img/main/6.png'" alt>
               </div>
@@ -117,6 +124,22 @@
               </div>
               <div class="info">
                 <a href="#">Посмотреть инструкцию</a>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-md-6 col-lg-4">
+            <div class="item">
+              <div class="img">
+                <img :src="$root.mainurl +'/assets/panel/img/main/7.png'" alt>
+              </div>
+              <div class="title">7. Добавить коллег</div>
+              <div class="btns">
+                <router-link
+                  :to="{ name: 'new_agent', params: { id: 1 }}"
+                  class="btn btn-outline-success btn-md waves-effect"
+                >Добавить</router-link>
               </div>
             </div>
           </div>
@@ -188,5 +211,9 @@ export default {
 <style lang="scss" scoped>
 .btn-outline-primary {
   margin-bottom: 25px;
+}
+
+.main-list .check {
+  margin-top: 40px;
 }
 </style>

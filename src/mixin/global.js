@@ -8,7 +8,7 @@ export default {
   },
 
 
-  computed:{
+  computed: {
     countObjects() {
       //   return false;
       if (!this.$store.state.myObjects) {
@@ -21,6 +21,20 @@ export default {
         return false;
       }
     },
+
+    userSettings() {
+      if (!this.$store.state.userSettings) {
+        this.$store.commit("loadUserSettings", "test");
+        return {
+          sh_mp_amo: false,
+          sh_mp_partner: false,
+          sh_mp_portal: false,
+          sh_mp_webch: false
+        };
+      } else {
+        return this.$store.state.userSettings;
+      }
+    }
   },
 
   methods: {
@@ -67,7 +81,7 @@ export default {
 
       if (mod == null && original == null) {
         if (!this.original || !this.form) return;
-      //  if (!this.original[item]) return;
+        //  if (!this.original[item]) return;
         original = this.original[item].trim();
         mod = this.form[item].trim();
       }

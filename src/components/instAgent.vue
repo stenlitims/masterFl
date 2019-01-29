@@ -28,26 +28,6 @@
           </div>
         </div>
 
-        <div class="col-md-6 col-lg-4">
-          <div class="item">
-          <div class="title">Интеграция с AmoCRM</div>
-          <div class="img img-m">
-            <img :src="$store.state.mainurl+'/assets/panel/img/object.svg'" alt="">
-          </div>
-  
-
-          <div>
-            <router-link  :to="{ name: 'new_amo', params: { id: 1 }}" class="btn btn-default waves-effect">ПОДКЛЮЧИТЬ</router-link>
-            <div class="info">
-              <a href="#">Посмотреть инструкцию</a>
-            </div>
-          </div>
-           
-      
-          
-          </div>
-        </div>
-
       </div>
 
     </div>

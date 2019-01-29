@@ -88,14 +88,6 @@
 <script>
 import settings from "@/mixin/settings";
 
-function passeye(){
-  if ($("#new_pass").attr("type") == "password") {
-        $("#new_pass").attr("type", "text");
-      } else {
-        $("#new_pass").attr("type", "password");
-      }
-}
-
 export default {
   name: "user",
   mixins: [settings],
@@ -110,12 +102,12 @@ export default {
   created() {
     //  this.$store.commit("loadUser");
   },
-  beforeDestroy(){
-    $(document).off("click", ".eye", passeye);
+  beforeDestroy() {
+    $(document).off("click", ".eye", this.passeye);
   },
 
   mounted() {
-    $(document).on("click", ".eye", passeye);
+    $(document).on("click", ".eye", this.passeye);
 
     $(document).on("click", ".forget-pass", e => {
       e.preventDefault();
@@ -151,6 +143,8 @@ export default {
             },
             "json"
           );
+        } else {
+          this.popPass();
         }
       });
     });
@@ -165,12 +159,28 @@ export default {
     }
   },
   methods: {
+    passeye() {
+      if ($("#new_pass").attr("type") == "password") {
+        $("#new_pass").attr("type", "text");
+        $(".eye img").attr(
+          "src",
+          this.$store.state.mainurl + "/assets/panel/img/e/view.png"
+        );
+      } else {
+        $("#new_pass").attr("type", "password");
+        $(".eye img").attr(
+          "src",
+          this.$store.state.mainurl + "/assets/panel/img/e/hide.png"
+        );
+      }
+    },
     popPass() {
       let old_pass = null;
       let new_pass = null;
       swal({
         title: "Изменить пароль",
-        html: `
+        html:
+          `
         <div class="form-group">
             <div class="a-dflex">
               <label>Введите старый пароль</label>
@@ -182,7 +192,9 @@ export default {
             <div class="a-dflex">
               <label>Новый пароль</label>
               <div class="eye">
-                <img src="https://flatris.com.ua/assets/site/images/ico-eye.svg" alt="">
+                <img src="` +
+          this.$store.state.mainurl +
+          `/assets/panel/img/e/hide.png" alt="">
               </div>
             </div>
             <input type="password" class="form-control" id="new_pass" name="password">
@@ -199,7 +211,7 @@ export default {
           new_pass = document.getElementById("new_pass").value;
           let err = null;
           if (old_pass.trim() == "" || new_pass.trim() == "") {
-            console.log(234);
+            //  console.log(234);
             return swal.showValidationMessage(`Все поля должны быть заполнены`);
           } else if (new_pass.length < 8) {
             return swal.showValidationMessage(
@@ -309,5 +321,8 @@ export default {
   width: 30px;
   height: 30px;
   cursor: pointer;
+  img {
+    width: 100%;
+  }
 }
 </style>

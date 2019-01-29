@@ -21,7 +21,7 @@ export default new Router({
       component: MainPage,
     },
     {
-      path: '/myobjects',
+      path: '/objects/:id',
       name: 'myObjects',
       component: myObjects,
     },
