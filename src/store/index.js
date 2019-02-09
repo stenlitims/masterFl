@@ -21,6 +21,7 @@ export default new Vuex.Store({
     myObjectsCMS: null,
     permissions: {
       web: [],
+      clear: [],
       mirkvartir: [],
       cms: [],
     },
@@ -111,6 +112,7 @@ export default new Vuex.Store({
           if (data) {
             // console.log(state);
             if (payload == 'cms') {
+              //     console.log(data);
               state.myObjectsCMS = data;
             } else {
               state.myObjects = data;
@@ -127,6 +129,16 @@ export default new Vuex.Store({
         data => {
           //  console.log(data);
           state.permissions[payload] = data.data.permissions_tree;
+          if (payload == 'web') {
+
+            let data2 = [...data.data.permissions_tree];
+
+            for (let item of data2) {
+              item.state.selected = false;
+              item.state.opened = false;
+            }
+            state.permissions.clear = data2;
+          }
         },
         "JSON"
       );
@@ -138,6 +150,10 @@ export default new Vuex.Store({
           state.mainurl + "/api?action=getUserPermissions&ut=cms&agent_id=" + item,
           data => {
             //  console.log(data);
+
+            for (let it of data.data.permissions_tree) {
+              it.state.opened = false;
+            }
             state.permissionsCMS[item] = data.data.permissions_tree;
           },
           "JSON"

@@ -6,7 +6,7 @@
     </div>
     <div class="form-group">
       <label>Email</label>
-      <input type="text" class="form-control" v-model="data.email">
+      <input type="text" class="form-control" @keyup="setGmal" v-model="data.email">
     </div>
     <div class="form-group">
       <label>Тип пользователя</label>
@@ -18,36 +18,11 @@
     <div class="form-group list-obj-m">
       <label>Права доступа к объектам</label>
 
-      <div class="item-obj" v-for="(item, i) in myObjects" :key="i">
-        <div class="row">
-          <div class="col-sm-6">
-            <label class="cus-check big">
-              <input type="checkbox" v-model="data.dataPer[i]">
-              <span class="ch"></span>
-              <div>
-                <span class="title">{{item.name}}</span>
-                <a href="#" class="t2 js-per-more">подробнее</a>
-              </div>
-            </label>
-          </div>
-          <div class="col-sm-6">
-            <select class="form-control">
-              <option>редактирование</option>
-              <option>просмотр</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="js-per-list">
-          <chObList
-            v-if="permissions.length"
-            class="text-border"
-            :data="permissions"
-            :dataId="i"
-            :clear="clearPer"
-          ></chObList>
-        </div>
+      <div v-if="countObjects">
+        <pModalPr :item="item" :userId="data.internalKey" v-for="(item, i) in myObjects" :key="i"></pModalPr>
       </div>
+
+      <div v-else class="text-center">У вас нет созданных объектов</div>
     </div>
 
     <div class="form-group">
@@ -58,7 +33,7 @@
 </template>
 
 <script>
-import chObList from "@/master/blocks/chObList";
+import pModalPr from "@/components/modal/pModalPr";
 
 function perToggle(e) {
   e.preventDefault();
@@ -79,7 +54,7 @@ export default {
   props: ["data"],
 
   components: {
-    chObList
+    pModalPr
   },
   data() {
     return {
@@ -87,6 +62,8 @@ export default {
       search: null
     };
   },
+
+  watch: {},
 
   created() {
     // console.log(this.data);
@@ -102,6 +79,9 @@ export default {
     if (!this.$store.state.permissions.web.length) {
       this.$store.commit("loadPermissions", "web");
     }
+  
+    
+    this.setGmal();
   },
 
   mounted() {
@@ -120,7 +100,7 @@ export default {
       if (this.$store.state.rmodal.type != "editUser") {
         return [...this.$store.state.permissions.web];
       } else {
-        return [...this.$store.state.permissions.web];
+        return false;
       }
     },
     myObjects() {
@@ -134,6 +114,13 @@ export default {
         ids.push(id);
       }
       return ids;
+    },
+    setGmal(e) {
+      if (this.isGmailAddress(this.data.email) && !this.data.extended.email) {
+        this.data.extended.email = this.data.email;
+      } else {
+        //  this.data.extended.email = "";
+      }
     },
     send(data) {
       // console.log(this.$store.state.permissions.cms);

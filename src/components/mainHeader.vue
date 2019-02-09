@@ -27,7 +27,7 @@
               </ul>
             </li>
             <li class="parent">
-              <a href="#">Инстументы</a>
+              <a href="#">Инструменты</a>
               <ul class="w2">
                 <li>
                   <router-link to="/inst/webchess">Интерактивный каталог для сайта</router-link>
@@ -349,7 +349,7 @@ export default {
             margin-top: 10px;
           }
           &.w2 {
-            min-width: 280px;
+            min-width: 330px;
           }
         }
       }

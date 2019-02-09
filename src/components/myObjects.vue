@@ -5,6 +5,11 @@
         <div class="l">Объекты</div>
 
         <div class="r">
+          <div class="search" v-if="countObjects">
+            <input type="text" v-model="search" class="form-control" placeholder="Поиск...">
+            <i class="fa fa-search" aria-hidden="true"></i>
+          </div>
+
           <div class="btn-group btn-group-toggle">
             <button
               @click="chObj('my')"
@@ -26,15 +31,6 @@
       </div>
     </div>
     <div class="main-container container">
-      <div class="search-wrap row" v-if="countObjects">
-        <div class="form-group col-md-5 col-xl-4">
-          <div class="search">
-            <input type="text" v-model="search" class="form-control" placeholder="Поиск...">
-            <i class="fa fa-search" aria-hidden="true"></i>
-          </div>
-        </div>
-      </div>
-
       <div class="objects-list main-list">
         <div class="row">
           <div class="col-md-6 col-lg-4" v-if="objtype == 'my'">
@@ -78,7 +74,7 @@
                 <img :src="item.img" v-else-if="item.img" alt>
                 <img :src="$store.state.mainurl+'/assets/panel/img/object.svg'" v-else alt>
               </div>
-              <div class="w-status" v-if="objtype == 'my'">
+              <div class="w-status">
                 <div class="sh">
                   <div class="t">Статус продаж</div>
                   <div class="st-btns">
@@ -89,7 +85,7 @@
                 <div class="progress progress-lg" v-html="item.hstatus"></div>
               </div>
 
-              <div class="b-btns" v-if="objtype == 'my'">
+              <div class="b-btns">
                 <div class="row">
                   <a
                     :href="$store.state.mainurl+'/api/chess/?cid='+item.cid"
@@ -114,7 +110,12 @@
                     </svg>
                     <span>Редактировать объект</span>
                   </router-link>
-                  <a href="#" @click.prevent="deleteObject(item.id)" class="col">
+                  <a
+                    href="#"
+                    v-if="objtype == 'my'"
+                    @click.prevent="deleteObject(item.id)"
+                    class="col"
+                  >
                     <svg>
                       <use xlink:href="#recycle-bin"></use>
                     </svg>
@@ -190,16 +191,21 @@ export default {
   computed: {
     objects() {
       let data = {};
-      let objects = this.$store.state.myObjects;
+      let objects = null;
+      //  console.log(this.$store.state.myObjectsCMS);
       if (this.objtype != "my") {
-        let objects = this.$store.state.myObjectsCMS;
+        objects = this.$store.state.myObjectsCMS;
+      } else {
+        objects = this.$store.state.myObjects;
       }
+
+      if (!objects) {
+        return null;
+      }
+
       for (let item in objects) {
-        this.$store.state.myObjects[item]["hstatus"] = this.status(
-          this.$store.state.myObjects[item],
-          false
-        );
-        data[item] = this.$store.state.myObjects[item];
+        objects[item]["hstatus"] = this.status(objects[item]);
+        data[item] = objects[item];
       }
       if (this.search) {
         //   this.search = this.search.toLowerCase().trim();
@@ -235,12 +241,16 @@ export default {
       this.showGtable = true;
     },
     st(item, st) {
-      console.log(st);
+      //  console.log(st);
       item.st = st;
       this.objects = " ";
     },
     status(item) {
       // item.st = st;
+      //   console.log(item);
+      if (!item) {
+        return "";
+      }
       let free = Math.ceil((item.free / item.total) * 100);
       let reserved = Math.ceil((item.reserved / item.total) * 100);
       let sold = Math.ceil((item.sold / item.total) * 100);
@@ -269,9 +279,23 @@ export default {
 </script>
 
 <style lang="scss">
+
+.heading{
+  .r{
+    display: flex;
+  }
+  .search{
+    margin-right: 30px;
+    input{
+      height: 100%;
+    }
+  }
+}
 .objects-list {
   .item {
     padding: 20px;
+    display: flex;
+    flex-direction: column;
   }
   .item-h {
     display: flex;
@@ -362,6 +386,7 @@ export default {
   }
   .b-btns {
     margin-top: 20px;
+    margin-top: auto;
     .row {
       margin-left: -20px;
       margin-right: -20px;

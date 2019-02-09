@@ -91,7 +91,7 @@ $(document).on("change", ".up-file input", function() {
   transform: translate(100%, 0);
 }
 
-.bottom-panel{
+.bottom-panel {
   padding-bottom: 90px;
 }
 
@@ -141,8 +141,23 @@ a {
     top: 50%;
     transform: translate(0, -50%);
     font-size: 19px;
-    color: #cad5e0;
+    color: #cbd6e2;
   }
+
+  input {
+    background: #f5f8fa;
+    border-color: #cbd6e2;
+    color: #33475b;
+  }
+
+  // ::-webkit-input-placeholder {
+  //   opacity: 1;
+  //   color: #cbd6e2;
+  // }
+  // ::-moz-placeholder {
+  //   opacity: 1;
+  //   color: #cbd6e2;
+  // }
 }
 
 .heading {
@@ -183,7 +198,7 @@ a {
 }
 
 .btn {
-  border-radius: 7px;
+  border-radius: 5px;
   border-width: 2px;
 }
 
@@ -243,19 +258,19 @@ a {
 .main-list {
   line-height: 1.2;
   > .row {
-    margin-right: -20px;
-    margin-left: -20px;
+    margin-right: -15px;
+    margin-left: -15px;
     > div {
-      padding-left: 20px;
-      padding-right: 20px;
-      margin-bottom: 40px;
+      padding-left: 15px;
+      padding-right: 15px;
+      margin-bottom: 30px;
     }
   }
   .item {
     text-align: center;
     background: #fff;
     padding: 40px 15px 30px;
-    border: 2px solid #38c0ac;
+    border: 1px solid #cbd6e2;
     border-radius: 5px;
     height: 100%;
   }
@@ -446,7 +461,6 @@ a.btn-line {
 .swal2-popup .swal2-styled.swal2-confirm.btn-or {
   background: #ff7a59;
   color: #fff;
-  border-radius: 8px;
   &:hover {
     color: #fff;
   }
@@ -685,6 +699,7 @@ select[disabled].form-control {
     opacity: 0;
     &:checked + .ch {
       background: #5fbeaa;
+      opacity: 1;
       border-color: #5fbeaa;
       &:before {
         content: "";
@@ -716,6 +731,11 @@ select[disabled].form-control {
     margin-bottom: -1px;
     transition: all 0.3s ease;
     position: relative;
+    &.active{
+      background: #5fbeaa;
+      border-color: #5fbeaa;
+      opacity: .7;
+    }
   }
 }
 
@@ -828,9 +848,16 @@ select[disabled].form-control {
   background-color: #e6f0f6;
 }
 
-
-.pagesettings{
+.pagesettings {
   background: #fff;
+}
+
+input[readonly]{
+  background: #fff !important;
+  cursor: no-drop;
+  &:focus{
+    border-color: #cbd6e2 !important;
+  }
 }
 
 @media (min-width: 1440px) {

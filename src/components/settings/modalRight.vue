@@ -38,6 +38,7 @@ export default {
       user: {
         fullname: null,
         email: null,
+        internalKey: 0,
         extended: {
           email: null,
           type: 1
@@ -99,26 +100,26 @@ export default {
     },
     saveUsers() {
       let users = {};
-    //  console.log(this.userIds, this.$store.state.users);
+      //  console.log(this.userIds, this.$store.state.users);
       for (let user of this.userIds) {
         users[user] = this.$store.state.users[user];
-      //  console.log(users[user], user);
+        //  console.log(users[user], user);
         if (!this.validForm(users[user])) return;
       }
       console.log(users);
-     // return;
+      // return;
       $.post(
         this.$store.state.apiurl,
         {
           action: "saveUsers",
-          data: users,
+          data: users
           //  id:
         },
         data => {
           if (data.type == "success") {
             this.saveOk();
-          //  this.$store.commit("getUsers");
-          //  this.$store.commit("loadUserPermissions");
+            //  this.$store.commit("getUsers");
+            //  this.$store.commit("loadUserPermissions");
             this.$store.commit("loadRmodal", {
               type: null
             });
@@ -169,6 +170,22 @@ export default {
       }
     }
   }
+
+  .content {
+    padding: 30px 25px 30px;
+  }
+
+  .modal-close {
+    margin-top: -5px;
+    cursor: pointer;
+    &:before {
+      line-height: 1;
+      content: "\D7";
+      height: 20px;
+      font-size: 26px;
+      display: block;
+    }
+  }
 }
 
 .modal-heading {
@@ -182,22 +199,11 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.content {
-  padding: 30px 25px;
-}
-
-.modal-close {
-  margin-top: -5px;
-  cursor: pointer;
-  &:before {
-    line-height: 1;
-    content: "\D7";
-    height: 20px;
-    font-size: 26px;
-    display: block;
-  }
+  position: sticky;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 .js-per-list {

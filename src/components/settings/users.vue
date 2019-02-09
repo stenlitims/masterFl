@@ -25,7 +25,7 @@
         <tbody>
           <tr v-for="(item, i) in users" :key="i" :class="{'active': item.checked}">
             <td>
-              <label class="cus-check">
+              <label class="cus-check" v-if="$store.state.user.internalKey != item.internalKey">
                 <input type="checkbox" @change="selectUs(item)" v-model="item.checked">
                 <span class="ch"></span>
               </label>
@@ -66,6 +66,9 @@ export default {
     }
     if (!this.$store.state.permissions.cms.length) {
       this.$store.commit("loadUserPermissions", "cms");
+    }
+    if (!this.$store.state.permissions.web.length) {
+      this.$store.commit("loadPermissions", "web");
     }
     if (!this.$store.state.myObjects) {
       this.$store.commit("loadMyObjects");
@@ -127,7 +130,13 @@ export default {
       if (this.$store.state.user.internalKey == item.internalKey) {
         return "Администратор";
       }
-     // return item.extended.type;
+      if (!item.extended) {
+        return "";
+      }
+      if (!item.extended.type) {
+        return "";
+      }
+      // return item.extended.type;
       return this.$store.state.typeUsers[item.extended.type];
     },
     addUser() {
@@ -147,6 +156,7 @@ export default {
       return names.join(", ");
     },
     selectUs(item) {
+      this.$store.commit("loadPermissionsCMS", [item.internalKey]);
       if (!this.userIds.includes(item.internalKey)) {
         this.userIds.push(item.internalKey);
       } else {

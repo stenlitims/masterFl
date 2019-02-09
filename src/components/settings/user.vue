@@ -60,7 +60,7 @@
       <div class="col-lg-6">
         <div class="form-group">
           <label>Email</label>
-          <input type="text" class="form-control" @keyup="setChanges('email')" v-model="out.email">
+          <input type="text" class="form-control" @keyup="setChanges('email')" readonly v-model="out.email">
         </div>
       </div>
       <div class="col-lg-6">

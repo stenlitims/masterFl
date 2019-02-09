@@ -1,7 +1,7 @@
 <template>
   <div class="list-obj">
     <div class="main">
-      <label class="cus-check big">
+      <label class="cus-check big" v-if="!hidename">
         <input type="checkbox" @change="add(main)" v-model="main.state.selected">
         <span class="ch"></span>
         <span class="title">{{main.text}}</span>
@@ -34,7 +34,7 @@
 <script>
 export default {
   name: "chObList",
-  props: ["data", "dataId", "clear"],
+  props: ["data", "dataId", "clear", "hidename"],
   data() {
     return {};
   },

@@ -216,4 +216,17 @@ export default {
 .main-list .check {
   margin-top: 40px;
 }
+
+.main-list .title{
+  min-height: 50px;
+  margin-bottom: 0;
+}
+
+.main-list{
+  .btns{
+    .btn{
+      min-width: 140px;
+    }
+  }
+}
 </style>
